@@ -1,2383 +1,1393 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#0a0e1a">
-<link rel="icon" type="image/png" href="favicon.png">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>">
-<title>Gordo Express</title>
-<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
-<style>
-  :root {
-    --bg-dark: #0b0f1a;
-    --bg-card: #151b2e;
-    --bg-card-hover: #1c2440;
-    --accent-orange: #f5a623;
-    --accent-orange-dark: #e0951a;
-    --text-white: #ffffff;
-    --text-muted: #8892a8;
-    --text-light: #c5cdd8;
-    --success: #10b981;
-    --danger: #ef4444;
-    --warning: #f59e0b;
-    --primary: #6366f1;
-    --primary-dark: #4f46e5;
-    --primary-light: #e0e7ff;
-    --border: #2a3150;
-    --shadow: 0 4px 12px rgba(0,0,0,0.3);
-    --shadow-lg: 0 8px 24px rgba(0,0,0,0.4);
-    --radius: 16px;
-    --radius-sm: 12px;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <link rel="icon" type="image/png" href="https://github.com/itv5ce-afk/LOGO_ITVPLAYER/raw/refs/heads/main/20211122_192815.ico">
+    <title>ITVClientes.3.0 - Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html, body { background-color: #000; color: #fff; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif; margin: 0; padding: 0; width: 100%; height: 100%; overflow-x: hidden; }
+        
+        /* Layout Full Screen / Dashboard Desktop */
+        body { padding-bottom: 80px; }
+        @media (min-width: 992px) {
+            body { padding-bottom: 0; }
+            .desktop-wrapper {
+                display: flex;
+                flex-direction: column;
+                height: 100vh;
+                width: 100vw;
+                padding: 20px;
+                overflow: hidden;
+            }
+            .desktop-content-scroll {
+                flex: 1;
+                overflow-y: auto;
+                padding-bottom: 40px;
+            }
+            .desktop-container {
+                max-width: 1400px;
+                margin: 0 auto;
+                width: 100%;
+            }
+        }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        .navbar { background-color: #111; border-top: 1px solid #333; position: fixed; bottom: 0; left: 0; right: 0; top: auto; z-index: 1020; padding: 6px 10px; }
+        @media (min-width: 992px) {
+            .navbar {
+                position: relative;
+                top: 0;
+                bottom: auto;
+                border-top: none;
+                border-bottom: 1px solid #333;
+                border-radius: 12px;
+                margin-bottom: 20px;
+            }
+            .btn-add-fixo { margin-top: 0 !important; }
+        }
 
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: var(--bg-dark);
-    color: var(--text-white);
-    min-height: 100vh;
-    overflow-x: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-  }
+        .card-cliente { background-color: #1a1a1a; border: 1px solid #333; border-radius: 12px; margin-bottom: 12px; padding: 14px; transition: all 0.1s ease; cursor: pointer; }
+        .card-cliente:active { transform: scale(0.98); }
+        .btn-small { font-size: 0.7rem; padding: 5px; flex: 1; margin: 2px; border: none; color: white; border-radius: 30px; font-weight: 500; }
+        .bg-lilas { background-color: #9933ff !important; color: white; }
+        #adminLock { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        .menu-lateral { height: 100%; width: 0; position: fixed; z-index: 1050; top: 0; left: 0; background-color: #111; overflow-x: hidden; transition: 0.3s; padding-top: 60px; box-shadow: 2px 0 12px rgba(0,0,0,0.5); overflow-y: auto; }
+        .menu-lateral a, .menu-lateral label { padding: 8px 32px; text-decoration: none; font-size: 16px; color: #ddd; display: block; }
+        .card-financeiro { background: #222; border-left: 4px solid #9933ff; border-radius: 12px; padding: 12px; margin-bottom: 12px; }
+        .stat-val { font-size: 1.4rem; font-weight: bold; color: #00ff00; }
+        .stat-label { font-size: 0.7rem; color: #aaa; text-transform: uppercase; letter-spacing: 0.5px; }
+        #authOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(2px); }
+        .auth-card { background: #111; border: 1px solid #333; border-radius: 24px; padding: 28px 22px; width: 100%; max-width: 380px; margin: 16px; }
+        .filter-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+        .filter-buttons button { flex: 1; min-width: 70px; font-size: 0.75rem; font-weight: 600; border-radius: 40px; padding: 6px 0; }
+        .btn-sm-custom { font-size: 0.7rem; padding: 6px 12px; border-radius: 40px; font-weight: 500; }
+        .modal-content { background: #1e1e1e; border-radius: 28px; border: none; }
+        input, textarea, .form-control, .form-select { background-color: #2a2a2a !important; color: white !important; border-color: #444 !important; border-radius: 14px !important; }
+        input:focus, textarea:focus { border-color: #9933ff !important; box-shadow: 0 0 0 2px rgba(153,51,255,0.3) !important; }
+        .badge { font-size: 0.7rem; padding: 5px 10px; border-radius: 50px; }
+        hr { opacity: 0.3; }
+        .btn-outline-light { border-radius: 40px; }
+        .nav-buttons-painel { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+        
+        .cliente-info { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 10px; font-size: 0.78rem; color: #ccc; margin-top: 6px; }
+        .cliente-info .info-item { display: flex; gap: 4px; }
+        .cliente-info .info-label { color: #888; font-weight: 500; }
+        .cliente-info .info-value { color: #fff; word-break: break-all; }
+        .cliente-info .info-full { grid-column: 1 / -1; }
+        
+        .modal-acoes-grid { display: flex; flex-direction: column; gap: 10px; }
+        .modal-acoes-row { display: flex; gap: 8px; }
+        .modal-acoes-row .btn { flex: 1; font-size: 0.78rem; font-weight: 600; padding: 10px 4px; border-radius: 12px; border: none; color: white; display: flex; align-items: center; justify-content: center; gap: 4px; }
 
-  /* PHONE FRAME / RESPONSIVE CONTAINER */
-  .phone-frame {
-    width: 100%;
-    max-width: 430px;
-    min-height: 100vh;
-    background: var(--bg-dark);
-    position: relative;
-    overflow: hidden;
-  }
+        .navbar-inferior { display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 10px; }
+        .navbar-inferior .nav-left, .navbar-inferior .nav-right { flex: 1; display: flex; align-items: center; }
+        .navbar-inferior .nav-right { justify-content: flex-end; }
+        .navbar-inferior .nav-center { flex: 0 0 auto; display: flex; justify-content: center; align-items: center; }
+        .btn-add-fixo {
+            background-color: #198754;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 52px;
+            height: 52px;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 -2px 12px rgba(25,135,84,0.5);
+            margin-top: -20px;
+        }
+        .btn-add-fixo:active { transform: scale(0.95); }
+        .navbar-brand-bottom { color: #fff !important; font-weight: 600; font-size: 0.95rem; margin: 0; white-space: nowrap; }
+        .navbar-brand-bottom small { display: block; font-size: 0.6rem; color: #aaa; font-weight: 400; }
+        .btn-menu-bottom { background: transparent; border: none; color: #fff; font-size: 1.6rem; padding: 4px 8px; }
 
-  /* DESKTOP DASHBOARD MODE (FULL SCREEN) */
-  @media (min-width: 768px) {
-    body {
-      padding: 0;
-      align-items: stretch;
-      background: var(--bg-dark);
-      height: 100vh;
-      overflow: hidden;
-    }
-    .phone-frame {
-      max-width: 100% !important;
-      min-height: 100vh !important;
-      max-height: 100vh !important;
-      border-radius: 0 !important;
-      border: none !important;
-      box-shadow: none !important;
-      display: flex;
-      flex-direction: column;
-      overflow-y: auto;
-    }
-    .phone-frame::-webkit-scrollbar { width: 6px; }
-    .phone-frame::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+        .menu-btn-group { display: flex; flex-direction: column; gap: 10px; padding: 16px 20px; }
+        .menu-btn-principal {
+            background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+            border: 1px solid #444;
+            color: #fff;
+            padding: 14px 16px;
+            border-radius: 14px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .menu-btn-principal:active { transform: scale(0.98); border-color: #9933ff; }
+        .menu-btn-principal.active { border-color: #9933ff; background: linear-gradient(135deg, #3a1a5a, #1a1a1a); }
+        .menu-btn-principal .bi { font-size: 1.2rem; color: #9933ff; }
+        .menu-secao { display: none; padding: 12px 20px 20px 20px; border-top: 1px solid #222; margin-top: 4px; }
+        .menu-secao.active { display: block; }
+        .menu-secao h6 { color: #9933ff; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; font-weight: 700; }
+        .painel-config-card { background: #1a1a1a; border: 1px solid #333; border-radius: 12px; padding: 12px; margin-bottom: 12px; }
+        .painel-config-card h6 { color: #fff; font-size: 0.85rem; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+        .creditos-display { display: flex; align-items: center; justify-content: space-between; background: #000; border: 1px solid #444; border-radius: 10px; padding: 6px 10px; margin-top: 8px; }
+        .creditos-display .cred-label { font-size: 0.72rem; color: #aaa; }
+        .creditos-display .cred-value { font-size: 1.1rem; font-weight: bold; color: #00ff00; }
+        .creditos-controls { display: flex; align-items: center; gap: 6px; }
+        .creditos-controls button { width: 28px; height: 28px; border-radius: 50%; border: none; font-weight: bold; color: white; display: flex; align-items: center; justify-content: center; }
+        .creditos-controls .btn-menos { background: #dc3545; }
+        .creditos-controls .btn-mais { background: #198754; }
+        .creditos-controls input { width: 60px !important; text-align: center !important; font-weight: bold !important; padding: 4px !important; }
+        .badge-creditos { background: #9933ff; color: white; font-size: 0.7rem; padding: 2px 8px; border-radius: 50px; margin-left: auto; }
+        
+        .toggle-container { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+        .toggle-switch { position: relative; width: 50px; height: 26px; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #444; transition: .4s; border-radius: 26px; }
+        .toggle-slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .toggle-slider { background-color: #198754; }
+        input:checked + .toggle-slider:before { transform: translateX(24px); }
+        
+        .modal-banco-itv .modal-content { background: #0f1115; border-radius: 0; height: 100vh; border: none; }
+        @media (min-width: 768px) {
+            .modal-banco-itv .modal-dialog { max-width: 900px; margin: 1.75rem auto; }
+            .modal-banco-itv .modal-content { height: 85vh; border-radius: 24px; border: 1px solid #333; box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
+        }
+        .banco-header { background: linear-gradient(135deg, #0d6efd, #0a58ca); padding: 20px; border-radius: 0 0 24px 24px; margin: -1px -1px 20px -1px; }
+        .banco-nav { display: flex; background: #1a1d24; border-radius: 16px; padding: 4px; margin-bottom: 20px; }
+        .banco-nav-btn { flex: 1; background: transparent; border: none; color: #888; padding: 10px; border-radius: 12px; font-weight: 600; font-size: 0.85rem; transition: all 0.3s; }
+        .banco-nav-btn.active { background: #0d6efd; color: white; box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3); }
+        .fintech-card { background: #1a1d24; border: 1px solid #2a2e38; border-radius: 16px; padding: 16px; margin-bottom: 12px; }
+        .fintech-stat-value { font-size: 1.5rem; font-weight: 700; color: #fff; }
+        .fintech-stat-label { font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
+        .emprestimo-item { background: #1a1d24; border: 1px solid #2a2e38; border-radius: 16px; padding: 16px; margin-bottom: 12px; transition: transform 0.2s; }
+        .emprestimo-item:active { transform: scale(0.98); }
+        .status-badge { padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; }
+        .status-ativo { background: rgba(13, 202, 240, 0.15); color: #0dcaf0; }
+        .status-atrasado { background: rgba(220, 53, 69, 0.15); color: #dc3545; }
+        .status-pago { background: rgba(25, 135, 84, 0.15); color: #198754; }
+        
+        .view-section { display: none; }
+        .view-section.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* LAYOUT DASHBOARD COMPUTADOR */
-    .home-view {
-      max-width: 1400px;
-      margin: 0 auto;
-      width: 100%;
-      padding: 30px 40px !important;
-    }
-    .main-grid {
-      grid-template-columns: repeat(4, 1fr) !important;
-      gap: 20px !important;
-    }
-    .main-btn {
-      aspect-ratio: 1.4 !important;
-    }
-
-    /* PDV DESKTOP COMPACTO (SEM ROLAGEM) */
-    #viewPDV .inner-content {
-      display: grid !important;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: auto auto auto;
-      gap: 16px;
-      padding: 20px 30px !important;
-      max-width: 1400px;
-      margin: 0 auto;
-      width: 100%;
-    }
-    #viewPDV .inner-content > .card:nth-child(1) { grid-column: 1; grid-row: 1; margin-bottom: 0; }
-    #viewPDV .inner-content > .card:nth-child(2) { grid-column: 1; grid-row: 2; margin-bottom: 0; }
-    #viewPDV .inner-content > .card:nth-child(3) { grid-column: 2; grid-row: 1 / span 2; margin-bottom: 0; max-height: 380px; overflow-y: auto; }
-    #viewPDV .inner-content > .total-box { grid-column: 2; grid-row: 3; margin: 0 !important; }
-    #viewPDV .inner-content > .payment-methods { grid-column: 1; grid-row: 3; margin: 0 !important; }
-    #viewPDV .inner-content > .btn-finalizar-venda { grid-column: 1 / span 2; grid-row: 4; height: 60px !important; min-height: 60px !important; }
-    #viewPDV .inner-content > .card:nth-child(8) { grid-column: 1 / span 2; grid-row: 5; margin-top: 0 !important; }
-    #viewPDV #reader { max-height: 150px !important; }
-
-    /* OUTRAS TELAS INTERNAS EM DASHBOARD */
-    .inner-view.active:not(#viewPDV) {
-      max-width: 1400px;
-      margin: 0 auto;
-      width: 100%;
-      padding: 20px 40px;
-    }
-    .catalog-grid {
-      grid-template-columns: repeat(4, 1fr) !important;
-    }
-  }
-
-  .status-bar { display: none; }
-
-  /* AUTH VIEW */
-  .auth-view {
-    padding: 30px 24px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-height: 100vh;
-    max-width: 450px;
-    margin: 0 auto;
-    width: 100%;
-  }
-  .auth-header {
-    text-align: center;
-    margin-bottom: 30px;
-  }
-  .auth-header .logo-icon {
-    margin: 0 auto 16px;
-  }
-
-  /* HOME VIEW */
-  .home-view {
-    padding: 20px 24px 100px;
-    display: none;
-    flex-direction: column;
-    min-height: calc(100vh - 40px);
-  }
-
-  /* LOGO */
-  .logo-area {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 36px;
-    margin-top: 10px;
-  }
-  .logo-icon {
-    width: 64px;
-    height: 64px;
-    background: var(--bg-card);
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .logo-icon svg {
-    width: 40px;
-    height: 40px;
-  }
-  .logo-text {
-    display: flex;
-    flex-direction: column;
-  }
-  .logo-text .pdv {
-    font-size: 32px;
-    font-weight: 900;
-    color: var(--text-white);
-    letter-spacing: 1px;
-    line-height: 1;
-  }
-  .logo-text .smart {
-    font-size: 22px;
-    font-weight: 900;
-    color: var(--accent-orange);
-    letter-spacing: 1px;
-    line-height: 1;
-  }
-
-  /* MAIN GRID */
-  .main-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-    margin-bottom: 20px;
-  }
-  .main-btn {
-    aspect-ratio: 1.15;
-    border-radius: var(--radius);
-    border: none;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    transition: all 0.2s;
-    font-family: inherit;
-    position: relative;
-    overflow: hidden;
-  }
-  .main-btn:active { transform: scale(0.96); }
-  .main-btn.pdv-btn { background: var(--accent-orange); }
-  .main-btn.pdv-btn .btn-icon, .main-btn.pdv-btn .btn-label { color: #1a1a1a; }
-  .main-btn.dark-btn { background: var(--bg-card); border: 1px solid var(--border); }
-  .main-btn.dark-btn .btn-icon { color: var(--text-white); }
-  .main-btn.dark-btn .btn-label { color: var(--text-light); }
-  .main-btn .btn-icon { font-size: 42px; line-height: 1; }
-  .main-btn .btn-icon svg { width: 44px; height: 44px; }
-  .main-btn .btn-label { font-size: 14px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
-
-  /* PROMO CARD */
-  .promo-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 18px 20px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    cursor: pointer;
-    transition: all 0.2s;
-    margin-top: 4px;
-  }
-  .promo-card:active { transform: scale(0.98); background: var(--bg-card-hover); }
-  .promo-card-icon {
-    width: 52px; height: 52px; background: var(--text-white);
-    border-radius: 12px; display: flex; align-items: center; justify-content: center;
-    font-size: 28px; flex-shrink: 0;
-  }
-  .promo-card-text { flex: 1; }
-  .promo-card-title { font-size: 17px; font-weight: 700; color: var(--text-white); margin-bottom: 3px; }
-  .promo-card-sub { font-size: 13px; color: var(--text-muted); line-height: 1.3; }
-
-  /* BOTTOM NAV */
-  .bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    max-width: 430px;
-    background: var(--bg-dark);
-    display: none;
-    justify-content: space-around;
-    align-items: center;
-    padding: 12px 20px 20px;
-    z-index: 100;
-  }
-  @media (min-width: 768px) {
-    .bottom-nav { display: none !important; }
-  }
-  .nav-btn {
-    background: none; border: none; cursor: pointer; color: var(--text-white);
-    display: flex; align-items: center; justify-content: center; padding: 8px; transition: all 0.2s;
-  }
-  .nav-btn:active { transform: scale(0.9); }
-  .nav-btn svg { width: 28px; height: 28px; }
-
-  .nav-btn-pdv {
-    width: 58px; height: 58px; border-radius: 50%; background: var(--accent-orange); color: #1a1a1a;
-    box-shadow: 0 6px 18px rgba(245,166,35,0.45), 0 0 0 5px var(--bg-dark);
-    padding: 0; flex-shrink: 0; margin-top: -14px; position: relative; z-index: 2;
-  }
-  .nav-btn-pdv svg { width: 30px; height: 30px; }
-
-  .inner-view {
-    display: none;
-    padding: 0 0 100px;
-    animation: slideIn 0.3s ease;
-  }
-  .inner-view.active { display: block; }
-  @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
-
-  .inner-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 16px 20px;
-    background: var(--bg-card);
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    z-index: 50;
-  }
-  @media (min-width: 768px) {
-    .inner-header { padding: 20px 40px; border-radius: 0; }
-  }
-  
-  .btn-pdv-nav { display: none; }
-
-  .back-btn {
-    width: 36px; height: 36px; border-radius: 10px; border: none;
-    background: var(--bg-dark); color: var(--text-white); cursor: pointer;
-    display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;
-  }
-  .back-btn:active { transform: scale(0.9); }
-  .inner-title { font-size: 18px; font-weight: 700; color: var(--text-white); }
-
-  .inner-content { padding: 16px 20px; }
-
-  .card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 18px;
-    margin-bottom: 14px;
-  }
-  .card-title {
-    font-size: 15px; font-weight: 700; margin-bottom: 12px;
-    display: flex; align-items: center; gap: 8px; color: var(--text-white);
-  }
-
-  #reader {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    max-height: 260px;
-    border-radius: var(--radius-sm);
-    overflow: hidden;
-    background: #000;
-  }
-  #reader video { width: 100%; height: 100%; object-fit: cover; }
-
-  .input-group { margin-bottom: 12px; }
-  .input-group label {
-    display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--text-muted);
-  }
-  input, select, textarea {
-    width: 100%; padding: 12px 14px; border: 1.5px solid var(--border);
-    border-radius: var(--radius-sm); font-size: 15px; font-family: inherit;
-    background: var(--bg-dark); transition: all 0.2s; color: var(--text-white);
-  }
-  textarea { resize: vertical; min-height: 70px; line-height: 1.4; }
-  input:focus, select:focus, textarea:focus {
-    outline: none; border-color: var(--accent-orange); box-shadow: 0 0 0 3px rgba(245,166,35,0.2);
-  }
-  input::placeholder, textarea::placeholder { color: var(--text-muted); }
-  .char-counter { display: flex; justify-content: flex-end; font-size: 11px; color: var(--text-muted); margin-top: 4px; }
-  .char-counter.warn { color: var(--warning); }
-  .char-counter.danger { color: var(--danger); }
-
-  .btn {
-    width: 100%; padding: 14px; border: none; border-radius: var(--radius-sm);
-    font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s;
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    font-family: inherit; letter-spacing: 0.3px;
-  }
-  .btn:active { transform: scale(0.98); }
-  .btn-primary { background: var(--accent-orange); color: #1a1a1a; }
-  .btn-primary:hover { background: var(--accent-orange-dark); }
-  .btn-success { background: var(--success); color: white; }
-  .btn-danger { background: var(--danger); color: white; }
-  .btn-outline {
-    background: transparent; color: var(--accent-orange); border: 1.5px solid var(--accent-orange);
-  }
-  .btn-outline:hover { background: rgba(245,166,35,0.1); }
-  .btn-sm { padding: 8px 14px; font-size: 13px; width: auto; }
-  .btn-dark { background: var(--bg-dark); color: var(--text-white); border: 1px solid var(--border); }
-
-  .btn-finalizar-venda {
-    height: 3cm; min-height: 3cm; padding: 0 14px; font-size: 17px; letter-spacing: 0.6px;
-  }
-
-  .image-upload {
-    display: flex; flex-direction: column; align-items: center; gap: 10px;
-    padding: 16px; border: 2px dashed var(--border); border-radius: var(--radius-sm);
-    background: var(--bg-dark); cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden;
-  }
-  .image-upload:hover { border-color: var(--accent-orange); background: rgba(245,166,35,0.05); }
-  .image-upload.has-image { border-style: solid; border-color: var(--accent-orange); padding: 0; }
-  .image-upload-preview { width: 100%; height: 180px; object-fit: cover; display: block; border-radius: calc(var(--radius-sm) - 2px); }
-  .image-upload-placeholder { display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--text-muted); padding: 10px; }
-  .image-upload-placeholder .icon { font-size: 36px; }
-  .image-upload-placeholder .text { font-size: 13px; font-weight: 600; text-align: center; }
-  .image-upload-placeholder .hint { font-size: 11px; opacity: 0.7; text-align: center; }
-  .image-upload input[type="file"] { display: none; }
-  .image-upload-actions { position: absolute; top: 8px; right: 8px; display: flex; gap: 6px; }
-  .image-action-btn {
-    width: 32px; height: 32px; border-radius: 50%; border: none;
-    background: rgba(255,255,255,0.95); color: var(--danger); cursor: pointer;
-    display: flex; align-items: center; justify-content: center; font-size: 14px; box-shadow: var(--shadow);
-  }
-
-  .whatsapp-input-wrap {
-    display: flex; align-items: stretch; border: 1.5px solid var(--border);
-    border-radius: var(--radius-sm); background: var(--bg-dark); transition: all 0.2s; overflow: hidden;
-  }
-  .whatsapp-input-wrap:focus-within { border-color: var(--accent-orange); box-shadow: 0 0 0 3px rgba(245,166,35,0.2); }
-  .whatsapp-prefix {
-    background: var(--bg-card); color: var(--text-white); font-weight: 700;
-    padding: 12px 12px; display: flex; align-items: center; gap: 6px;
-    border-right: 1.5px solid var(--border); font-size: 15px; flex-shrink: 0;
-  }
-  .whatsapp-prefix .flag { font-size: 18px; }
-  .whatsapp-input-wrap input { border: none; padding: 12px; flex: 1; background: transparent; }
-  .whatsapp-input-wrap input:focus { box-shadow: none; }
-
-  .toggle-row {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 14px; background: var(--bg-dark); border-radius: var(--radius-sm);
-    margin-bottom: 12px; border: 1.5px solid var(--border); transition: all 0.2s;
-  }
-  .toggle-row.active { background: rgba(245,166,35,0.1); border-color: var(--accent-orange); }
-  .toggle-label { display: flex; align-items: center; gap: 10px; flex: 1; cursor: pointer; }
-  .toggle-label-icon {
-    width: 36px; height: 36px; border-radius: 8px; background: var(--bg-card);
-    display: flex; align-items: center; justify-content: center; font-size: 18px; box-shadow: var(--shadow);
-  }
-  .toggle-row.active .toggle-label-icon { background: var(--accent-orange); }
-  .toggle-label-text { display: flex; flex-direction: column; }
-  .toggle-label-title { font-size: 14px; font-weight: 600; color: var(--text-white); }
-  .toggle-label-sub { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
-  .toggle-switch { position: relative; width: 48px; height: 28px; flex-shrink: 0; }
-  .toggle-switch input { opacity: 0; width: 0; height: 0; padding: 0; border: none; }
-  .toggle-slider {
-    position: absolute; inset: 0; background: var(--border); border-radius: 28px; cursor: pointer; transition: all 0.3s;
-  }
-  .toggle-slider::before {
-    content: ''; position: absolute; width: 22px; height: 22px; left: 3px; top: 3px;
-    background: white; border-radius: 50%; transition: all 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  }
-  .toggle-switch input:checked + .toggle-slider { background: var(--accent-orange); }
-  .toggle-switch input:checked + .toggle-slider::before { transform: translateX(20px); }
-
-  .address-fields { display: none; animation: slideIn 0.3s ease; }
-  .address-fields.show { display: block; }
-
-  .cart-item {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 10px 0; border-bottom: 1px solid var(--border); gap: 10px;
-  }
-  .cart-item:last-child { border-bottom: none; }
-  .cart-item-img { width: 38px; height: 38px; border-radius: 8px; object-fit: cover; background: var(--bg-dark); flex-shrink: 0; }
-  .cart-item-img-placeholder {
-    width: 38px; height: 38px; border-radius: 8px; background: var(--bg-dark); color: var(--accent-orange);
-    display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;
-  }
-  .cart-item-info { flex: 1; min-width: 0; }
-  .cart-item-name { font-weight: 600; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-white); }
-  .cart-item-desc { font-size: 10px; color: var(--text-muted); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .cart-item-price { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
-  .qty-controls { display: flex; align-items: center; gap: 6px; background: var(--bg-dark); padding: 3px; border-radius: 6px; flex-shrink: 0; }
-  .qty-btn { width: 24px; height: 24px; border: none; background: var(--bg-card); border-radius: 4px; font-weight: 700; cursor: pointer; color: var(--accent-orange); }
-  .qty-btn:active { transform: scale(0.9); }
-  .qty-value { min-width: 20px; text-align: center; font-weight: 600; color: var(--text-white); font-size: 13px; }
-
-  .total-box {
-    background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-orange-dark) 100%);
-    color: #1a1a1a; padding: 16px; border-radius: var(--radius); box-shadow: var(--shadow-lg);
-  }
-  .total-label { font-size: 12px; opacity: 0.8; font-weight: 600; }
-  .total-value { font-size: 26px; font-weight: 900; margin-top: 2px; }
-  .total-items { font-size: 12px; opacity: 0.8; margin-top: 2px; font-weight: 600; }
-
-  .payment-methods { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-  .pay-btn {
-    padding: 12px 6px; border-radius: var(--radius-sm); border: 1.5px solid var(--border);
-    background: var(--bg-card); color: var(--text-white); font-weight: 700; font-size: 12px;
-    cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; transition: all 0.2s; font-family: inherit;
-  }
-  .pay-btn:active { transform: scale(0.96); background: var(--bg-card-hover); }
-  .pay-btn .pay-icon { font-size: 20px; }
-  .pay-btn.cash { border-color: #10b981; color: #10b981; }
-  .pay-btn.pix { border-color: #818cf8; color: #818cf8; }
-  .pay-btn.card { border-color: #f59e0b; color: #f59e0b; }
-
-  .product-item {
-    display: flex; align-items: center; padding: 12px; background: var(--bg-card);
-    border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 8px; gap: 12px;
-  }
-  .product-img { width: 52px; height: 52px; border-radius: 10px; object-fit: cover; background: var(--bg-dark); flex-shrink: 0; }
-  .product-icon {
-    width: 52px; height: 52px; background: var(--bg-dark); color: var(--accent-orange);
-    border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 26px; flex-shrink: 0;
-  }
-  .product-info { flex: 1; min-width: 0; }
-  .product-name { font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-white); }
-  .product-desc { font-size: 11px; color: var(--text-muted); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-style: italic; }
-  .product-meta { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-  .product-price { font-weight: 700; color: var(--success); font-size: 15px; }
-  .product-actions { display: flex; gap: 6px; flex-shrink: 0; }
-  .icon-btn {
-    width: 34px; height: 34px; border: none; border-radius: 8px; cursor: pointer;
-    display: flex; align-items: center; justify-content: center; font-size: 14px;
-  }
-  .icon-btn.edit { background: rgba(99,102,241,0.2); color: #818cf8; }
-  .icon-btn.delete { background: rgba(239,68,68,0.2); color: var(--danger); }
-
-  .client-item {
-    background: var(--bg-card); border: 1px solid var(--border); padding: 14px;
-    border-radius: var(--radius-sm); margin-bottom: 8px; display: flex; align-items: center; gap: 12px;
-  }
-  .client-avatar {
-    width: 48px; height: 48px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-orange-dark) 100%);
-    color: #1a1a1a; display: flex; align-items: center; justify-content: center;
-    font-size: 18px; font-weight: 700; flex-shrink: 0; text-transform: uppercase;
-  }
-  .client-info { flex: 1; min-width: 0; }
-  .client-name { font-weight: 600; font-size: 15px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; color: var(--text-white); }
-  .client-badge {
-    display: inline-flex; align-items: center; gap: 3px; font-size: 10px; font-weight: 600;
-    background: var(--success); color: white; padding: 2px 7px; border-radius: 10px;
-  }
-  .client-meta { font-size: 12px; color: var(--text-muted); margin-top: 3px; display: flex; flex-direction: column; gap: 2px; }
-  .client-meta-row { display: flex; align-items: center; gap: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .client-actions { display: flex; gap: 6px; flex-shrink: 0; }
-
-  .catalog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-  .catalog-count { font-size: 13px; color: var(--text-muted); font-weight: 500; }
-  .catalog-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-  .catalog-card {
-    background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
-    overflow: hidden; display: flex; flex-direction: column; transition: all 0.2s; animation: slideIn 0.3s ease;
-  }
-  .catalog-card:active { transform: scale(0.98); }
-  .catalog-card-img-wrap {
-    width: 100%; aspect-ratio: 1 / 1; background: var(--bg-dark);
-    display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;
-  }
-  .catalog-card-img { width: 100%; height: 100%; object-fit: cover; }
-  .catalog-card-placeholder { font-size: 48px; color: var(--accent-orange); }
-  .catalog-card-stock {
-    position: absolute; top: 6px; right: 6px; background: rgba(0,0,0,0.7); color: white;
-    font-size: 10px; font-weight: 600; padding: 3px 7px; border-radius: 10px; backdrop-filter: blur(4px);
-  }
-  .catalog-card-stock.low { background: var(--danger); }
-  .catalog-card-stock.out { background: var(--text-muted); }
-  .catalog-card-body { padding: 10px 12px 12px; display: flex; flex-direction: column; flex: 1; }
-  .catalog-card-name {
-    font-size: 13px; font-weight: 600; color: var(--text-white); line-height: 1.3;
-    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 34px;
-  }
-  .catalog-card-desc {
-    font-size: 11px; color: var(--text-muted); margin-top: 3px; font-style: italic;
-    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 26px;
-  }
-  .catalog-card-category {
-    display: inline-block; font-size: 10px; color: var(--accent-orange);
-    background: rgba(245,166,35,0.15); padding: 2px 6px; border-radius: 4px;
-    margin-top: 6px; align-self: flex-start; text-transform: capitalize; font-weight: 600;
-  }
-  .catalog-card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; gap: 6px; }
-  .catalog-card-price { font-size: 16px; font-weight: 800; color: var(--success); }
-  .catalog-card-add {
-    width: 32px; height: 32px; border-radius: 50%; border: none; background: var(--accent-orange);
-    color: #1a1a1a; font-size: 18px; font-weight: 700; cursor: pointer; display: flex;
-    align-items: center; justify-content: center; box-shadow: var(--shadow); transition: all 0.2s; flex-shrink: 0;
-  }
-  .catalog-card-add:active { transform: scale(0.9); }
-  .catalog-card-add:disabled { background: var(--border); color: var(--text-muted); cursor: not-allowed; }
-
-  .empty { text-align: center; padding: 40px 20px; color: var(--text-muted); }
-  .empty-icon { font-size: 48px; margin-bottom: 12px; }
-  .empty-text { font-size: 14px; }
-
-  .menu-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
-    z-index: 999; opacity: 0; visibility: hidden; transition: all 0.3s;
-  }
-  .menu-overlay.active { opacity: 1; visibility: visible; }
-  .menu-drawer {
-    position: fixed; top: 0; right: -300px; width: 280px; max-width: 85vw;
-    height: 100vh; background: var(--bg-card); z-index: 1000;
-    transition: right 0.3s ease; display: flex; flex-direction: column; box-shadow: -10px 0 30px rgba(0,0,0,0.5);
-  }
-  .menu-drawer.active { right: 0; }
-  .menu-header {
-    background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-orange-dark) 100%);
-    color: #1a1a1a; padding: 24px 20px; display: flex; justify-content: space-between; align-items: center;
-  }
-  .menu-header h2 { font-size: 20px; font-weight: 900; display: flex; align-items: center; gap: 10px; }
-  .menu-close {
-    width: 36px; height: 36px; border-radius: 50%; border: none; background: rgba(0,0,0,0.2);
-    color: #1a1a1a; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px;
-  }
-  .menu-content { flex: 1; overflow-y: auto; padding: 16px 0; }
-  .menu-item {
-    display: flex; align-items: center; gap: 14px; padding: 16px 20px; cursor: pointer;
-    transition: all 0.2s; border: none; background: none; width: 100%; text-align: left; font-family: inherit; color: var(--text-white);
-  }
-  .menu-item:hover { background: var(--bg-dark); }
-  .menu-item-icon {
-    width: 44px; height: 44px; border-radius: 10px; background: var(--bg-dark); color: var(--accent-orange);
-    display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;
-  }
-  .menu-item-content { flex: 1; }
-  .menu-item-title { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
-  .menu-item-desc { font-size: 12px; color: var(--text-muted); }
-  .menu-item-arrow { color: var(--text-muted); font-size: 18px; }
-  .menu-divider { height: 1px; background: var(--border); margin: 8px 20px; }
-  .menu-footer { padding: 16px 20px; border-top: 1px solid var(--border); text-align: center; font-size: 12px; color: var(--text-muted); }
-
-  .modal-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
-    display: none; align-items: flex-end; justify-content: center; z-index: 1000; animation: fadeIn 0.2s;
-  }
-  .modal-overlay.active { display: flex; }
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-  .modal {
-    background: var(--bg-card); border-radius: 20px 20px 0 0; width: 100%; max-width: 430px;
-    max-height: 90vh; overflow-y: auto; padding: 24px 20px; animation: slideUp 0.3s ease;
-  }
-  @media (min-width: 768px) {
-    .modal { border-radius: 20px; max-width: 500px; }
-  }
-  @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-  .modal-handle { width: 40px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 16px; }
-  .modal-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--text-white); }
-
-  .modal-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-  .modal-header-row .modal-title { margin-bottom: 0; }
-  .modal-icon-btn {
-    width: 36px; height: 36px; border-radius: 8px; border: none; background: var(--bg-dark);
-    color: var(--accent-orange); cursor: pointer; display: flex; align-items: center; justify-content: center;
-    font-size: 18px; transition: all 0.2s;
-  }
-  .modal-icon-btn:active { transform: scale(0.9); background: var(--bg-card-hover); }
-
-  .app-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 12px; }
-  .app-option {
-    padding: 14px; border-radius: var(--radius-sm); border: 1.5px solid var(--border);
-    background: var(--bg-dark); color: var(--text-white); cursor: pointer;
-    display: flex; flex-direction: column; align-items: center; gap: 6px; transition: all 0.2s; font-family: inherit;
-  }
-  .app-option:active { transform: scale(0.96); border-color: var(--accent-orange); }
-  .app-option .app-icon { font-size: 28px; }
-  .app-option .app-name { font-size: 13px; font-weight: 600; }
-
-  .toast {
-    position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-    background: var(--bg-card); color: var(--text-white); padding: 12px 20px;
-    border-radius: 10px; font-size: 14px; font-weight: 500; box-shadow: var(--shadow-lg);
-    z-index: 2000; opacity: 0; transition: opacity 0.3s; pointer-events: none; border: 1px solid var(--border);
-  }
-  .toast.show { opacity: 1; }
-  .toast.success { background: var(--success); color: white; border-color: var(--success); }
-  .toast.error { background: var(--danger); color: white; border-color: var(--danger); }
-
-  .search-box { position: relative; margin-bottom: 14px; }
-  .search-box input { padding-left: 40px; padding-right: 36px; }
-  .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
-  .search-clear {
-    position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
-    width: 24px; height: 24px; border-radius: 50%; border: none; background: var(--border);
-    color: var(--text-muted); cursor: pointer; display: none; align-items: center; justify-content: center; font-size: 12px;
-  }
-  .search-clear.show { display: flex; }
-
-  .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 14px; }
-  .stat-card { background: var(--bg-card); border: 1px solid var(--border); padding: 14px; border-radius: var(--radius-sm); }
-  .stat-value { font-size: 20px; font-weight: 800; color: var(--accent-orange); }
-  .stat-label { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-
-  .sale-item { background: var(--bg-card); border: 1px solid var(--border); padding: 14px; border-radius: var(--radius-sm); margin-bottom: 12px; }
-  
-  .sale-header-info {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    margin-bottom: 10px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--border);
-  }
-  .sale-header-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 13px;
-  }
-  .sale-header-label {
-    color: var(--text-muted);
-    font-weight: 600;
-  }
-  .sale-header-val {
-    color: var(--text-white);
-    font-weight: 500;
-  }
-
-  .sale-products-title {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--accent-orange);
-    margin-bottom: 6px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .sale-details-block {
-    background: var(--bg-dark);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 10px 12px;
-    margin-bottom: 6px;
-    font-size: 13px;
-    color: var(--text-light);
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-  .sale-details-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .sale-details-label {
-    color: var(--text-muted);
-    font-weight: 600;
-  }
-  .sale-details-val {
-    color: var(--text-white);
-    font-weight: 500;
-    text-align: right;
-  }
-
-  .sale-footer-actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 10px;
-    padding-top: 8px;
-    border-top: 1px solid var(--border);
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-  .sale-total-text {
-    font-size: 14px;
-    font-weight: 800;
-    color: var(--success);
-  }
-  .sale-actions-right {
-    display: flex;
-    gap: 6px;
-    align-items: center;
-  }
-
-  .btn-whatsapp-sale {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    height: 34px;
-    padding: 0 12px;
-    border: none;
-    border-radius: 8px;
-    background: var(--success);
-    color: white;
-    font-size: 12px;
-    font-weight: 700;
-    font-family: inherit;
-    cursor: pointer;
-    flex-shrink: 0;
-    transition: all 0.2s;
-  }
-  .btn-whatsapp-sale:active { transform: scale(0.94); }
-
-  .delete-inline-btn {
-    display: inline-flex; align-items: center; justify-content: center; gap: 4px; height: 34px; padding: 0 10px;
-    border: none; border-radius: 8px; background: rgba(239,68,68,0.2); color: var(--danger); font-size: 12px;
-    font-weight: 700; font-family: inherit; cursor: pointer; flex-shrink: 0; transition: all 0.2s; animation: fadeIn 0.25s ease;
-  }
-  .delete-inline-btn:active { transform: scale(0.94); background: rgba(239,68,68,0.35); }
-  .delete-inline-btn:hover { background: rgba(239,68,68,0.35); }
-
-  .delete-hint {
-    display: flex; align-items: center; gap: 8px; background: rgba(239,68,68,0.12); border: 1px dashed rgba(239,68,68,0.5);
-    color: var(--danger); font-size: 12px; font-weight: 600; padding: 10px 12px; border-radius: var(--radius-sm); margin-bottom: 12px; animation: fadeIn 0.25s ease;
-  }
-
-  .promo-win-content { text-align: center; padding: 10px 0; }
-  .promo-win-img { width: 120px; height: 120px; border-radius: 16px; object-fit: cover; margin: 0 auto 16px; background: var(--bg-dark); box-shadow: var(--shadow-lg); }
-  .promo-win-img-placeholder {
-    width: 120px; height: 120px; border-radius: 16px; background: var(--bg-dark); color: var(--accent-orange);
-    display: flex; align-items: center; justify-content: center; font-size: 48px; margin: 0 auto 16px;
-  }
-  .promo-win-title { font-size: 20px; font-weight: 800; color: var(--success); margin-bottom: 8px; }
-  .promo-win-client { font-size: 16px; font-weight: 600; color: var(--text-white); margin-bottom: 12px; }
-  .promo-win-desc { font-size: 14px; color: var(--text-muted); line-height: 1.5; }
-</style>
+        @media (max-width: 576px) {
+            .card-cliente h5 { font-size: 1rem; }
+            .stat-val { font-size: 1.2rem; }
+            .modal-acoes-row .btn { font-size: 0.72rem; padding: 9px 2px; }
+            .navbar-brand-bottom { font-size: 0.85rem; }
+        }
+    </style>
 </head>
 <body>
 
-<div class="phone-frame">
-
-  <!-- AUTH VIEW -->
-  <div class="auth-view" id="authView">
-    <div class="auth-header">
-      <div class="logo-icon" style="margin: 0 auto 12px;">
-        <svg viewBox="0 0 40 40" fill="none">
-          <path d="M8 12L12 12L16 28L30 28L34 16H14" stroke="#f5a623" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="16" cy="32" r="3" fill="#f5a623"/>
-          <circle cx="28" cy="32" r="3" fill="#f5a623"/>
-        </svg>
-      </div>
-      <div class="logo-text">
-        <span class="pdv">GORDO</span>
-        <span class="smart">EXPRESS</span>
-      </div>
+<div id="authOverlay">
+    <div class="auth-card">
+        <div class="text-center mb-4">
+            <h3 class="text-white"><i class="bi bi-shield-lock text-success"></i> ITVPlayer</h3>
+            <p class="text-secondary small">Credenciais para acessar o sistema</p>
+        </div>
+        <div id="formLogin">
+            <div class="mb-3">
+                <label class="form-label small text-secondary">E-mail</label>
+                <input type="email" id="loginEmail" class="form-control" placeholder="seu@email.com">
+            </div>
+            <div class="mb-3">
+                <label class="form-label small text-secondary">Senha</label>
+                <input type="password" id="loginSenha" class="form-control" placeholder="******">
+            </div>
+            <button class="btn btn-success w-100 bg-lilas border-0 py-2" onclick="handleLogin()">Entrar no Sistema</button>
+        </div>
     </div>
-    
-    <div class="card">
-      <div class="card-title">🔐 Acesso ao Sistema</div>
-      
-      <div class="input-group">
-        <label>E-mail *</label>
-        <input type="email" id="authEmail" placeholder="seuemail@exemplo.com" autocomplete="email">
-      </div>
-
-      <div class="input-group">
-        <label>Senha *</label>
-        <input type="password" id="authPassword" placeholder="******" autocomplete="current-password">
-      </div>
-
-      <div style="display:flex; flex-direction:column; gap:10px; margin-top: 16px;">
-        <button class="btn btn-primary" onclick="handleLogin()">🔑 Entrar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- HOME VIEW -->
-  <div class="home-view" id="homeView">
-    <div class="logo-area" style="justify-content: space-between; width: 100%;">
-      <div style="display: flex; align-items: center; gap: 16px;">
-        <div class="logo-icon">
-          <svg viewBox="0 0 40 40" fill="none">
-            <path d="M8 12L12 12L16 28L30 28L34 16H14" stroke="#f5a623" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="16" cy="32" r="3" fill="#f5a623"/>
-            <circle cx="28" cy="32" r="3" fill="#f5a623"/>
-            <path d="M4 8L10 8" stroke="#f5a623" stroke-width="3" stroke-linecap="round"/>
-            <path d="M2 4L6 4" stroke="#f5a623" stroke-width="3" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <div class="logo-text">
-          <span class="pdv">GORDO</span>
-          <span class="smart">EXPRESS</span>
-        </div>
-      </div>
-      <button class="btn btn-dark btn-sm" onclick="openMenu()" style="width: auto; padding: 10px 16px;">☰ Menu Principal</button>
-    </div>
-
-    <div class="main-grid">
-      <button class="main-btn pdv-btn" onclick="openInnerView('pdv')">
-        <div class="btn-icon">
-          <svg viewBox="0 0 44 44" fill="none">
-            <path d="M10 14L14 14L18 30L32 30L36 18H16" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="18" cy="34" r="3" fill="#1a1a1a"/>
-            <circle cx="30" cy="34" r="3" fill="#1a1a1a"/>
-          </svg>
-        </div>
-        <span class="btn-label">PDV</span>
-      </button>
-
-      <button class="main-btn dark-btn" onclick="openInnerView('catalog')">
-        <div class="btn-icon">
-          <svg viewBox="0 0 44 44" fill="none">
-            <path d="M22 8L34 14V28L22 34L10 28V14L22 8Z" stroke="white" stroke-width="2.5" stroke-linejoin="round"/>
-            <path d="M22 20V34" stroke="white" stroke-width="2.5"/>
-            <path d="M10 14L22 20L34 14" stroke="white" stroke-width="2.5"/>
-            <circle cx="22" cy="20" r="2" fill="white"/>
-          </svg>
-        </div>
-        <span class="btn-label">Catálogo</span>
-      </button>
-
-      <button class="main-btn dark-btn" onclick="openInnerView('clients')">
-        <div class="btn-icon">
-          <svg viewBox="0 0 44 44" fill="none">
-            <circle cx="16" cy="14" r="5" stroke="white" stroke-width="2.5"/>
-            <circle cx="30" cy="16" r="4" stroke="white" stroke-width="2.5"/>
-            <path d="M6 32C6 26 10 22 16 22C18 22 19.5 22.3 21 23" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-            <path d="M26 32C26 27 28 24 30 24C32 24 34 25 36 27" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <span class="btn-label">Clientes</span>
-      </button>
-
-      <button class="main-btn dark-btn" onclick="openInnerView('sales')">
-        <div class="btn-icon">
-          <svg viewBox="0 0 44 44" fill="none">
-            <rect x="8" y="24" width="7" height="12" rx="1" fill="white"/>
-            <rect x="18.5" y="16" width="7" height="20" rx="1" fill="white"/>
-            <rect x="29" y="8" width="7" height="28" rx="1" fill="white"/>
-          </svg>
-        </div>
-        <span class="btn-label">Vendas</span>
-      </button>
-    </div>
-
-    <div class="promo-card" onclick="openInnerView('promos')">
-      <div class="promo-card-icon">🎁</div>
-      <div class="promo-card-text">
-        <div class="promo-card-title">Promoção Ativa</div>
-        <div class="promo-card-sub">Clientes participando de promoções</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- INNER VIEW: PDV -->
-  <div class="inner-view" id="viewPDV">
-    <div class="inner-header">
-      <button class="back-btn" onclick="goHome()">←</button>
-      <span class="inner-title">Gordo Express - PDV</span>
-    </div>
-    <div class="inner-content">
-
-      <div class="card" style="margin-bottom:10px; padding:12px;">
-        <div class="card-title" style="margin-bottom:6px; font-size:13px;">⌨️ Código de Barras</div>
-        <div style="display:flex; gap:6px;">
-          <input type="text" id="manualCode" placeholder="Código..." inputmode="numeric" style="padding:8px 10px; font-size:13px;">
-          <button class="btn btn-primary btn-sm" onclick="addByCode()">+</button>
-        </div>
-      </div>
-
-      <div class="card" style="margin-bottom:10px; padding:12px;">
-        <div class="card-title" style="margin-bottom:6px; font-size:13px;">👤 Cliente</div>
-        <div id="selectedClientDisplay" style="display:none; padding: 8px; background: rgba(245,166,35,0.1); border-radius: var(--radius-sm); margin-bottom: 8px; border: 1.5px solid var(--accent-orange);">
-          <div style="font-weight: 700; color: var(--accent-orange); font-size: 13px;" id="selectedClientName"></div>
-          <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;" id="selectedClientDetails"></div>
-        </div>
-        <button class="btn btn-outline btn-sm" onclick="openClientSelectionModal()">👤 Selecionar Cliente</button>
-      </div>
-
-      <div class="card" style="margin-bottom:10px; padding:12px;">
-        <div class="card-title" style="margin-bottom:6px; font-size:13px;">🛍️ Carrinho</div>
-        <div id="cartList" style="max-height: 150px; overflow-y: auto;"></div>
-      </div>
-
-      <div class="total-box" style="padding: 12px; margin: 0 0 10px 0;">
-        <div class="total-label" style="font-size: 11px;">Total a pagar</div>
-        <div class="total-value" id="cartTotal" style="font-size: 22px;">R$ 0,00</div>
-        <div class="total-items" id="cartCount" style="font-size: 11px;">0 itens</div>
-      </div>
-
-      <div class="payment-methods" style="margin-bottom: 10px;">
-        <button class="pay-btn cash" onclick="openCashModal()" style="padding: 8px 4px;">
-          <span class="pay-icon" style="font-size: 16px;">💵</span> Dinheiro
-        </button>
-        <button class="pay-btn pix" onclick="openPixModal()" style="padding: 8px 4px;">
-          <span class="pay-icon" style="font-size: 16px;">⚡</span> Pix
-        </button>
-        <button class="pay-btn card" onclick="openCardModal()" style="padding: 8px 4px;">
-          <span class="pay-icon" style="font-size: 16px;">💳</span> Cartão
-        </button>
-      </div>
-
-      <button class="btn btn-success btn-finalizar-venda" onclick="finalizeSale()" style="height: 48px; min-height: 48px; font-size: 15px; margin-bottom: 10px;">✅ Finalizar Venda</button>
-
-      <div class="card" style="margin-top: 0; padding: 12px;">
-        <div class="card-title" style="margin-bottom: 6px; font-size: 13px;">📷 Câmera</div>
-        <div id="reader" style="max-height: 120px;"></div>
-        <div style="display:flex; gap:6px; margin-top:8px;">
-          <button class="btn btn-primary btn-sm" id="btnStartScan" style="flex:1;">▶ Iniciar</button>
-          <button class="btn btn-dark btn-sm" id="btnStopScan" style="flex:1; display:none;">⏸ Parar</button>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- INNER VIEW: CATÁLOGO -->
-  <div class="inner-view" id="viewCatalog">
-    <div class="inner-header">
-      <button class="back-btn" onclick="goHome()">←</button>
-      <span class="inner-title">Catálogo</span>
-    </div>
-    <div class="inner-content">
-      <div class="search-box">
-        <span class="search-icon">🔍</span>
-        <input type="text" id="searchCatalog" placeholder="Buscar produto..." oninput="renderCatalog()">
-        <button class="search-clear" id="clearCatalogSearch" onclick="clearCatalogSearch()">✕</button>
-      </div>
-      <div class="catalog-header">
-        <div class="catalog-count" id="catalogCount">0 produtos</div>
-      </div>
-      <div id="catalogList"></div>
-    </div>
-  </div>
-
-  <!-- INNER VIEW: PRODUTOS (Admin) -->
-  <div class="inner-view" id="viewAdmin">
-    <div class="inner-header">
-      <button class="back-btn" onclick="goHome()">←</button>
-      <span class="inner-title">Produtos</span>
-    </div>
-    <div class="inner-content">
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-value" id="statProducts">0</div>
-          <div class="stat-label">Produtos</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value" id="statLowStock">0</div>
-          <div class="stat-label">Estoque Baixo</div>
-        </div>
-      </div>
-      <button class="btn btn-primary" onclick="openProductModal()" style="margin-bottom:14px;">➕ Cadastrar Produto</button>
-      <div class="search-box">
-        <span class="search-icon">🔍</span>
-        <input type="text" id="searchProduct" placeholder="Buscar produto..." oninput="renderProducts()">
-      </div>
-      <div id="productList"></div>
-    </div>
-  </div>
-
-  <!-- INNER VIEW: VENDAS -->
-  <div class="inner-view" id="viewSales">
-    <div class="inner-header">
-      <button class="back-btn" onclick="goHome()">←</button>
-      <span class="inner-title">Vendas</span>
-    </div>
-    <div class="inner-content">
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-value" id="statSales">0</div>
-          <div class="stat-label">Vendas</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value" id="statRevenue">R$ 0</div>
-          <div class="stat-label">Faturamento</div>
-        </div>
-      </div>
-
-      <div class="search-box">
-        <span class="search-icon">🔍</span>
-        <input type="text" id="searchSale" placeholder="Buscar venda... (digite Deletar)" oninput="renderSales()">
-        <button class="search-clear" id="clearSaleSearch" onclick="clearSaleSearch()">✕</button>
-      </div>
-
-      <div id="salesList"></div>
-    </div>
-  </div>
-
-  <!-- INNER VIEW: CLIENTES -->
-  <div class="inner-view" id="viewClients">
-    <div class="inner-header">
-      <button class="back-btn" onclick="goHome()">←</button>
-      <span class="inner-title">Clientes</span>
-    </div>
-    <div class="inner-content">
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-value" id="statClients">0</div>
-          <div class="stat-label">Clientes</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value" id="statDelivery">0</div>
-          <div class="stat-label">A Domicílio</div>
-        </div>
-      </div>
-      <button class="btn btn-primary" onclick="openClientModal()" style="margin-bottom:14px;">➕ Cadastrar Cliente</button>
-      <div class="search-box">
-        <span class="search-icon">🔍</span>
-        <input type="text" id="searchClient" placeholder="Buscar por nome ou WhatsApp..." oninput="renderClients()">
-        <button class="search-clear" id="clearClientSearch" onclick="clearClientSearch()">✕</button>
-      </div>
-      <div id="clientList"></div>
-    </div>
-  </div>
-
-  <!-- INNER VIEW: PROMOÇÕES -->
-  <div class="inner-view" id="viewPromos">
-    <div class="inner-header">
-      <button class="back-btn" onclick="goHome()">←</button>
-      <span class="inner-title">Promoção Ativa</span>
-    </div>
-    <div class="inner-content">
-      <div class="card">
-        <div class="card-title">🎁 Clientes Participando</div>
-        <div class="search-box">
-          <span class="search-icon">🔍</span>
-          <input type="text" id="searchPromoClient" placeholder="Buscar cliente... (digite Deletar)" oninput="renderPromos()">
-          <button class="search-clear" id="clearPromoSearch" onclick="clearPromoSearch()">✕</button>
-        </div>
-        <div id="promoClientList"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- BOTTOM NAV -->
-  <div class="bottom-nav" id="bottomNav">
-    <button class="nav-btn" onclick="goHome()" title="Início">
-      <svg viewBox="0 0 28 28" fill="white">
-        <path d="M14 3L3 12V24C3 24.6 3.4 25 4 25H10V18C10 17.4 10.4 17 11 17H17C17.6 17 18 17.4 18 18V25H24C24.6 25 25 24.6 25 24V12L14 3Z"/>
-      </svg>
-    </button>
-    <button class="nav-btn nav-btn-pdv" onclick="openInnerView('pdv')" title="PDV">
-      <svg viewBox="0 0 44 44" fill="none">
-        <path d="M10 14L14 14L18 30L32 30L36 18H16" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="18" cy="34" r="3" fill="#1a1a1a"/>
-        <circle cx="30" cy="34" r="3" fill="#1a1a1a"/>
-      </svg>
-    </button>
-    <button class="nav-btn" onclick="openMenu()" title="Menu">
-      <svg viewBox="0 0 28 28" fill="white">
-        <rect x="4" y="6" width="20" height="2.5" rx="1"/>
-        <rect x="4" y="12.75" width="20" height="2.5" rx="1"/>
-        <rect x="4" y="19.5" width="20" height="2.5" rx="1"/>
-      </svg>
-    </button>
-  </div>
-
-  <!-- SIDE MENU -->
-  <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
-  <div class="menu-drawer" id="menuDrawer">
-    <div class="menu-header">
-      <h2>☰ Menu</h2>
-      <button class="menu-close" onclick="closeMenu()">✕</button>
-    </div>
-    <div class="menu-content">
-      <button class="menu-item" onclick="navigateTo('viewAdmin')">
-        <div class="menu-item-icon">📦</div>
-        <div class="menu-item-content">
-          <div class="menu-item-title">Produtos</div>
-          <div class="menu-item-desc">Cadastrar e gerenciar</div>
-        </div>
-        <span class="menu-item-arrow">›</span>
-      </button>
-      <div class="menu-divider"></div>
-      <button class="menu-item" onclick="navigateTo('viewSales')">
-        <div class="menu-item-icon">📊</div>
-        <div class="menu-item-content">
-          <div class="menu-item-title">Vendas</div>
-          <div class="menu-item-desc">Histórico e relatórios</div>
-        </div>
-        <span class="menu-item-arrow">›</span>
-      </button>
-      <div class="menu-divider"></div>
-      <button class="menu-item" onclick="navigateTo('viewClients')">
-        <div class="menu-item-icon">👤</div>
-        <div class="menu-item-content">
-          <div class="menu-item-title">Clientes</div>
-          <div class="menu-item-desc">Cadastro e gerenciamento</div>
-        </div>
-        <span class="menu-item-arrow">›</span>
-      </button>
-      <div class="menu-divider"></div>
-      <button class="menu-item" onclick="navigateTo('viewPromos')">
-        <div class="menu-item-icon">🎁</div>
-        <div class="menu-item-content">
-          <div class="menu-item-title">Promoção Ativa</div>
-          <div class="menu-item-desc">Clientes em promoções</div>
-        </div>
-        <span class="menu-item-arrow">›</span>
-      </button>
-      <div class="menu-divider"></div>
-      <button class="menu-item" onclick="handleLogout()">
-        <div class="menu-item-icon">🚪</div>
-        <div class="menu-item-content">
-          <div class="menu-item-title" style="color: var(--danger);">Sair da Conta</div>
-          <div class="menu-item-desc">Fazer logout</div>
-        </div>
-        <span class="menu-item-arrow">›</span>
-      </button>
-    </div>
-    <div class="menu-footer">Gordo Express v1.0</div>
-  </div>
-
-  <!-- MODAL PRODUTO -->
-  <div class="modal-overlay" id="productModal">
-    <div class="modal">
-      <div class="modal-handle"></div>
-      <div class="modal-title" id="modalTitle">Novo Produto</div>
-      <input type="hidden" id="productId">
-
-      <div class="input-group">
-        <label>Foto do Produto</label>
-        <label class="image-upload" id="imageUploadBox" for="productImage">
-          <div class="image-upload-placeholder" id="imagePlaceholder">
-            <span class="icon">📸</span>
-            <span class="text">Toque para escolher uma imagem ou vídeo</span>
-            <span class="hint">Da galeria ou memória do celular</span>
-          </div>
-          <img id="imagePreview" class="image-upload-preview" style="display:none;" alt="Preview">
-          <div class="image-upload-actions" id="imageActions" style="display:none;">
-            <button type="button" class="image-action-btn" onclick="removeImage(event)" title="Remover mídia">🗑️</button>
-          </div>
-          <input type="file" id="productImage" accept="image/*,video/*" onchange="handleImageUpload(event)">
-        </label>
-      </div>
-
-      <div class="input-group">
-        <label>Nome do Produto *</label>
-        <input type="text" id="productName" placeholder="Ex: Coca-Cola 350ml">
-      </div>
-
-      <div class="input-group">
-        <label>Descrição do Produto</label>
-        <textarea id="productDescription" placeholder="Ex: Refrigerante sabor cola, lata gelada" maxlength="200" rows="2" oninput="updateDescCounter()"></textarea>
-        <div class="char-counter" id="descCounter">0/200</div>
-      </div>
-
-      <div class="input-group">
-        <label>Código de Barras *</label>
-        <div style="display:flex; gap:8px;">
-          <input type="text" id="productCode" placeholder="Ex: 7891234567890" inputmode="numeric" style="flex:1;">
-          <button class="btn btn-dark btn-sm" onclick="scanForProduct()">📷</button>
-        </div>
-      </div>
-
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-        <div class="input-group">
-          <label>Preço (R$) *</label>
-          <input type="number" id="productPrice" placeholder="0,00" step="0.01" min="0">
-        </div>
-        <div class="input-group">
-          <label>Estoque *</label>
-          <input type="number" id="productStock" placeholder="0" min="0">
-        </div>
-      </div>
-
-      <div class="input-group">
-        <label>Categoria</label>
-        <select id="productCategory">
-          <option value="geral">Geral</option>
-          <option value="bebidas">Bebidas</option>
-          <option value="alimentos">Alimentos</option>
-          <option value="limpeza">Limpeza</option>
-          <option value="higiene">Higiene</option>
-          <option value="outros">Outros</option>
-        </select>
-      </div>
-
-      <div class="toggle-row" id="promoToggleRow" style="margin-top: 8px;">
-        <div class="toggle-label" onclick="togglePromo()">
-          <div class="toggle-label-icon">🎁</div>
-          <div class="toggle-label-text">
-            <div class="toggle-label-title">Ativar Promoção</div>
-            <div class="toggle-label-sub">Acumule compras para ganhar</div>
-          </div>
-        </div>
-        <label class="toggle-switch" onclick="event.stopPropagation()">
-          <input type="checkbox" id="productPromoActive" onchange="onPromoToggle()">
-          <span class="toggle-slider"></span>
-        </label>
-      </div>
-      <div class="input-group" id="promoQuantityGroup" style="display:none;">
-        <label>Quantidade para Ganhar *</label>
-        <input type="number" id="productPromoQuantity" placeholder="Ex: 10" min="1">
-      </div>
-
-      <div style="display:flex; gap:10px; margin-top:8px;">
-        <button class="btn btn-dark" onclick="closeProductModal()">Cancelar</button>
-        <button class="btn btn-primary" onclick="saveProduct()">💾 Salvar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL CLIENTE -->
-  <div class="modal-overlay" id="clientModal">
-    <div class="modal">
-      <div class="modal-handle"></div>
-      <div class="modal-title" id="clientModalTitle">Novo Cliente</div>
-      <input type="hidden" id="clientId">
-
-      <div class="input-group">
-        <label>Nome Completo *</label>
-        <input type="text" id="clientName" placeholder="Ex: João da Silva" autocomplete="name">
-      </div>
-
-      <div class="input-group">
-        <label>WhatsApp</label>
-        <div class="whatsapp-input-wrap">
-          <div class="whatsapp-prefix"><span class="flag">🇧🇷</span><span>+55</span></div>
-          <input type="tel" id="clientWhatsapp" placeholder="(Opcional) 11 99999-9999" inputmode="tel" autocomplete="tel">
-        </div>
-        <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">Digite apenas DDD + número. Ex: 11999999999 (Opcional)</div>
-      </div>
-
-      <div class="toggle-row" id="deliveryToggleRow">
-        <div class="toggle-label" onclick="toggleDelivery()">
-          <div class="toggle-label-icon">🏠</div>
-          <div class="toggle-label-text">
-            <div class="toggle-label-title">Entrega a Domicílio</div>
-            <div class="toggle-label-sub">Cliente recebe em casa</div>
-          </div>
-        </div>
-        <label class="toggle-switch" onclick="event.stopPropagation()">
-          <input type="checkbox" id="clientDelivery" onchange="onDeliveryToggle()">
-          <span class="toggle-slider"></span>
-        </label>
-      </div>
-
-      <div class="address-fields" id="addressFields">
-        <div class="input-group">
-          <label>Endereço *</label>
-          <input type="text" id="clientAddress" placeholder="Ex: Rua das Flores, 123">
-        </div>
-        <div class="input-group">
-          <label>Bairro *</label>
-          <input type="text" id="clientNeighborhood" placeholder="Ex: Centro">
-        </div>
-      </div>
-
-      <div style="display:flex; gap:10px; margin-top:8px;">
-        <button class="btn btn-dark" onclick="closeClientModal()">Cancelar</button>
-        <button class="btn btn-primary" onclick="saveClient()">💾 Salvar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL SELEÇÃO DE CLIENTE -->
-  <div class="modal-overlay" id="clientSelectionModal">
-    <div class="modal">
-      <div class="modal-handle"></div>
-      <div class="modal-title">Selecionar Cliente</div>
-      <div class="search-box">
-        <span class="search-icon">🔍</span>
-        <input type="text" id="searchClientSelection" placeholder="Buscar por nome ou WhatsApp..." oninput="renderClientSelectionList()">
-      </div>
-      <div id="clientSelectionList" style="max-height: 50vh; overflow-y: auto; margin-top: 12px;"></div>
-      <div style="display:flex; gap:10px; margin-top:16px;">
-        <button class="btn btn-dark" onclick="closeClientSelectionModal()" style="flex:1;">Cancelar</button>
-        <button class="btn btn-danger" onclick="clearSelectedClient()" style="flex:1;">🗑️ Remover</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL VITÓRIA PROMOÇÃO -->
-  <div class="modal-overlay" id="promoWinModal">
-    <div class="modal">
-      <div class="modal-handle"></div>
-      <div class="promo-win-content">
-        <div class="promo-win-title">🎉 Parabéns! Você Ganhou! 🎁</div>
-        <div id="promoWinImageContainer"></div>
-        <div class="promo-win-client" id="promoWinClientName"></div>
-        <div class="promo-win-desc" id="promoWinDesc"></div>
-        <button class="btn btn-success" onclick="closePromoWinModal()" style="margin-top: 20px;">Fechar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL DINHEIRO -->
-  <div class="modal-overlay" id="cashModal">
-    <div class="modal">
-      <div class="modal-handle"></div>
-      <div class="modal-header-row">
-        <div class="modal-title">💵 Pagamento em Dinheiro</div>
-        <button class="modal-icon-btn" onclick="closeCashModal()">✕</button>
-      </div>
-      <div class="input-group">
-        <label>Total a Pagar</label>
-        <div id="cashTotalDisplay" style="font-size: 28px; font-weight: 800; color: var(--success); margin-bottom: 12px;">R$ 0,00</div>
-      </div>
-      <div class="input-group">
-        <label>Valor Recebido</label>
-        <input type="number" id="cashReceived" placeholder="0,00" step="0.01" inputmode="decimal" oninput="updateTroco()">
-      </div>
-      <div class="input-group">
-        <label>Valor do Troco</label>
-        <div id="cashTroco" style="font-size: 24px; font-weight: 800; color: var(--text-muted);">R$ 0,00</div>
-      </div>
-      <button class="btn btn-success" onclick="closeCashModal()" style="margin-top: 12px;">Confirmar e Fechar</button>
-    </div>
-  </div>
-
-  <!-- MODAL PIX -->
-  <div class="modal-overlay" id="pixModal">
-    <div class="modal">
-      <div class="modal-handle"></div>
-      <div class="modal-header-row">
-        <div class="modal-title">⚡ Pagamento via Pix</div>
-        <button class="modal-icon-btn" onclick="document.getElementById('pixQrInput').click()" title="Alterar QR Code">📷</button>
-      </div>
-      <input type="file" id="pixQrInput" accept="image/*,video/*" style="display:none" onchange="handlePixUpload(event)">
-      
-      <div id="pixQrContainer" style="text-align: center; padding: 20px 0;">
-        <img id="pixQrImage" style="max-width: 250px; width: 100%; border-radius: var(--radius-sm); display: none; margin: 0 auto; box-shadow: var(--shadow-lg);" alt="QR Code Pix">
-        <div id="pixQrPlaceholder" class="image-upload-placeholder" style="padding: 40px 20px;">
-          <span class="icon" style="font-size: 48px;">📱</span>
-          <span class="text">Nenhum QR Code salvo</span>
-          <span class="hint">Toque no ícone de câmera no canto superior direito para escolher da galeria</span>
-        </div>
-      </div>
-      <button class="btn btn-dark" onclick="closePixModal()" style="margin-top: 12px;">Fechar</button>
-    </div>
-  </div>
-
-  <!-- MODAL CARTÃO -->
-  <div class="modal-overlay" id="cardModal">
-    <div class="modal">
-      <div class="modal-handle"></div>
-      <div class="modal-header-row">
-        <div class="modal-title">💳 Pagamento com Cartão</div>
-        <button class="modal-icon-btn" onclick="openCardSettings()" title="Configurar Aplicativo">⚙️</button>
-      </div>
-      
-      <div id="cardAppContainer" style="text-align: center; padding: 20px 0;">
-        <div id="cardAppPlaceholder" class="image-upload-placeholder" style="padding: 40px 20px;">
-          <span class="icon" style="font-size: 48px;">💳</span>
-          <span class="text">Nenhum aplicativo configurado</span>
-          <span class="hint">Toque em Configurações (⚙️) para escolher seu app de maquininha</span>
-        </div>
-        <div id="cardAppDisplay" style="display: none;"></div>
-      </div>
-      <button class="btn btn-dark" onclick="closeCardModal()" style="margin-top: 12px;">Fechar</button>
-    </div>
-  </div>
-
-  <!-- MODAL CONFIGURAÇÕES DO CARTÃO -->
-  <div class="modal-overlay" id="cardSettingsModal">
-    <div class="modal">
-      <div class="modal-handle"></div>
-      <div class="modal-header-row">
-        <div class="modal-title">Escolher Aplicativo</div>
-        <button class="modal-icon-btn" onclick="closeCardSettings()">✕</button>
-      </div>
-      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px; text-align: center;">Selecione o app da sua maquininha para criar um atalho fixo nesta janela:</p>
-      <div class="app-grid">
-        <button class="app-option" onclick="saveCardApp('Ton', 'ton://')">
-          <span class="app-icon">🟢</span>
-          <span class="app-name">Ton</span>
-        </button>
-        <button class="app-option" onclick="saveCardApp('SumUp', 'sumup://')">
-          <span class="app-icon">🔵</span>
-          <span class="app-name">SumUp</span>
-        </button>
-        <button class="app-option" onclick="saveCardApp('Stone', 'stone://')">
-          <span class="app-icon">🟩</span>
-          <span class="app-name">Stone</span>
-        </button>
-        <button class="app-option" onclick="saveCardApp('InfinitePay', 'infinitepay://')">
-          <span class="app-icon">🟣</span>
-          <span class="app-name">InfinitePay</span>
-        </button>
-        <button class="app-option" onclick="promptCustomApp()" style="grid-column: span 2; border-style: dashed;">
-          <span class="app-icon">⚙️</span>
-          <span class="app-name">Outro (Personalizado)</span>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <div class="toast" id="toast"></div>
-
-  <audio id="bellSound" preload="auto">
-    <source src="data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAADhAC7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7//////////////////////////////////////////////////////////////////8AAAAATGF2YzU4LjEzAAAAAAAAAAAAAAAAJAAAAAAAAAAAA4T8v6UGAAAAAAAAAAAAAAAAAAAA//sQZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV" type="audio/mpeg">
-  </audio>
-
 </div>
 
-<!-- Firebase SDKs -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js";
-  import { 
-    getAuth, 
-    signInWithEmailAndPassword, 
-    signOut, 
-    onAuthStateChanged 
-  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-  import {
-    getFirestore,
-    collection,
-    doc,
-    setDoc,
-    deleteDoc,
-    onSnapshot
-  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+<div id="adminLock" style="display: none;">
+    <h2>🔒 Contato com ADM</h2>
+    <p>Acesso temporariamente bloqueado</p>
+    <button class="btn btn-success mb-3" onclick="window.open('https://wa.me/5585996498573')"><i class="bi bi-whatsapp"></i> WhatsApp ADM</button>
+    <input type="password" id="adminPass" class="form-control w-50 mb-2" placeholder="Senha mestre">
+    <button class="btn btn-primary" onclick="unlockApp()">Desbloquear</button>
+</div>
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyAsKXYlMx27-BeE5yBkifhyjcMT4u6iL9o",
-    authDomain: "gordo-express.firebaseapp.com",
-    projectId: "gordo-express",
-    storageBucket: "gordo-express.firebasestorage.app",
-    messagingSenderId: "277784561308",
-    appId: "1:277784561308:web:93c1bbee9d7d6728c3cf59",
-    measurementId: "G-NM6XSMBGEV"
-  };
+<!-- MENU LATERAL -->
+<div id="mySidenav" class="menu-lateral">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()" style="position:absolute; top:10px; right:20px; font-size:32px;">&times;</a>
+    
+    <div class="menu-btn-group">
+        <button class="menu-btn-principal" onclick="toggleMenuSecao('secCobranca', this)">
+            <i class="bi bi-chat-dots-fill"></i>
+            <span>Conf Cobrança</span>
+        </button>
+        <div class="menu-secao" id="secCobranca">
+            <h6>📢 Mensagem de Cobrança</h6>
+            <textarea id="cfgMsg" class="form-control mb-2" rows="3" placeholder="Digite a mensagem que será enviada..."></textarea>
+            <button class="btn btn-success w-100" onclick="saveSettings()">💾 Salvar Mensagem</button>
+        </div>
 
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
+        <button class="menu-btn-principal" onclick="toggleMenuSecao('secPaineis', this)">
+            <i class="bi bi-hdd-stack-fill"></i>
+            <span>Conf Painel</span>
+        </button>
+        <div class="menu-secao" id="secPaineis">
+            <h6>⚙️ Configuração dos Painéis</h6>
 
-  window.firebaseAuth = auth;
-  window.db = db;
+            <div class="painel-config-card">
+                <div class="toggle-container">
+                    <h6 class="m-0"><i class="bi bi-broadcast text-info"></i> <span id="painel1Label">Painel 1 (CENTRAL)</span></h6>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="togglePainel1" onchange="saveSettings()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <label class="small text-secondary">📝 Nome do Painel:</label>
+                <input type="text" id="nomePainel1" class="form-control mb-2" placeholder="Nome personalizado" onchange="saveSettings()">
+                <label class="small text-secondary">🔗 Link do Painel:</label>
+                <input type="text" id="url1" class="form-control mb-2" placeholder="https://...">
+                <label class="small text-secondary">💳 Quantidade de Créditos:</label>
+                <div class="creditos-display">
+                    <div>
+                        <div class="cred-label">Disponíveis</div>
+                        <div class="cred-value" id="credCentralDisplay">0</div>
+                    </div>
+                    <div class="creditos-controls">
+                        <button class="btn-menos" onclick="ajustarCredito('central', -1)">−</button>
+                        <input type="number" id="credCentral" class="form-control" value="0" min="0" onchange="atualizarDisplayCredito('central')">
+                        <button class="btn-mais" onclick="ajustarCredito('central', 1)">+</button>
+                    </div>
+                </div>
+            </div>
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      document.getElementById('authView').style.display = 'none';
-      document.getElementById('homeView').style.display = 'flex';
-      toast('Sessão iniciada com segurança!', 'success');
+            <div class="painel-config-card">
+                <div class="toggle-container">
+                    <h6 class="m-0"><i class="bi bi-lightning-fill text-warning"></i> <span id="painel2Label">Painel 2 (WAREZ)</span></h6>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="togglePainel2" onchange="saveSettings()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <label class="small text-secondary">📝 Nome do Painel:</label>
+                <input type="text" id="nomePainel2" class="form-control mb-2" placeholder="Nome personalizado" onchange="saveSettings()">
+                <label class="small text-secondary">🔗 Link do Painel:</label>
+                <input type="text" id="url2" class="form-control mb-2" placeholder="https://...">
+                <label class="small text-secondary">💳 Quantidade de Créditos:</label>
+                <div class="creditos-display">
+                    <div>
+                        <div class="cred-label">Disponíveis</div>
+                        <div class="cred-value" id="credWarezDisplay">0</div>
+                    </div>
+                    <div class="creditos-controls">
+                        <button class="btn-menos" onclick="ajustarCredito('warez', -1)">−</button>
+                        <input type="number" id="credWarez" class="form-control" value="0" min="0" onchange="atualizarDisplayCredito('warez')">
+                        <button class="btn-mais" onclick="ajustarCredito('warez', 1)">+</button>
+                    </div>
+                </div>
+            </div>
 
-      onSnapshot(collection(db, "products"), (snapshot) => {
-        window.products = [];
-        snapshot.forEach(doc => { window.products.push(doc.data()); });
-        localStorage.setItem('pdv_products', JSON.stringify(window.products));
-        renderProducts();
-        renderCatalog();
-      });
+            <div class="painel-config-card">
+                <div class="toggle-container">
+                    <h6 class="m-0"><i class="bi bi-fire text-danger"></i> <span id="painel3Label">Painel 3 (ZEUS)</span></h6>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="togglePainel3" onchange="saveSettings()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <label class="small text-secondary">📝 Nome do Painel:</label>
+                <input type="text" id="nomePainel3" class="form-control mb-2" placeholder="Nome personalizado" onchange="saveSettings()">
+                <label class="small text-secondary">🔗 Link do Painel:</label>
+                <input type="text" id="url3" class="form-control mb-2" placeholder="https://...">
+                <label class="small text-secondary">💳 Quantidade de Créditos:</label>
+                <div class="creditos-display">
+                    <div>
+                        <div class="cred-label">Disponíveis</div>
+                        <div class="cred-value" id="credZeusDisplay">0</div>
+                    </div>
+                    <div class="creditos-controls">
+                        <button class="btn-menos" onclick="ajustarCredito('zeus', -1)">−</button>
+                        <input type="number" id="credZeus" class="form-control" value="0" min="0" onchange="atualizarDisplayCredito('zeus')">
+                        <button class="btn-mais" onclick="ajustarCredito('zeus', 1)">+</button>
+                    </div>
+                </div>
+            </div>
 
-      onSnapshot(collection(db, "clients"), (snapshot) => {
-        window.clients = [];
-        snapshot.forEach(doc => { window.clients.push(doc.data()); });
-        localStorage.setItem('pdv_clients', JSON.stringify(window.clients));
-        renderClients();
-        renderPromos();
-      });
+            <button class="btn btn-success w-100 mt-2" onclick="saveSettings()">💾 Salvar Configurações</button>
+        </div>
 
-      onSnapshot(collection(db, "sales"), (snapshot) => {
-        window.sales = [];
-        snapshot.forEach(doc => { window.sales.push(doc.data()); });
-        window.sales.sort((a, b) => b.id - a.id);
-        localStorage.setItem('pdv_sales', JSON.stringify(window.sales));
-        renderSales();
-      });
+        <button class="menu-btn-principal" onclick="handleLogout()" style="background: linear-gradient(135deg, #5a1a1a, #1a1a1a); border-color: #dc3545;">
+            <i class="bi bi-box-arrow-right" style="color: #dc3545;"></i>
+            <span>Sair</span>
+        </button>
+    </div>
+</div>
 
-    } else {
-      document.getElementById('authView').style.display = 'flex';
-      document.getElementById('homeView').style.display = 'none';
-      document.querySelectorAll('.inner-view').forEach(v => v.classList.remove('active'));
-    }
-  });
+<!-- CONTAINER PRINCIPAL FULL SCREEN / DESKTOP -->
+<div class="desktop-wrapper">
+    <div class="desktop-container desktop-content-scroll">
 
-  window.handleLogin = function() {
-    const email = document.getElementById('authEmail').value.trim();
-    const password = document.getElementById('authPassword').value;
+        <!-- NAVBAR -->
+        <nav class="navbar">
+            <div class="navbar-inferior">
+                <div class="nav-left">
+                    <button class="btn-menu-bottom" onclick="openNav()"><i class="bi bi-list"></i></button>
+                </div>
+                <div class="nav-center">
+                    <button class="btn btn-add-fixo" onclick="showModalCadastro()"><i class="bi bi-plus-lg"></i></button>
+                </div>
+                <div class="nav-right">
+                    <div class="navbar-brand-bottom text-end">
+                        ITVPlayer
+                        <small id="userEmailDisplay"></small>
+                    </div>
+                </div>
+            </div>
+        </nav>
 
-    if (!email || !password) {
-      toast('Preencha e-mail e senha!', 'error');
-      return;
-    }
+        <div class="container-fluid mt-3 px-0">
+            <div id="adminPanel" class="mb-4 p-2">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                    <h5 class="m-0"><i class="bi bi-cash-stack text-success"></i> Financeiro</h5>
+                    <input type="date" id="filterMes" class="form-control w-auto bg-dark text-white border-secondary" style="max-width: 170px;">
+                </div>
+                <div class="row g-2">
+                    <div class="col-6 col-md-3"><div class="card-financeiro"><div class="stat-label">Recebido (Mês)</div><div class="stat-val" id="finRecebido">R$ 0,00</div></div></div>
+                    <div class="col-6 col-md-3"><div class="card-financeiro" style="border-left-color: #ffc107;"><div class="stat-label">A Receber</div><div class="stat-val text-warning" id="finPendente">R$ 0,00</div></div></div>
+                    <div class="col-6 col-md-3"><div class="card-financeiro" style="border-left-color: #0dcaf0;"><div class="stat-label">Total Clientes</div><div class="stat-val text-info" id="finTotalClientes">0</div></div></div>
+                    <div class="col-6 col-md-3"><div class="card-financeiro" style="border-left-color: #00ff00;"><div class="stat-label">Lucro Geral</div><div class="stat-val" id="finGeral" style="color: #00ff00;">R$ 0,00</div></div></div>
+                </div>
+                <hr class="border-secondary">
+            </div>
 
-    signInWithEmailAndPassword(auth, email, password)
-      .then(() => { toast('Login realizado com sucesso!', 'success'); })
-      .catch((error) => { toast('Erro no login: ' + error.message, 'error'); });
-  };
+            <button class="btn btn-success w-100 mb-3 rounded-pill fw-bold py-2" onclick="abrirBancoItv()" style="background: linear-gradient(135deg, #0d6efd, #0a58ca); border: none; box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);">
+                <i class="bi bi-bank2 me-2"></i> BANCO ITV - Gestão de Empréstimos
+            </button>
 
-  window.handleLogout = function() {
-    signOut(auth).then(() => {
-      closeMenu();
-      toast('Você saiu do sistema!', 'success');
-    });
-  };
+            <input type="text" id="search" class="form-control mb-3" placeholder="🔍 Buscar cliente por nome..." onkeyup="renderClientes()">
 
-  window.saveProductFirebase = async function(product) {
-    if (!window.db) return;
-    try { await setDoc(doc(window.db, "products", String(product.id)), product); } catch(e) { console.error(e); }
-  };
+            <div class="nav-buttons-painel" id="paineisAtivos"></div>
 
-  window.deleteProductFirebase = async function(id) {
-    if (!window.db) return;
-    try { await deleteDoc(doc(window.db, "products", String(id))); } catch(e) { console.error(e); }
-  };
+            <div class="filter-buttons">
+                <button class="btn-small bg-primary" onclick="filterData('ativos')">ATIVOS <span id="countAtivos">0</span></button>
+                <button class="btn-small" style="background-color: orange;" onclick="filterData('vencer')">A VENCER <span id="countVencer">0</span></button>
+                <button class="btn-small bg-danger" onclick="filterData('expirados')">EXPIRADOS <span id="countExp">0</span></button>
+                <button class="btn-small bg-info" onclick="filterData('apagar')">A RECEBER <span id="countPagar">0</span></button>
+                <button class="btn-small bg-secondary" onclick="filterData('deletados')" style="display: none;">LIXO <span id="countDel">0</span></button>
+            </div>
 
-  window.saveClientFirebase = async function(client) {
-    if (!window.db) return;
-    try { await setDoc(doc(window.db, "clients", String(client.id)), client); } catch(e) { console.error(e); }
-  };
+            <div id="listaClientes"></div>
+        </div>
 
-  window.deleteClientFirebase = async function(id) {
-    if (!window.db) return;
-    try { await deleteDoc(doc(window.db, "clients", String(id))); } catch(e) { console.error(e); }
-  };
+    </div>
+</div>
 
-  window.saveSaleFirebase = async function(sale) {
-    if (!window.db) return;
-    try { await setDoc(doc(window.db, "sales", String(sale.id)), sale); } catch(e) { console.error(e); }
-  };
+<!-- Modal Cadastro/Edição -->
+<div class="modal fade" id="modalCadastro" tabindex="-1" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content bg-dark text-white">
+            <div class="modal-header border-secondary"><h5 class="modal-title">📋 Cliente</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body">
+                <input type="hidden" id="editId">
+                <label class="small">Nome:</label><input type="text" id="cNome" class="form-control mb-2">
+                <label class="small">Usuário:</label><input type="text" id="cUser" class="form-control mb-2">
+                <label class="small">Senha:</label><input type="text" id="cPass" class="form-control mb-2">
+                <label class="small">Valor (R$):</label><input type="number" id="cValor" class="form-control mb-2" step="0.01">
+                <label class="small">Data Vencimento:</label><input type="date" id="cData" class="form-control mb-2">
+                <div style="display: none;">
+                    <label class="small">Servidor:</label><input type="text" id="cServ" class="form-control mb-2">
+                </div>
+                <label class="small">URL Playlist:</label><input type="text" id="cUrl" class="form-control mb-2">
+                <label class="small">WhatsApp (com DDD):</label><input type="tel" id="cTel" class="form-control mb-2" placeholder="55999999999">
+                <label class="small">Painel (onde será renovado):</label>
+                <select id="cPainel" class="form-control form-select mb-2">
+                    <option value="central">📡 CENTRAL</option>
+                    <option value="warez">⚡ WAREZ</option>
+                    <option value="zeus">🔥 ZEUS</option>
+                    <option value="itvplayer">🎬 ITVPlayer</option>
+                </select>
+                <label class="small">Observações:</label><textarea id="cObs" class="form-control mb-2" rows="2"></textarea>
+                <button class="btn btn-success w-100 mt-2 rounded-pill" onclick="saveCliente()">Salvar Cliente</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-  window.deleteSaleFirebase = async function(id) {
-    if (!window.db) return;
-    try { await deleteDoc(doc(window.db, "sales", String(id))); } catch(e) { console.error(e); }
-  };
-</script>
+<!-- Modal de Ações do Cliente -->
+<div class="modal fade" id="modalAcoes" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark text-white">
+            <div class="modal-header border-secondary">
+                <div>
+                    <h5 class="modal-title" id="acoesTitulo">👤 Cliente</h5>
+                    <small class="text-secondary" id="acoesSubtitulo"></small>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="cliente-info mb-3" id="acoesInfoResumo"></div>
+                <hr class="border-secondary">
+                <div class="modal-acoes-grid" id="acoesGrid"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL: BANCO ITV -->
+<div class="modal fade modal-banco-itv" id="modalBancoItv" tabindex="-1" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="banco-header d-flex justify-content-between align-items-center">
+                <div>
+                    <h4 class="m-0 fw-bold"><i class="bi bi-bank2 me-2"></i>BANCO ITV</h4>
+                    <small class="opacity-75">Gestão Profissional de Empréstimos</small>
+                </div>
+                <button type="button" class="btn btn-link text-white p-0" data-bs-dismiss="modal" style="font-size: 1.5rem;"><i class="bi bi-x-lg"></i></button>
+            </div>
+            
+            <div class="px-3 px-md-4">
+                <div class="banco-nav">
+                    <button class="banco-nav-btn active" onclick="mudarViewBanco('dashboard', this)"><i class="bi bi-pie-chart me-1"></i> Painel</button>
+                    <button class="banco-nav-btn" onclick="mudarViewBanco('lista', this)"><i class="bi bi-people me-1"></i> Clientes</button>
+                    <button class="banco-nav-btn" onclick="mudarViewBanco('novo', this)"><i class="bi bi-plus-circle me-1"></i> Novo</button>
+                </div>
+
+                <div id="view-dashboard" class="view-section active">
+                    <div class="row g-3 mb-4">
+                        <div class="col-6 col-md-3">
+                            <div class="fintech-card text-center">
+                                <div class="fintech-stat-label">Total Emprestado</div>
+                                <div class="fintech-stat-value text-info" id="bancoTotalEmprestado">R$ 0,00</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="fintech-card text-center">
+                                <div class="fintech-stat-label">Total Recebido</div>
+                                <div class="fintech-stat-value text-success" id="bancoTotalRecebido">R$ 0,00</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="fintech-card text-center">
+                                <div class="fintech-stat-label">A Receber</div>
+                                <div class="fintech-stat-value text-warning" id="bancoTotalPendente">R$ 0,00</div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="fintech-card text-center">
+                                <div class="fintech-stat-label">Lucro (Juros)</div>
+                                <div class="fintech-stat-value" style="color: #9933ff;" id="bancoTotalLucro">R$ 0,00</div>
+                            </div>
+                        </div>
+                    </div>
+                    <h6 class="text-secondary mb-3"><i class="bi bi-exclamation-triangle me-2"></i>Empréstimos Atrasados</h6>
+                    <div id="listaAtrasadosBanco"></div>
+                </div>
+
+                <div id="view-lista" class="view-section">
+                    <input type="text" id="searchBanco" class="form-control mb-3" placeholder="🔍 Buscar no Banco ITV..." onkeyup="renderizarListaBanco()">
+                    <div id="listaEmprestimosBanco"></div>
+                </div>
+
+                <div id="view-novo" class="view-section">
+                    <div class="fintech-card">
+                        <h5 class="mb-3"><i class="bi bi-file-earmark-plus me-2"></i>Cadastrar Novo Empréstimo</h5>
+                        <input type="hidden" id="bancoEditId">
+                        <label class="small text-secondary">Nome Completo:</label>
+                        <input type="text" id="bancoNome" class="form-control mb-2">
+                        
+                        <label class="small text-secondary">WhatsApp (com DDD):</label>
+                        <input type="tel" id="bancoTelefone" class="form-control mb-2" placeholder="55999999999">
+                        
+                        <div class="row g-2 mb-2">
+                            <div class="col-6">
+                                <label class="small text-secondary">Valor Emprestado (R$):</label>
+                                <input type="number" id="bancoValor" class="form-control" step="0.01" oninput="calcularTotalBanco()">
+                            </div>
+                            <div class="col-6">
+                                <label class="small text-secondary">Taxa de Juros (%):</label>
+                                <input type="number" id="bancoJuros" class="form-control" step="0.01" value="0" oninput="calcularTotalBanco()">
+                            </div>
+                        </div>
+                        
+                        <div class="fintech-card bg-dark border-primary mb-2">
+                            <div class="d-flex justify-content-between">
+                                <span class="text-secondary">Valor Total a Receber:</span>
+                                <span class="fw-bold text-success" id="bancoValorTotalDisplay">R$ 0,00</span>
+                            </div>
+                        </div>
+
+                        <div class="row g-2 mb-2">
+                            <div class="col-6">
+                                <label class="small text-secondary">Nº de Parcelas:</label>
+                                <input type="number" id="bancoParcelas" class="form-control" value="1" min="1" oninput="calcularTotalBanco()">
+                            </div>
+                            <div class="col-6">
+                                <label class="small text-secondary">Data 1º Vencimento:</label>
+                                <input type="date" id="bancoDataVenc" class="form-control">
+                            </div>
+                        </div>
+
+                        <label class="small text-secondary">Observações:</label>
+                        <textarea id="bancoObs" class="form-control mb-3" rows="2"></textarea>
+
+                        <button class="btn btn-primary w-100 py-2 fw-bold rounded-pill" onclick="salvarEmprestimo()">
+                            <i class="bi bi-check-circle me-2"></i>Salvar Empréstimo
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
 <script>
-  window.products = JSON.parse(localStorage.getItem('pdv_products') || '[]');
-  let cart = [];
-  window.sales = JSON.parse(localStorage.getItem('pdv_sales') || '[]');
-  window.clients = JSON.parse(localStorage.getItem('pdv_clients') || '[]');
-  let html5QrCode = null;
-  let scanMode = 'cart';
-  let currentImageData = null;
-  let currentClient = null;
-
-  window.products.forEach(p => {
-    if (!('description' in p)) p.description = '';
-    if (!('promoActive' in p)) p.promoActive = false;
-    if (!('promoQuantity' in p)) p.promoQuantity = 0;
-  });
-  window.clients.forEach(c => {
-    if (!('promoProgress' in c)) c.promoProgress = {};
-  });
-
-  function openInnerView(viewName) {
-    document.getElementById('homeView').style.display = 'none';
-    document.querySelectorAll('.inner-view').forEach(v => v.classList.remove('active'));
-    const viewMap = {
-      'pdv': 'viewPDV', 'catalog': 'viewCatalog', 'clients': 'viewClients',
-      'sales': 'viewSales', 'promos': 'viewPromos', 'admin': 'viewAdmin'
+    const firebaseConfig = {
+      apiKey: "AIzaSyDd_rtYsto9_0zp8pxYwXRs4XRRip7k3uc",
+      authDomain: "itvcontrol.firebaseapp.com",
+      projectId: "itvcontrol",
+      storageBucket: "itvcontrol.firebasestorage.app",
+      messagingSenderId: "291731890067",
+      appId: "1:291731890067:web:e75e79766765d861db5266"
     };
-    const viewId = viewMap[viewName];
-    if (viewId) {
-      document.getElementById(viewId).classList.add('active');
-      if (viewName === 'catalog') renderCatalog();
-      if (viewName === 'admin') renderProducts();
-      if (viewName === 'sales') renderSales();
-      if (viewName === 'clients') renderClients();
-      if (viewName === 'promos') renderPromos();
-    }
-  }
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
 
-  function goHome() {
-    document.querySelectorAll('.inner-view').forEach(v => v.classList.remove('active'));
-    document.getElementById('homeView').style.display = 'flex';
-    stopScanner();
-  }
-
-  function navigateTo(viewId) {
-    closeMenu();
-    document.getElementById('homeView').style.display = 'none';
-    document.querySelectorAll('.inner-view').forEach(v => v.classList.remove('active'));
-    document.getElementById(viewId).classList.add('active');
-    if (viewId === 'viewAdmin') renderProducts();
-    if (viewId === 'viewSales') renderSales();
-    if (viewId === 'viewClients') renderClients();
-    if (viewId === 'viewPromos') renderPromos();
-  }
-
-  function openMenu() {
-    document.getElementById('menuOverlay').classList.add('active');
-    document.getElementById('menuDrawer').classList.add('active');
-  }
-  function closeMenu() {
-    document.getElementById('menuOverlay').classList.remove('active');
-    document.getElementById('menuDrawer').classList.remove('active');
-  }
-
-  function toast(msg, type = '') {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.className = 'toast show ' + type;
-    setTimeout(() => t.classList.remove('show'), 2500);
-  }
-
-  function playScanBeep() {
-    try {
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      if (!AudioContext) return;
-      const ctx = new AudioContext();
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.type = 'square';
-      osc.frequency.setValueAtTime(1500, ctx.currentTime);
-      gain.gain.setValueAtTime(0.4, ctx.currentTime);
-      osc.start();
-      osc.stop(ctx.currentTime + 0.12);
-    } catch (e) {}
-  }
-
-  async function startScanner() {
-    if (!html5QrCode) html5QrCode = new Html5Qrcode("reader");
-    try {
-      const cameras = await Html5Qrcode.getCameras();
-      if (!cameras || cameras.length === 0) { toast('Nenhuma câmera encontrada', 'error'); return; }
-      const cam = cameras.find(c => /back|traseira|rear|environment/i.test(c.label)) || cameras[cameras.length - 1];
-      
-      let lastScannedCode = '';
-      let lastScanTime = 0;
-
-      await html5QrCode.start(cam.id, { fps: 10, qrbox: { width: 250, height: 100 }, aspectRatio: 1.77 },
-        (decodedText) => {
-          const now = Date.now();
-          if (decodedText === lastScannedCode && (now - lastScanTime) < 800) return;
-          lastScannedCode = decodedText;
-          lastScanTime = now;
-          playScanBeep();
-          if (scanMode === 'cart') addToCart(decodedText);
-          else if (scanMode === 'product') {
-            document.getElementById('productCode').value = decodedText;
-            toast('Código capturado!', 'success');
-            stopScanner();
-          }
-        }, () => {});
-      document.getElementById('btnStartScan').style.display = 'none';
-      document.getElementById('btnStopScan').style.display = 'flex';
-    } catch (err) {
-      toast('Erro ao acessar câmera: ' + err.message, 'error');
-    }
-  }
-
-  function stopScanner() {
-    if (html5QrCode && html5QrCode.isScanning) html5QrCode.stop().catch(() => {});
-    const btnStart = document.getElementById('btnStartScan');
-    const btnStop = document.getElementById('btnStopScan');
-    if (btnStart) btnStart.style.display = 'flex';
-    if (btnStop) btnStop.style.display = 'none';
-  }
-  document.getElementById('btnStartScan').addEventListener('click', () => { scanMode = 'cart'; startScanner(); });
-  document.getElementById('btnStopScan').addEventListener('click', stopScanner);
-
-  function handleImageUpload(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      currentImageData = e.target.result;
-      showImagePreview(e.target.result, file.type.startsWith('video/'));
+    let clientes = [];
+    let config = { 
+        msg: "", 
+        p1: "", p2: "", p3: "", 
+        credCentral: 0, credWarez: 0, credZeus: 0,
+        nomePainel1: "CENTRAL",
+        nomePainel2: "WAREZ",
+        nomePainel3: "ZEUS",
+        togglePainel1: true,
+        togglePainel2: true,
+        togglePainel3: true
     };
-    reader.readAsDataURL(file);
-  }
+    let currentFilter = 'ativos';
+    let usuarioLogadoUid = null;
+    let emprestimos = [];
 
-  function showImagePreview(src, isVideo = false) {
-    const preview = document.getElementById('imagePreview');
-    if (isVideo) {
-      preview.outerHTML = `<video id="imagePreview" class="image-upload-preview" controls src="${src}"></video>`;
-    } else {
-      preview.outerHTML = `<img id="imagePreview" class="image-upload-preview" src="${src}" alt="Preview">`;
+    function abrirBancoItv() {
+        new bootstrap.Modal(document.getElementById('modalBancoItv')).show();
+        carregarDadosBanco();
     }
-    document.getElementById('imagePreview').style.display = 'block';
-    document.getElementById('imagePlaceholder').style.display = 'none';
-    document.getElementById('imageActions').style.display = 'flex';
-    document.getElementById('imageUploadBox').classList.add('has-image');
-  }
 
-  function clearImagePreview() {
-    const preview = document.getElementById('imagePreview');
-    if (preview) preview.outerHTML = `<img id="imagePreview" class="image-upload-preview" style="display:none;" alt="Preview">`;
-    document.getElementById('imagePlaceholder').style.display = 'flex';
-    document.getElementById('imageActions').style.display = 'none';
-    document.getElementById('imageUploadBox').classList.remove('has-image');
-    document.getElementById('productImage').value = '';
-    currentImageData = null;
-  }
-  function removeImage(event) {
-    event.preventDefault(); event.stopPropagation();
-    clearImagePreview();
-    toast('Mídia removida');
-  }
-
-  function updateDescCounter() {
-    const textarea = document.getElementById('productDescription');
-    const counter = document.getElementById('descCounter');
-    const len = textarea.value.length;
-    counter.textContent = len + '/200';
-    counter.classList.remove('warn', 'danger');
-    if (len >= 200) counter.classList.add('danger');
-    else if (len >= 160) counter.classList.add('warn');
-  }
-
-  function addByCode() {
-    const code = document.getElementById('manualCode').value.trim();
-    if (!code) return;
-    addToCart(code);
-    document.getElementById('manualCode').value = '';
-  }
-
-  function addToCart(code) {
-    const product = window.products.find(p => p.code === code);
-    if (!product) { toast('Produto não encontrado: ' + code, 'error'); return; }
-    if (product.stock <= 0) { toast('Produto sem estoque!', 'error'); return; }
-    const item = cart.find(c => c.id === product.id);
-    if (item) {
-      if (item.qty >= product.stock) { toast('Estoque insuficiente!', 'error'); return; }
-      item.qty++;
-    } else {
-      cart.push({ id: product.id, name: product.name, price: product.price, qty: 1, image: product.image || null, description: product.description || '' });
+    function mudarViewBanco(view, btn) {
+        document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.banco-nav-btn').forEach(el => el.classList.remove('active'));
+        document.getElementById('view-' + view).classList.add('active');
+        if(btn) btn.classList.add('active');
+        if(view === 'lista') renderizarListaBanco();
+        if(view === 'dashboard') renderizarDashboardBanco();
     }
-    toast('✓ ' + product.name, 'success');
-    renderCart();
-  }
 
-  function changeQty(id, delta) {
-    const item = cart.find(c => c.id === id);
-    if (!item) return;
-    const product = window.products.find(p => p.id === id);
-    const newQty = item.qty + delta;
-    if (newQty <= 0) cart = cart.filter(c => c.id !== id);
-    else if (newQty > product.stock) { toast('Estoque insuficiente!', 'error'); return; }
-    else item.qty = newQty;
-    renderCart();
-  }
-
-  function renderCart() {
-    const list = document.getElementById('cartList');
-    if (cart.length === 0) {
-      list.innerHTML = '<div class="empty" style="padding: 20px;"><div class="empty-text">Carrinho vazio</div></div>';
-    } else {
-      list.innerHTML = cart.map(item => {
-        const isVid = item.image && item.image.startsWith('data:video');
-        const imgHtml = item.image ? (isVid ? `<video src="${item.image}" class="cart-item-img"></video>` : `<img src="${item.image}" class="cart-item-img" alt="">`) : `<div class="cart-item-img-placeholder">📦</div>`;
-        const descHtml = item.description ? `<div class="cart-item-desc">${escapeHtml(item.description)}</div>` : '';
-        return `<div class="cart-item">${imgHtml}<div class="cart-item-info"><div class="cart-item-name">${escapeHtml(item.name)}</div>${descHtml}<div class="cart-item-price">R$ ${item.price.toFixed(2)} × ${item.qty} = R$ ${(item.price * item.qty).toFixed(2)}</div></div><div class="qty-controls"><button class="qty-btn" onclick="changeQty(${item.id}, -1)">−</button><span class="qty-value">${item.qty}</span><button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button></div></div>`;
-      }).join('');
+    function calcularTotalBanco() {
+        const valor = parseFloat(document.getElementById('bancoValor').value) || 0;
+        const juros = parseFloat(document.getElementById('bancoJuros').value) || 0;
+        const total = valor + (valor * (juros / 100));
+        document.getElementById('bancoValorTotalDisplay').innerText = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
-    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-    const count = cart.reduce((s, i) => s + i.qty, 0);
-    document.getElementById('cartTotal').textContent = 'R$ ' + total.toFixed(2);
-    document.getElementById('cartCount').textContent = count + ' ' + (count === 1 ? 'item' : 'itens');
-  }
 
-  function finalizeSale() {
-    if (cart.length === 0) { toast('Carrinho vazio!', 'error'); return; }
-    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-    const sale = {
-      id: Date.now(),
-      items: cart.map(i => ({ id: i.id, name: i.name, price: i.price, qty: i.qty, image: i.image || null, description: i.description || '' })),
-      total: total,
-      date: new Date().toISOString(),
-      client: currentClient ? { id: currentClient.id, name: currentClient.name, whatsapp: currentClient.whatsapp, delivery: currentClient.delivery, address: currentClient.address, neighborhood: currentClient.neighborhood } : null
-    };
+    function carregarDadosBanco() {
+        if(!usuarioLogadoUid) return;
+        db.collection("usuarios").doc(usuarioLogadoUid).collection("emprestimos").onSnapshot(snapshot => {
+            emprestimos = [];
+            snapshot.forEach(doc => { emprestimos.push({ id: doc.id, ...doc.data() }); });
+            renderizarDashboardBanco();
+            renderizarListaBanco();
+        });
+    }
 
-    cart.forEach(item => {
-      const p = window.products.find(pr => pr.id === item.id);
-      if (p) {
-        p.stock -= item.qty;
-        if (window.saveProductFirebase) window.saveProductFirebase(p);
-      }
-    });
+    function salvarEmprestimo() {
+        if(!usuarioLogadoUid) return;
+        const id = document.getElementById('bancoEditId').value;
+        const valor = parseFloat(document.getElementById('bancoValor').value) || 0;
+        const juros = parseFloat(document.getElementById('bancoJuros').value) || 0;
+        const valorTotal = valor + (valor * (juros / 100));
+        const parcelas = parseInt(document.getElementById('bancoParcelas').value) || 1;
 
-    if (currentClient) {
-      if (!currentClient.promoProgress) currentClient.promoProgress = {};
-      cart.forEach(item => {
-        const product = window.products.find(p => p.id === item.id);
-        if (product && product.promoActive && product.promoQuantity > 0) {
-          let currentCount = currentClient.promoProgress[product.id] || 0;
-          let newTotal = currentCount + item.qty;
-          let wins = Math.floor(newTotal / product.promoQuantity);
-          let remainder = newTotal % product.promoQuantity;
-          if (wins > 0) {
-            playBellSound();
-            showPromoWinModal(currentClient.name, product, product.promoQuantity);
-            currentClient.promoProgress[product.id] = remainder;
-          } else {
-            currentClient.promoProgress[product.id] = newTotal;
-          }
+        const dados = {
+            nome: document.getElementById('bancoNome').value,
+            telefone: document.getElementById('bancoTelefone').value,
+            valorEmprestado: valor,
+            taxaJuros: juros,
+            valorTotal: valorTotal,
+            parcelas: parcelas,
+            parcelasPagas: id ? (emprestimos.find(e => e.id === id)?.parcelasPagas || 0) : 0,
+            dataVencimento: document.getElementById('bancoDataVenc').value,
+            obs: document.getElementById('bancoObs').value,
+            status: 'ativo',
+            dataCriacao: new Date().toISOString()
+        };
+        
+        if(id === "") {
+            db.collection("usuarios").doc(usuarioLogadoUid).collection("emprestimos").add(dados).then(() => {
+                limparFormBanco();
+                alert("✅ Empréstimo cadastrado com sucesso!");
+                mudarViewBanco('lista', document.querySelectorAll('.banco-nav-btn')[1]);
+            });
+        } else {
+            db.collection("usuarios").doc(usuarioLogadoUid).collection("emprestimos").doc(id).update(dados).then(() => {
+                limparFormBanco();
+                alert("✅ Empréstimo atualizado!");
+                mudarViewBanco('lista', document.querySelectorAll('.banco-nav-btn')[1]);
+            });
         }
-      });
-      if (window.saveClientFirebase) window.saveClientFirebase(currentClient);
     }
 
-    if (window.saveSaleFirebase) window.saveSaleFirebase(sale);
-
-    cart = []; currentClient = null;
-    updateSelectedClientDisplay();
-    renderCart();
-    toast('✅ Venda finalizada! R$ ' + total.toFixed(2), 'success');
-  }
-
-  function playBellSound() {
-    const audio = document.getElementById('bellSound');
-    if (audio) {
-      let count = 0;
-      const interval = setInterval(() => {
-        audio.currentTime = 0;
-        audio.play().catch(e => {});
-        count++;
-        if (count >= 6) clearInterval(interval);
-      }, 500);
-    }
-  }
-
-  function showPromoWinModal(clientName, product, requiredQty) {
-    const imgContainer = document.getElementById('promoWinImageContainer');
-    document.getElementById('promoWinClientName').textContent = `Cliente: ${clientName}`;
-    document.getElementById('promoWinDesc').innerHTML = `Você completou <strong>${requiredQty} unidades</strong> de:<br><strong>${escapeHtml(product.name)}</strong>`;
-    const isVid = product.image && product.image.startsWith('data:video');
-    imgContainer.innerHTML = product.image ? (isVid ? `<video src="${product.image}" class="promo-win-img" controls></video>` : `<img src="${product.image}" class="promo-win-img" alt="">`) : `<div class="promo-win-img-placeholder">📦</div>`;
-    document.getElementById('promoWinModal').classList.add('active');
-  }
-  function closePromoWinModal() { document.getElementById('promoWinModal').classList.remove('active'); }
-
-  function openClientSelectionModal() {
-    document.getElementById('clientSelectionModal').classList.add('active');
-    document.getElementById('searchClientSelection').value = '';
-    renderClientSelectionList();
-  }
-  function closeClientSelectionModal() { document.getElementById('clientSelectionModal').classList.remove('active'); }
-  function renderClientSelectionList() {
-    const search = (document.getElementById('searchClientSelection').value || '').toLowerCase().trim();
-    const filtered = window.clients.filter(c => c.name.toLowerCase().includes(search) || c.whatsapp.includes(search) || formatWhatsapp(c.whatsapp).includes(search));
-    const list = document.getElementById('clientSelectionList');
-    if (filtered.length === 0) {
-      list.innerHTML = '<div class="empty" style="padding: 20px;"><div class="empty-text">Nenhum cliente encontrado</div></div>';
-    } else {
-      list.innerHTML = filtered.map(c => {
-        const initials = getInitials(c.name);
-        const whatsappFormatted = formatWhatsapp(c.whatsapp);
-        const badgeHtml = c.delivery ? '<span class="client-badge" style="font-size:9px; padding: 1px 5px;">🏠 Domicílio</span>' : '';
-        const whatsappHtml = c.whatsapp ? `📱 +55 ${escapeHtml(whatsappFormatted)}` : '📱 Sem WhatsApp';
-        return `<div class="client-item" style="cursor: pointer;" onclick="selectClientForSaleById(${c.id})"><div class="client-avatar" style="width: 40px; height: 40px; font-size: 16px;">${escapeHtml(initials)}</div><div class="client-info"><div class="client-name" style="font-size: 14px;">${escapeHtml(c.name)}${badgeHtml}</div><div class="client-meta"><div class="client-meta-row">${whatsappHtml}</div></div></div><div style="color: var(--accent-orange); font-size: 20px;">✓</div></div>`;
-      }).join('');
-    }
-  }
-  function selectClientForSaleById(id) {
-    const client = window.clients.find(c => c.id === id);
-    if (client) { currentClient = client; updateSelectedClientDisplay(); closeClientSelectionModal(); toast('Cliente selecionado: ' + client.name, 'success'); }
-  }
-  function clearSelectedClient() { currentClient = null; updateSelectedClientDisplay(); closeClientSelectionModal(); toast('Cliente removido', 'success'); }
-  function updateSelectedClientDisplay() {
-    const display = document.getElementById('selectedClientDisplay');
-    if (currentClient) {
-      display.style.display = 'block';
-      document.getElementById('selectedClientName').textContent = currentClient.name;
-      let details = '';
-      if (currentClient.whatsapp) {
-        const whatsappFormatted = formatWhatsapp(currentClient.whatsapp);
-        details += `📱 +55 ${whatsappFormatted}`;
-      } else {
-        details += '📱 Sem WhatsApp';
-      }
-      if (currentClient.delivery && currentClient.address) details += ` • 📍 ${currentClient.address}`;
-      document.getElementById('selectedClientDetails').textContent = details;
-    } else { display.style.display = 'none'; }
-  }
-
-  function renderPromos() {
-    const searchInput = document.getElementById('searchPromoClient');
-    const rawSearch = searchInput ? searchInput.value : '';
-    const search = rawSearch.toLowerCase().trim();
-    const clearBtn = document.getElementById('clearPromoSearch');
-    if (clearBtn) clearBtn.classList.toggle('show', rawSearch.length > 0);
-
-    const deleteMode = search.includes('deletar');
-    const list = document.getElementById('promoClientList');
-    let participatingClients = window.clients.filter(c => {
-      if (!c.promoProgress) return false;
-      return Object.keys(c.promoProgress).some(prodId => {
-        const prod = window.products.find(p => p.id === parseInt(prodId));
-        return prod && prod.promoActive && c.promoProgress[prodId] > 0;
-      });
-    });
-
-    if (!deleteMode && search) {
-      participatingClients = participatingClients.filter(c =>
-        c.name.toLowerCase().includes(search) || (c.whatsapp && c.whatsapp.includes(search))
-      );
+    function limparFormBanco() {
+        document.getElementById('bancoEditId').value = "";
+        document.getElementById('bancoNome').value = "";
+        document.getElementById('bancoTelefone').value = "";
+        document.getElementById('bancoValor').value = "";
+        document.getElementById('bancoJuros').value = "0";
+        document.getElementById('bancoParcelas').value = "1";
+        document.getElementById('bancoDataVenc').value = "";
+        document.getElementById('bancoObs').value = "";
+        document.getElementById('bancoValorTotalDisplay').innerText = "R$ 0,00";
     }
 
-    let hintHtml = '';
-    if (deleteMode) {
-      hintHtml = '<div class="delete-hint">🗑️ <span>Modo Deletar ativo — toque no botão ao lado para remover.</span></div>';
+    function renderizarDashboardBanco() {
+        let totalEmprestado = 0, totalRecebido = 0, totalPendente = 0, totalLucro = 0;
+        let atrasadosHtml = '';
+        const hoje = new Date();
+
+        emprestimos.forEach(e => {
+            if(e.status !== 'pago') {
+                const valorEmprestado = parseFloat(e.valorEmprestado) || 0;
+                const valorTotal = parseFloat(e.valorTotal) || 0;
+                const parcelas = parseInt(e.parcelas) || 1;
+                const parcelasPagas = parseInt(e.parcelasPagas) || 0;
+
+                totalEmprestado += valorEmprestado;
+                totalLucro += (valorTotal - valorEmprestado);
+                
+                const valorPago = (valorTotal / parcelas) * parcelasPagas;
+                totalRecebido += valorPago;
+                totalPendente += (valorTotal - valorPago);
+
+                if (e.dataVencimento) {
+                    let partes = e.dataVencimento.split('-');
+                    if (partes.length === 3) {
+                        let dataVenc = new Date(partes[0], partes[1] - 1, partes[2]);
+                        dataVenc.setMonth(dataVenc.getMonth() + parcelasPagas);
+                        
+                        if(dataVenc < hoje && parcelasPagas < parcelas) {
+                            atrasadosHtml += `
+                                <div class="emprestimo-item border-danger">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h6 class="m-0 text-white">${e.nome || 'Sem Nome'}</h6>
+                                        <span class="status-badge status-atrasado">ATRASADO</span>
+                                    </div>
+                                    <div class="small text-secondary mb-2">Vencimento: ${formatarDataBR(e.dataVencimento)} | Parcela: ${parcelasPagas + 1}/${parcelas}</div>
+                                    <div class="d-flex gap-2">
+                                        <button class="btn btn-sm btn-success flex-fill" onclick="pagarParcelaBanco('${e.id}')"><i class="bi bi-cash"></i> Receber</button>
+                                        <button class="btn btn-sm btn-outline-light flex-fill" onclick="cobrarWhatsAppBanco('${e.id}')"><i class="bi bi-whatsapp"></i> Cobrar</button>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    }
+                }
+            }
+        });
+
+        document.getElementById('bancoTotalEmprestado').innerText = totalEmprestado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        document.getElementById('bancoTotalRecebido').innerText = totalRecebido.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        document.getElementById('bancoTotalPendente').innerText = totalPendente.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        document.getElementById('bancoTotalLucro').innerText = totalLucro.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        document.getElementById('listaAtrasadosBanco').innerHTML = atrasadosHtml || '<div class="text-center text-secondary py-3">Nenhum empréstimo atrasado. 🎉</div>';
     }
 
-    if (participatingClients.length === 0) {
-      list.innerHTML = hintHtml + '<div class="empty"><div class="empty-icon">🎁</div><div class="empty-text">Nenhum cliente participando de promoções.</div></div>';
-      return;
-    }
+    function renderizarListaBanco() {
+        const search = (document.getElementById('searchBanco').value || "").toLowerCase();
+        const container = document.getElementById('listaEmprestimosBanco');
+        container.innerHTML = '';
 
-    list.innerHTML = hintHtml + participatingClients.map(c => {
-      const whatsappFormatted = formatWhatsapp(c.whatsapp);
-      const whatsappHtml = c.whatsapp ? `📱 +55 ${escapeHtml(whatsappFormatted)}` : '📱 Sem WhatsApp';
-      let promoItemsHtml = '';
-      for (const [prodId, count] of Object.entries(c.promoProgress)) {
-        const prod = window.products.find(p => p.id === parseInt(prodId));
-        if (prod && prod.promoActive && count > 0) {
-          const isVid = prod.image && prod.image.startsWith('data:video');
-          const imgHtml = prod.image ? (isVid ? `<video src="${prod.image}" style="width:36px; height:36px; border-radius:6px; object-fit:cover; margin-right:8px;"></video>` : `<img src="${prod.image}" style="width:36px; height:36px; border-radius:6px; object-fit:cover; margin-right:8px;">`) : `<div style="width:36px; height:36px; border-radius:6px; background:var(--bg-dark); color:var(--accent-orange); display:flex; align-items:center; justify-content:center; margin-right:8px; font-size:16px;">📦</div>`;
-          const itemDeleteBtn = deleteMode ? `<button class="delete-inline-btn" onclick="deletePromoItem(${c.id}, ${prod.id})">🗑️</button>` : '';
-          promoItemsHtml += `<div style="display:flex; align-items:center; background:var(--bg-dark); padding:6px; border-radius:6px; margin-top:6px;">${imgHtml}<div style="flex:1; min-width:0;"><div style="font-size:12px; font-weight:600; color:var(--text-white);">${escapeHtml(prod.name)}</div><div style="font-size:11px; color:var(--text-muted);">Progresso: <strong style="color:var(--accent-orange);">${count}</strong> / ${prod.promoQuantity}</div></div>${itemDeleteBtn}</div>`;
+        if (emprestimos.length === 0) {
+            container.innerHTML = '<div class="text-center text-secondary py-4">Nenhum empréstimo cadastrado ainda.</div>';
+            return;
         }
-      }
-      const waMsg = `Parabéns!\nVocê Comprou e Ganhou!!\nNós da Gordo Express estamos felizes em presentear você!!!`;
-      const waLink = c.whatsapp ? `https://wa.me/55${c.whatsapp}?text=${encodeURIComponent(waMsg)}` : '#';
-      const waButton = c.whatsapp ? `<button class="btn btn-success btn-sm" style="margin-top: 10px;" onclick="window.open('${waLink}', '_blank')">📱 Enviar WhatsApp</button>` : '';
-      const clientDeleteBtn = deleteMode ? `<button class="delete-inline-btn" onclick="deletePromoClient(${c.id})">🗑️ Deletar</button>` : '';
 
-      return `<div class="client-item" style="flex-direction: column; align-items: stretch;"><div style="display:flex; align-items:center; gap:12px; margin-bottom:6px;"><div class="client-avatar" style="width:40px; height:40px; font-size:16px;">${getInitials(c.name)}</div><div style="flex:1; min-width:0;"><div class="client-name" style="font-size:14px;">${escapeHtml(c.name)}</div><div class="client-meta"><div class="client-meta-row">${whatsappHtml}</div></div></div>${clientDeleteBtn}</div><div style="border-top: 1px dashed var(--border); padding-top: 6px;">${promoItemsHtml}</div>${waButton}</div>`;
-    }).join('');
-  }
+        emprestimos.filter(e => (e.nome || "").toLowerCase().includes(search)).forEach(e => {
+            const parcelas = parseInt(e.parcelas) || 1;
+            const parcelasPagas = parseInt(e.parcelasPagas) || 0;
+            const valorTotal = parseFloat(e.valorTotal) || 0;
+            const valorParcela = valorTotal / parcelas;
+            const pendente = Math.max(0, valorTotal - (valorParcela * parcelasPagas));
+            
+            let statusClass = 'status-ativo';
+            let statusText = 'ATIVO';
+            
+            if(e.status === 'pago') { 
+                statusClass = 'status-pago'; 
+                statusText = 'PAGO'; 
+            } else if (e.dataVencimento) {
+                let partes = e.dataVencimento.split('-');
+                if (partes.length === 3) {
+                    let dataVenc = new Date(partes[0], partes[1] - 1, partes[2]);
+                    dataVenc.setMonth(dataVenc.getMonth() + parcelasPagas);
+                    if(dataVenc < new Date()) { 
+                        statusClass = 'status-atrasado'; 
+                        statusText = 'ATRASADO'; 
+                    }
+                }
+            }
 
-  function clearPromoSearch() { document.getElementById('searchPromoClient').value = ''; renderPromos(); }
-  function deletePromoItem(clientId, productId) {
-    const c = window.clients.find(cl => cl.id === clientId);
-    if (!c || !c.promoProgress) return;
-    delete c.promoProgress[productId];
-    if (window.saveClientFirebase) window.saveClientFirebase(c);
-    renderPromos();
-    toast('Promoção deletada!', 'success');
-  }
-  function deletePromoClient(clientId) {
-    const c = window.clients.find(cl => cl.id === clientId);
-    if (!c) return;
-    c.promoProgress = {};
-    if (window.saveClientFirebase) window.saveClientFirebase(c);
-    renderPromos();
-    toast('Promoções deletadas!', 'success');
-  }
-
-  function renderCatalog() {
-    const search = document.getElementById('searchCatalog').value.toLowerCase().trim();
-    const clearBtn = document.getElementById('clearCatalogSearch');
-    clearBtn.classList.toggle('show', search.length > 0);
-    const filtered = window.products.filter(p => p.name.toLowerCase().includes(search) || p.code.includes(search) || (p.description && p.description.toLowerCase().includes(search)) || p.category.toLowerCase().includes(search));
-    const list = document.getElementById('catalogList');
-    document.getElementById('catalogCount').textContent = filtered.length + ' ' + (filtered.length === 1 ? 'produto' : 'produtos');
-    if (filtered.length === 0) {
-      list.innerHTML = `<div class="empty"><div class="empty-icon">📖</div><div class="empty-text">Nenhum produto encontrado</div></div>`;
-      return;
+            container.innerHTML += `
+                <div class="emprestimo-item" onclick="editarEmprestimo('${e.id}')">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <div>
+                            <h6 class="m-0 text-white fw-bold">${e.nome || 'Sem Nome'}</h6>
+                            <small class="text-secondary"><i class="bi bi-telephone me-1"></i>${e.telefone || 'Sem telefone'}</small>
+                        </div>
+                        <span class="status-badge ${statusClass}">${statusText}</span>
+                    </div>
+                    <div class="row g-1 mb-3 small">
+                        <div class="col-6 text-secondary">Total: <span class="text-white">${valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span></div>
+                        <div class="col-6 text-secondary">Parcelas: <span class="text-white">${parcelasPagas}/${parcelas}</span></div>
+                        <div class="col-12 text-secondary">Pendente: <span class="text-warning fw-bold">${pendente.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span></div>
+                        <div class="col-12 text-secondary">Vencimento: <span class="text-info">${formatarDataBR(e.dataVencimento) || 'Não definida'}</span></div>
+                    </div>
+                    <div class="d-flex gap-2" onclick="event.stopPropagation()">
+                        ${e.status !== 'pago' ? `<button class="btn btn-sm btn-success flex-fill" onclick="pagarParcelaBanco('${e.id}')"><i class="bi bi-cash-coin"></i> Pagar Parcela</button>` : ''}
+                        <button class="btn btn-sm btn-outline-success flex-fill" onclick="cobrarWhatsAppBanco('${e.id}')"><i class="bi bi-whatsapp"></i> ZAP</button>
+                        <button class="btn btn-sm btn-danger flex-fill" onclick="excluirEmprestimo('${e.id}')"><i class="bi bi-trash"></i></button>
+                    </div>
+                </div>
+            `;
+        });
     }
-    list.innerHTML = '<div class="catalog-grid">' + filtered.map(p => {
-      const isVid = p.image && p.image.startsWith('data:video');
-      const imgHtml = p.image ? (isVid ? `<video src="${p.image}" class="catalog-card-img" controls></video>` : `<img src="${p.image}" class="catalog-card-img" alt="">`) : `<div class="catalog-card-placeholder"></div>`;
-      let stockLabel = '', stockClass = '';
-      if (p.stock <= 0) { stockLabel = 'Esgotado'; stockClass = 'out'; }
-      else if (p.stock <= 5) { stockLabel = 'Est: ' + p.stock; stockClass = 'low'; }
-      else { stockLabel = 'Est: ' + p.stock; }
-      const descHtml = p.description ? `<div class="catalog-card-desc">${escapeHtml(p.description)}</div>` : '<div class="catalog-card-desc">&nbsp;</div>';
-      const addDisabled = p.stock <= 0 ? 'disabled' : '';
-      return `<div class="catalog-card"><div class="catalog-card-img-wrap">${imgHtml}<span class="catalog-card-stock ${stockClass}">${stockLabel}</span></div><div class="catalog-card-body"><div class="catalog-card-name">${escapeHtml(p.name)}</div>${descHtml}<span class="catalog-card-category">${escapeHtml(p.category)}</span><div class="catalog-card-footer"><div class="catalog-card-price">R$ ${p.price.toFixed(2)}</div><button class="catalog-card-add" onclick="addToCart('${p.code}')" ${addDisabled}>+</button></div></div></div>`;
-    }).join('') + '</div>';
-  }
-  function clearCatalogSearch() { document.getElementById('searchCatalog').value = ''; renderCatalog(); }
 
-  function escapeHtml(str) { if (!str) return ''; const div = document.createElement('div'); div.textContent = str; return div.innerHTML; }
-  function getInitials(name) { if (!name) return '?'; const parts = name.trim().split(/\s+/); if (parts.length === 1) return parts[0].charAt(0); return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase(); }
-  function formatWhatsapp(digits) { if (!digits) return ''; const d = digits.replace(/\D/g, ''); if (d.length === 10) return `(${d.slice(0,2)}) ${d.slice(2,6)}-${d.slice(6)}`; else if (d.length === 11) return `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`; return d; }
-
-  function renderProducts() {
-    const search = document.getElementById('searchProduct').value.toLowerCase();
-    const filtered = window.products.filter(p => p.name.toLowerCase().includes(search) || p.code.includes(search));
-    const list = document.getElementById('productList');
-    if (filtered.length === 0) { list.innerHTML = '<div class="empty"><div class="empty-text">Nenhum produto encontrado</div></div>'; }
-    else {
-      list.innerHTML = filtered.map(p => {
-        const isVid = p.image && p.image.startsWith('data:video');
-        const imgHtml = p.image ? (isVid ? `<video src="${p.image}" class="product-img"></video>` : `<img src="${p.image}" class="product-img" alt="">`) : `<div class="product-icon">📦</div>`;
-        const descHtml = p.description ? `<div class="product-desc">${escapeHtml(p.description)}</div>` : '';
-        const promoBadge = p.promoActive ? `<span style="font-size:10px; background:var(--warning); color:#1a1a1a; padding:2px 6px; border-radius:4px; margin-left:6px;">🎁 ${p.promoQuantity}x</span>` : '';
-        return `<div class="product-item">${imgHtml}<div class="product-info"><div class="product-name">${escapeHtml(p.name)}${promoBadge}</div>${descHtml}<div class="product-meta">Cod: ${p.code} • Est: ${p.stock} • ${p.category}</div></div><div class="product-price">R$ ${p.price.toFixed(2)}</div><div class="product-actions"><button class="icon-btn edit" onclick="editProduct(${p.id})">✏️</button><button class="icon-btn delete" onclick="deleteProduct(${p.id})">🗑️</button></div></div>`;
-      }).join('');
+    function editarEmprestimo(id) {
+        const e = emprestimos.find(x => x.id === id);
+        if(!e) return;
+        document.getElementById('bancoEditId').value = e.id;
+        document.getElementById('bancoNome').value = e.nome || "";
+        document.getElementById('bancoTelefone').value = e.telefone || "";
+        document.getElementById('bancoValor').value = e.valorEmprestado || "";
+        document.getElementById('bancoJuros').value = e.taxaJuros || "0";
+        document.getElementById('bancoParcelas').value = e.parcelas || "1";
+        document.getElementById('bancoDataVenc').value = e.dataVencimento || "";
+        document.getElementById('bancoObs').value = e.obs || '';
+        calcularTotalBanco();
+        mudarViewBanco('novo', document.querySelectorAll('.banco-nav-btn')[2]);
     }
-    document.getElementById('statProducts').textContent = window.products.length;
-    document.getElementById('statLowStock').textContent = window.products.filter(p => p.stock <= 5).length;
-  }
 
-  function openProductModal(product = null) {
-    document.getElementById('modalTitle').textContent = product ? 'Editar Produto' : 'Novo Produto';
-    document.getElementById('productId').value = product ? product.id : '';
-    document.getElementById('productName').value = product ? product.name : '';
-    document.getElementById('productDescription').value = product ? (product.description || '') : '';
-    document.getElementById('productCode').value = product ? product.code : '';
-    document.getElementById('productPrice').value = product ? product.price : '';
-    document.getElementById('productStock').value = product ? product.stock : '';
-    document.getElementById('productCategory').value = product ? product.category : 'geral';
-    document.getElementById('productPromoActive').checked = product ? !!product.promoActive : false;
-    document.getElementById('productPromoQuantity').value = product ? product.promoQuantity : '';
-    onPromoToggle(); updateDescCounter();
-    if (product && product.image) { currentImageData = product.image; showImagePreview(product.image, product.image.startsWith('data:video')); } else { clearImagePreview(); }
-    document.getElementById('productModal').classList.add('active');
-  }
-  function closeProductModal() { document.getElementById('productModal').classList.remove('active'); clearImagePreview(); }
-  function togglePromo() { const cb = document.getElementById('productPromoActive'); cb.checked = !cb.checked; onPromoToggle(); }
-  function onPromoToggle() { const checked = document.getElementById('productPromoActive').checked; document.getElementById('promoQuantityGroup').style.display = checked ? 'block' : 'none'; document.getElementById('promoToggleRow').classList.toggle('active', checked); }
+    function pagarParcelaBanco(id) {
+        const e = emprestimos.find(x => x.id === id);
+        if(!e) return;
+        const parcelas = parseInt(e.parcelas) || 1;
+        const parcelasPagas = parseInt(e.parcelasPagas) || 0;
+        
+        if(parcelasPagas >= parcelas) return alert("Este empréstimo já está quitado!");
 
-  function saveProduct() {
-    const id = document.getElementById('productId').value;
-    const name = document.getElementById('productName').value.trim();
-    const description = document.getElementById('productDescription').value.trim();
-    const code = document.getElementById('productCode').value.trim();
-    const price = parseFloat(document.getElementById('productPrice').value);
-    const stock = parseInt(document.getElementById('productStock').value);
-    const category = document.getElementById('productCategory').value;
-    const promoActive = document.getElementById('productPromoActive').checked;
-    const promoQuantity = promoActive ? parseInt(document.getElementById('productPromoQuantity').value) : 0;
-    if (!name || !code || isNaN(price) || isNaN(stock)) { toast('Preencha os campos obrigatórios!', 'error'); return; }
+        if(confirm(`Confirmar recebimento da parcela ${parcelasPagas + 1} de ${e.nome}?`)) {
+            const novasParcelasPagas = parcelasPagas + 1;
+            const novoStatus = novasParcelasPagas >= parcelas ? 'pago' : 'ativo';
+            
+            let novaDataVencISO = e.dataVencimento;
+            if (e.dataVencimento) {
+                let partes = e.dataVencimento.split('-');
+                if (partes.length === 3) {
+                    let dataVenc = new Date(partes[0], partes[1] - 1, partes[2]);
+                    dataVenc.setMonth(dataVenc.getMonth() + 1);
+                    novaDataVencISO = `${dataVenc.getFullYear()}-${String(dataVenc.getMonth() + 1).padStart(2, '0')}-${String(dataVenc.getDate()).padStart(2, '0')}`;
+                }
+            }
+
+            db.collection("usuarios").doc(usuarioLogadoUid).collection("emprestimos").doc(id).update({
+                parcelasPagas: novasParcelasPagas,
+                status: novoStatus,
+                dataVencimento: novaDataVencISO,
+                ultimoPagamento: new Date().toISOString()
+            }).then(() => {
+                if(e.telefone) {
+                    const valorTotalFmt = parseFloat(e.valorTotal).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                    const valorParcela = (parseFloat(e.valorTotal) || 0) / parcelas;
+                    const valorParcelaFmt = valorParcela.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                    const pendente = Math.max(0, parseFloat(e.valorTotal) - (valorParcela * novasParcelasPagas));
+                    const pendenteFmt = pendente.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                    const proximaDataFmt = formatarDataBR(novaDataVencISO);
+                    const proximaDataTexto = novoStatus === 'pago' ? 'EMPRÉSTIMO QUITADO! 🎉' : proximaDataFmt;
+
+                    const msg = `📩 𝕞𝕤𝕘-𝕒𝕦𝕥**omáti**𝕔𝕒📩\n✅*BANCO ITV* - 𝕊𝔼𝕌 ℙ𝔸𝔾𝔸𝕄𝔼ℕ𝕋𝕆 𝔽𝕆𝕀 ℂ𝕆ℕ𝔽𝕀ℝ𝕄𝔸𝔻𝕆!!\n\nOlá ${e.nome},\nValor do Empréstimo R$: ${valorTotalFmt}.\n\nRecebemos sua parcela nº: ${novasParcelasPagas}/${parcelas}.\nValor da Parcela R$: ${valorParcelaFmt}.\nValor Pendente R$: ${pendenteFmt}.\nData do Próximo Parcela: ${proximaDataTexto}`;
+                    window.open(`https://wa.me/${e.telefone.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`);
+                }
+                alert("✅ Parcela registrada com sucesso!");
+            }).catch(err => {
+                alert("Erro ao registrar parcela: " + err.message);
+            });
+        }
+    }
+
+    function cobrarWhatsAppBanco(id) {
+        const e = emprestimos.find(x => x.id === id);
+        if(!e) return alert("Cliente não encontrado!");
+        if(!e.telefone) return alert("Telefone não cadastrado!");
+        
+        const parcelas = parseInt(e.parcelas) || 1;
+        const parcelasPagas = parseInt(e.parcelasPagas) || 0;
+        const valorTotal = parseFloat(e.valorTotal) || 0;
+        const valorParcela = valorTotal / parcelas;
+        const valorPendente = Math.max(0, valorTotal - (valorParcela * parcelasPagas));
+        
+        const valorTotalFmt = valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        const valorParcelaFmt = valorParcela.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        const valorPendenteFmt = valorPendente.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        const dataVencFmt = formatarDataBR(e.dataVencimento);
+
+        const msg = `📩 𝕞𝕤𝕘-𝕒𝕦𝕥𝕠𝕞á𝕥𝕚𝕔𝕒📩
+⛔️*BANCO ITV* - 𝕊𝔼𝕌 ℙ𝔸𝔾𝔸𝕄𝔼ℕ𝕋𝕆 ℕ𝔸𝕆 𝔽𝕆𝕀 ℂ𝕆ℕ𝔽𝕀ℝ𝕄𝔸𝔻𝕆!!
+
+Olá ${e.nome},
+Valor do Empréstimo R$: ${valorTotalFmt}.
+
+Sua parcela nº: ${parcelasPagas + 1}/${parcelas}.
+Valor da Parcela R$: ${valorParcelaFmt}.
+Valor Pendente R$: ${valorPendenteFmt}.
+Data: ${dataVencFmt}
+
+Por favor, regularize para evitar juros adicionais, 
+
+Faça um Pix 💠
+💰VALOR: ${valorParcelaFmt}
+
+🏦Banco: *Pic Pay*
+👤Nome: *Maria lucilene* 
+📲Opção: *Celular*
+🔑 Chaves: *(85)996498573*
+
+_Após o pagamento, encaminhar o comprovante.
+🤝 Obrigado!.`;
+        
+        window.open(`https://wa.me/${e.telefone.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`);
+    }
+
+    function excluirEmprestimo(id) {
+        if(confirm("Tem certeza que deseja excluir este empréstimo permanentemente?")) {
+            db.collection("usuarios").doc(usuarioLogadoUid).collection("emprestimos").doc(id).delete();
+        }
+    }
+
+    const hojeLocal = new Date();
+    const anoLocal = hojeLocal.getFullYear();
+    const mesLocal = String(hojeLocal.getMonth() + 1).padStart(2, '0');
+    const diaLocal = String(hojeLocal.getDate()).padStart(2, '0');
+    document.getElementById('filterMes').value = `${anoLocal}-${mesLocal}-${diaLocal}`;
     
-    let productObj = { id: id ? parseInt(id) : Date.now(), name, description, code, price, stock, category, image: currentImageData, promoActive, promoQuantity };
-    if (window.saveProductFirebase) window.saveProductFirebase(productObj);
-    closeProductModal();
-    toast('Produto salvo com sucesso!', 'success');
-  }
-  function editProduct(id) { const p = window.products.find(pr => pr.id === id); if (p) openProductModal(p); }
-  function deleteProduct(id) { 
-    if (!confirm('Deseja realmente excluir este produto?')) return; 
-    if (window.deleteProductFirebase) window.deleteProductFirebase(id);
-    toast('Produto excluído', 'success'); 
-  }
-  function scanForProduct() { scanMode = 'product'; openInnerView('pdv'); setTimeout(() => startScanner(), 300); }
-
-  function renderClients() {
-    const search = (document.getElementById('searchClient').value || '').toLowerCase().trim();
-    const clearBtn = document.getElementById('clearClientSearch');
-    if (clearBtn) clearBtn.classList.toggle('show', search.length > 0);
-    const filtered = window.clients.filter(c => c.name.toLowerCase().includes(search) || c.whatsapp.includes(search));
-    const list = document.getElementById('clientList');
-    if (filtered.length === 0) { list.innerHTML = `<div class="empty"><div class="empty-text">Nenhum cliente encontrado</div></div>`; }
-    else {
-      list.innerHTML = filtered.map(c => {
-        const initials = getInitials(c.name);
-        const whatsappFormatted = formatWhatsapp(c.whatsapp);
-        const badgeHtml = c.delivery ? '<span class="client-badge">🏠 Domicílio</span>' : '';
-        const addressHtml = c.delivery && c.address ? `<div class="client-meta-row">📍 ${escapeHtml(c.address)}</div>` : '';
-        const whatsappHtml = c.whatsapp ? `<div class="client-meta-row">📱 +55 ${escapeHtml(whatsappFormatted)}</div>` : '<div class="client-meta-row">📱 Sem WhatsApp</div>';
-        return `<div class="client-item"><div class="client-avatar">${escapeHtml(initials)}</div><div class="client-info"><div class="client-name">${escapeHtml(c.name)}${badgeHtml}</div><div class="client-meta">${whatsappHtml}${addressHtml}</div></div><div class="client-actions"><button class="icon-btn edit" onclick="editClient(${c.id})">✏️</button><button class="icon-btn delete" onclick="deleteClient(${c.id})">🗑️</button></div></div>`;
-      }).join('');
-    }
-    document.getElementById('statClients').textContent = window.clients.length;
-    document.getElementById('statDelivery').textContent = window.clients.filter(c => c.delivery).length;
-  }
-  function clearClientSearch() { document.getElementById('searchClient').value = ''; renderClients(); }
-
-  function openClientModal(client = null) {
-    document.getElementById('clientModalTitle').textContent = client ? 'Editar Cliente' : 'Novo Cliente';
-    document.getElementById('clientId').value = client ? client.id : '';
-    document.getElementById('clientName').value = client ? client.name : '';
-    document.getElementById('clientWhatsapp').value = client ? client.whatsapp : '';
-    document.getElementById('clientDelivery').checked = client ? !!client.delivery : false;
-    document.getElementById('clientAddress').value = client ? (client.address || '') : '';
-    document.getElementById('clientNeighborhood').value = client ? (client.neighborhood || '') : '';
-    onDeliveryToggle();
-    document.getElementById('clientModal').classList.add('active');
-  }
-  function closeClientModal() { document.getElementById('clientModal').classList.remove('active'); }
-  function toggleDelivery() { const cb = document.getElementById('clientDelivery'); cb.checked = !cb.checked; onDeliveryToggle(); }
-  function onDeliveryToggle() {
-    const checked = document.getElementById('clientDelivery').checked;
-    document.getElementById('deliveryToggleRow').classList.toggle('active', checked);
-    document.getElementById('addressFields').classList.toggle('show', checked);
-  }
-  function saveClient() {
-    const id = document.getElementById('clientId').value;
-    const name = document.getElementById('clientName').value.trim();
-    const whatsapp = document.getElementById('clientWhatsapp').value.replace(/\D/g, '');
-    const delivery = document.getElementById('clientDelivery').checked;
-    const address = document.getElementById('clientAddress').value.trim();
-    const neighborhood = document.getElementById('clientNeighborhood').value.trim();
-    if (!name) { toast('Informe o nome!', 'error'); return; }
-
-    let clientObj = {
-      id: id ? parseInt(id) : Date.now(),
-      name, whatsapp, delivery,
-      address: delivery ? address : '',
-      neighborhood: delivery ? neighborhood : '',
-      promoProgress: id ? (window.clients.find(cl => cl.id === parseInt(id))?.promoProgress || {}) : {}
-    };
-
-    if (window.saveClientFirebase) window.saveClientFirebase(clientObj);
-    closeClientModal();
-    toast('Cliente salvo com sucesso!', 'success');
-  }
-  function editClient(id) { const c = window.clients.find(cl => cl.id === id); if (c) openClientModal(c); }
-  function deleteClient(id) { 
-    if (!confirm('Deseja realmente excluir este cliente?')) return; 
-    if (window.deleteClientFirebase) window.deleteClientFirebase(id);
-    toast('Cliente excluído', 'success'); 
-  }
-
-  function sendSaleWhatsApp(saleId) {
-    const s = window.sales.find(item => item.id === saleId);
-    if (!s) return;
-    const rawWhatsapp = s.client && s.client.whatsapp ? s.client.whatsapp.replace(/\D/g, '') : '';
-    if (!rawWhatsapp) {
-      toast('Este cliente não possui WhatsApp cadastrado!', 'error');
-      return;
-    }
-
-    const d = new Date(s.date);
-    const dateStr = d.toLocaleDateString('pt-BR');
-    const timeStr = d.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
-    const saleNumberStr = String(s.id).slice(-6);
-    const clientNameStr = s.client && s.client.name ? s.client.name : 'Não informado';
-
-    let msg = `🛒 *COMPROVANTE DE COMPRA - GORDO EXPRESS*\n\n`;
-    msg += `None: ${clientNameStr}\n`;
-    msg += `WhatsApp: ${formatWhatsapp(rawWhatsapp)}\n`;
-    msg += `Número da Venda: #${saleNumberStr}\n`;
-    msg += `Data: ${dateStr} Hora: ${timeStr}\n\n`;
-    msg += `*PRODUTOS*\n`;
-
-    s.items.forEach(i => {
-      const itemTotal = i.price * i.qty;
-      msg += `• Nome: ${i.name}\n`;
-      msg += `  Quantidade: ${i.qty}\n`;
-      msg += `  Valor unitário: R$ ${i.price.toFixed(2)}\n`;
-      msg += `  Valor: ${i.qty} X R$ ${i.price.toFixed(2)} = R$ ${itemTotal.toFixed(2)}\n\n`;
+    auth.onAuthStateChanged(user => {
+        if (user) {
+            usuarioLogadoUid = user.uid;
+            document.getElementById('userEmailDisplay').innerText = user.email || "";
+            document.getElementById('authOverlay').style.display = 'none';
+            syncConfigAndClients();
+        } else {
+            usuarioLogadoUid = null;
+            document.getElementById('userEmailDisplay').innerText = "";
+            document.getElementById('authOverlay').style.display = 'flex';
+            document.getElementById('adminLock').style.display = 'none';
+        }
     });
 
-    msg += `*VALOR TOTAL DAS COMPRAS: R$ ${s.total.toFixed(2)}*`;
+    function handleLogin() {
+        const email = document.getElementById('loginEmail').value.trim();
+        const senha = document.getElementById('loginSenha').value.trim();
+        if(!email || !senha) return alert("Preencha e-mail e senha.");
+        auth.signInWithEmailAndPassword(email, senha).catch(err => alert("Erro: " + err.message));
+    }
+    function handleLogout() { auth.signOut().then(() => closeNav()); }
+    function openNav() { document.getElementById("mySidenav").style.width = "300px"; }
+    function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+        document.querySelectorAll('.menu-secao').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.menu-btn-principal').forEach(b => b.classList.remove('active'));
+    }
+    function unlockApp() { document.getElementById('adminLock').style.display = 'none'; }
 
-    const url = `https://wa.me/55${rawWhatsapp}?text=${encodeURIComponent(msg)}`;
-    window.open(url, '_blank');
-  }
-
-  function renderSales() {
-    const list = document.getElementById('salesList');
-    const searchInput = document.getElementById('searchSale');
-    const rawSearch = searchInput ? searchInput.value : '';
-    const search = rawSearch.toLowerCase().trim();
-    const clearBtn = document.getElementById('clearSaleSearch');
-    if (clearBtn) clearBtn.classList.toggle('show', rawSearch.length > 0);
-
-    const deleteMode = search.includes('deletar');
-    let filtered = window.sales;
-    if (!deleteMode && search) {
-      filtered = window.sales.filter(s => {
-        const clientName = s.client ? (s.client.name || '').toLowerCase() : '';
-        return clientName.includes(search) || String(s.id).includes(search);
-      });
+    function toggleMenuSecao(idSecao, btn) {
+        const secao = document.getElementById(idSecao);
+        const estaAberta = secao.classList.contains('active');
+        document.querySelectorAll('.menu-secao').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.menu-btn-principal').forEach(b => b.classList.remove('active'));
+        if (!estaAberta) {
+            secao.classList.add('active');
+            btn.classList.add('active');
+        }
     }
 
-    let hintHtml = deleteMode ? '<div class="delete-hint">🗑️ <span>Modo Deletar ativo — clique no botão ao lado da venda para excluir.</span></div>' : '';
+    function ajustarCredito(painel, delta) {
+        const inputId = 'cred' + painel.charAt(0).toUpperCase() + painel.slice(1);
+        const input = document.getElementById(inputId);
+        let val = parseInt(input.value) || 0;
+        val = Math.max(0, val + delta);
+        input.value = val;
+        atualizarDisplayCredito(painel);
+    }
+    function atualizarDisplayCredito(painel) {
+        const inputId = 'cred' + painel.charAt(0).toUpperCase() + painel.slice(1);
+        const displayId = 'cred' + painel.charAt(0).toUpperCase() + painel.slice(1) + 'Display';
+        const val = parseInt(document.getElementById(inputId).value) || 0;
+        document.getElementById(displayId).innerText = val;
+    }
+    function atualizarBadgesCreditos() {
+        document.getElementById('credCentralDisplay').innerText = config.credCentral || 0;
+        document.getElementById('credWarezDisplay').innerText = config.credWarez || 0;
+        document.getElementById('credZeusDisplay').innerText = config.credZeus || 0;
+    }
 
-    if (filtered.length === 0) {
-      list.innerHTML = hintHtml + '<div class="empty"><div class="empty-text">Nenhuma venda registrada</div></div>';
-    } else {
-      list.innerHTML = hintHtml + filtered.map(s => {
-        const d = new Date(s.date);
-        const dateStr = d.toLocaleDateString('pt-BR');
-        const timeStr = d.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
-        const deleteBtn = deleteMode ? `<button class="delete-inline-btn" onclick="deleteSale(${s.id})">🗑️ Deletar</button>` : '';
+    function consumirCredito(painel) {
+        if (painel === 'itvplayer') return true;
+        const chave = 'cred' + painel.charAt(0).toUpperCase() + painel.slice(1);
+        const atual = parseInt(config[chave]) || 0;
+        if (atual <= 0) {
+            alert(`⚠️ Sem créditos no Painel ${painel.toUpperCase()}! Adicione créditos no menu "Conf Painel".`);
+            return false;
+        }
+        config[chave] = atual - 1;
+        db.collection("usuarios").doc(usuarioLogadoUid).collection("config").doc("geral")
+          .update({ [chave]: config[chave] })
+          .catch(e => console.error("Erro ao atualizar crédito:", e));
+        atualizarBadgesCreditos();
+        const inputId = 'cred' + painel.charAt(0).toUpperCase() + painel.slice(1);
+        const input = document.getElementById(inputId);
+        if (input) input.value = config[chave];
+        return true;
+    }
+    
+    function syncConfigAndClients() {
+        if(!usuarioLogadoUid) return;
+        db.collection("usuarios").doc(usuarioLogadoUid).collection("config").doc("geral").onSnapshot(doc => {
+            if(doc.exists) {
+                config = doc.data();
+                config.msg = config.msg || "";
+                config.p1 = config.p1 || "";
+                config.p2 = config.p2 || "";
+                config.p3 = config.p3 || "";                
+                config.credCentral = parseInt(config.credCentral) || 0;
+                config.credWarez = parseInt(config.credWarez) || 0;
+                config.credZeus = parseInt(config.credZeus) || 0;
+                config.nomePainel1 = config.nomePainel1 || "CENTRAL";
+                config.nomePainel2 = config.nomePainel2 || "WAREZ";
+                config.nomePainel3 = config.nomePainel3 || "ZEUS";
+                config.togglePainel1 = config.togglePainel1 !== undefined ? config.togglePainel1 : true;
+                config.togglePainel2 = config.togglePainel2 !== undefined ? config.togglePainel2 : true;
+                config.togglePainel3 = config.togglePainel3 !== undefined ? config.togglePainel3 : true;
+            } else {
+                config = { 
+                    msg: "", p1: "", p2: "", p3: "", 
+                    credCentral: 0, credWarez: 0, credZeus: 0,
+                    nomePainel1: "CENTRAL", nomePainel2: "WAREZ", nomePainel3: "ZEUS",
+                    togglePainel1: true, togglePainel2: true, togglePainel3: true
+                };
+            }
+            document.getElementById('cfgMsg').value = config.msg || "";
+            document.getElementById('url1').value = config.p1 || "";
+            document.getElementById('url2').value = config.p2 || "";
+            document.getElementById('url3').value = config.p3 || "";
+            document.getElementById('credCentral').value = config.credCentral;
+            document.getElementById('credWarez').value = config.credWarez;
+            document.getElementById('credZeus').value = config.credZeus;
+            document.getElementById('nomePainel1').value = config.nomePainel1;
+            document.getElementById('nomePainel2').value = config.nomePainel2;
+            document.getElementById('nomePainel3').value = config.nomePainel3;
+            document.getElementById('togglePainel1').checked = config.togglePainel1;
+            document.getElementById('togglePainel2').checked = config.togglePainel2;
+            document.getElementById('togglePainel3').checked = config.togglePainel3;
+            document.getElementById('painel1Label').innerText = `Painel 1 (${config.nomePainel1})`;
+            document.getElementById('painel2Label').innerText = `Painel 2 (${config.nomePainel2})`;
+            document.getElementById('painel3Label').innerText = `Painel 3 (${config.nomePainel3})`;
+            atualizarBadgesCreditos();
+            renderPaineisAtivos();
+        });        
+        db.collection("usuarios").doc(usuarioLogadoUid).collection("clientes").onSnapshot(snapshot => {
+            clientes = [];
+            snapshot.forEach(doc => { clientes.push({ id: doc.id, ...doc.data() }); });
+            renderClientes();
+        });
+    }
 
-        const clientNameStr = s.client && s.client.name ? escapeHtml(s.client.name) : 'Não informado';
-        const clientWhatsappStr = s.client && s.client.whatsapp ? escapeHtml(formatWhatsapp(s.client.whatsapp)) : 'Não informado';
-        const saleNumberStr = String(s.id).slice(-6);
+    function saveSettings() {
+        if(!usuarioLogadoUid) return;
+        config = {
+            msg: document.getElementById('cfgMsg').value,
+            p1: document.getElementById('url1').value,
+            p2: document.getElementById('url2').value,
+            p3: document.getElementById('url3').value,
+            credCentral: parseInt(document.getElementById('credCentral').value) || 0,
+            credWarez: parseInt(document.getElementById('credWarez').value) || 0,
+            credZeus: parseInt(document.getElementById('credZeus').value) || 0,
+            nomePainel1: document.getElementById('nomePainel1').value || "CENTRAL",
+            nomePainel2: document.getElementById('nomePainel2').value || "WAREZ",
+            nomePainel3: document.getElementById('nomePainel3').value || "ZEUS",
+            togglePainel1: document.getElementById('togglePainel1').checked,
+            togglePainel2: document.getElementById('togglePainel2').checked,
+            togglePainel3: document.getElementById('togglePainel3').checked
+        };
+        db.collection("usuarios").doc(usuarioLogadoUid).collection("config").doc("geral").set(config).then(() => {
+            atualizarBadgesCreditos();
+            document.getElementById('painel1Label').innerText = `Painel 1 (${config.nomePainel1})`;
+            document.getElementById('painel2Label').innerText = `Painel 2 (${config.nomePainel2})`;
+            document.getElementById('painel3Label').innerText = `Painel 3 (${config.nomePainel3})`;
+            renderPaineisAtivos();
+            alert("✅ Configurações salvas!");
+        }).catch(err => alert("Erro: "+err.message));
+    }
 
-        const hasWa = s.client && s.client.whatsapp && s.client.whatsapp.replace(/\D/g, '').length > 0;
-        const waButton = hasWa ? `<button class="btn-whatsapp-sale" onclick="sendSaleWhatsApp(${s.id})">💬 WhatsApp</button>` : '';
+    function renderPaineisAtivos() {
+        const container = document.getElementById('paineisAtivos');
+        container.innerHTML = '';
+        if(config.togglePainel1) {
+            container.innerHTML += `<button class="btn btn-outline-light btn-sm flex-fill" onclick="accessPanel(1)">📡 ${config.nomePainel1} <span id="badgeCentral" class="badge-creditos">${config.credCentral || 0}</span></button>`;
+        }
+        if(config.togglePainel2) {
+            container.innerHTML += `<button class="btn btn-outline-light btn-sm flex-fill" onclick="accessPanel(2)">⚡ ${config.nomePainel2} <span id="badgeWarez" class="badge-creditos">${config.credWarez || 0}</span></button>`;
+        }
+        if(config.togglePainel3) {
+            container.innerHTML += `<button class="btn btn-outline-light btn-sm flex-fill" onclick="accessPanel(3)">🔥 ${config.nomePainel3} <span id="badgeZeus" class="badge-creditos">${config.credZeus || 0}</span></button>`;
+        }
+    }
 
-        const itemsDetailsHtml = s.items.map(i => {
-          const itemTotal = i.price * i.qty;
-          return `
-            <div class="sale-details-block">
-              <div class="sale-details-row">
-                <span class="sale-details-label">Nome:</span>
-                <span class="sale-details-val">${escapeHtml(i.name)}</span>
-              </div>
-              <div class="sale-details-row">
-                <span class="sale-details-label">Quantidade:</span>
-                <span class="sale-details-val">${i.qty}</span>
-              </div>
-              <div class="sale-details-row">
-                <span class="sale-details-label">Valor unitário:</span>
-                <span class="sale-details-val">R$ ${i.price.toFixed(2)}</span>
-              </div>
-              <div class="sale-details-row">
-                <span class="sale-details-label">Valor:</span>
-                <span class="sale-details-val">${i.qty} X R$ ${i.price.toFixed(2)} = R$ ${itemTotal.toFixed(2)}</span>
-              </div>
-            </div>
-          `;
-        }).join('');
+    function showModalCadastro(id = "") {
+        if(id === "") {
+            document.getElementById('editId').value = "";
+            document.getElementById('cNome').value = ""; document.getElementById('cUser').value = ""; document.getElementById('cPass').value = "";
+            document.getElementById('cValor').value = ""; document.getElementById('cData').value = ""; document.getElementById('cServ').value = "";
+            document.getElementById('cUrl').value = ""; document.getElementById('cTel').value = ""; document.getElementById('cObs').value = "";
+            document.getElementById('cPainel').value = "central";
+        }
+        new bootstrap.Modal(document.getElementById('modalCadastro')).show();
+    }
 
-        return `
-          <div class="sale-item">
-            <div class="sale-header-info">
-              <div class="sale-header-row">
-                <span class="sale-header-label">None:</span>
-                <span class="sale-header-val">${clientNameStr}</span>
-              </div>
-              <div class="sale-header-row">
-                <span class="sale-header-label">WhatsApp:</span>
-                <span class="sale-header-val">${clientWhatsappStr}</span>
-              </div>
-              <div class="sale-header-row">
-                <span class="sale-header-label">Número da Venda:</span>
-                <span class="sale-header-val">#${saleNumberStr}</span>
-              </div>
-              <div class="sale-header-row">
-                <span class="sale-header-label">Data e Hora:</span>
-                <span class="sale-header-val">${dateStr} Hora: ${timeStr}</span>
-              </div>
-            </div>
+    function saveCliente() {
+        if(!usuarioLogadoUid) return;
+        const id = document.getElementById('editId').value;
+        const clienteData = {
+            nome: document.getElementById('cNome').value,
+            user: document.getElementById('cUser').value,
+            pass: document.getElementById('cPass').value,
+            valor: parseFloat(document.getElementById('cValor').value) || 0,
+            data: document.getElementById('cData').value,
+            serv: document.getElementById('cServ').value,
+            url: document.getElementById('cUrl').value,
+            tel: document.getElementById('cTel').value,
+            obs: document.getElementById('cObs').value,
+            painel: document.getElementById('cPainel').value || 'central',
+            status: 'ativo'
+        };
+        const modalEl = document.getElementById('modalCadastro');
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        
+        if(id === "") {
+            db.collection("usuarios").doc(usuarioLogadoUid).collection("clientes").add(clienteData).then(() => modal.hide());
+        } else {
+            const original = clientes.find(c => c.id === id);
+            if(original) {
+                clienteData.status = original.status;
+                if(original.ultimoPagamento) clienteData.ultimoPagamento = original.ultimoPagamento;
+            }
+            db.collection("usuarios").doc(usuarioLogadoUid).collection("clientes").doc(id).set(clienteData).then(() => modal.hide());
+        }
+    }
+    
+    function addOneMonthFromToday() {
+        let hoje = new Date();
+        hoje.setMonth(hoje.getMonth() + 1);
+        const ano = hoje.getFullYear();
+        const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+        const dia = String(hoje.getDate()).padStart(2, '0');
+        return `${ano}-${mes}-${dia}`;
+    }
+    
+    function formatarDataBR(dataISO) {
+        if(!dataISO) return "";
+        let partes = dataISO.split('-');
+        if(partes.length===3) return `${partes[2]}/${partes[1]}/${partes[0]}`;
+        return dataISO;
+    }
+    
+    function renovarCliente(id) {
+        const cliente = clientes.find(c => c.id === id);
+        if(!cliente) return;
+        const painel = cliente.painel || 'central';
+        if(!consumirCredito(painel)) return;
 
-            <div class="sale-products-title">PRODUTOS</div>
-            <div>${itemsDetailsHtml}</div>
+        let novaDataISO = "";
+        if (cliente.data) {
+            let partes = cliente.data.split('-');
+            if (partes.length === 3) {
+                let dataBase = new Date(partes[0], partes[1] - 1, partes[2]);
+                dataBase.setMonth(dataBase.getMonth() + 1);
+                const ano = dataBase.getFullYear();
+                const mes = String(dataBase.getMonth() + 1).padStart(2, '0');
+                const dia = String(dataBase.getDate()).padStart(2, '0');
+                novaDataISO = `${ano}-${mes}-${dia}`;
+            }
+        }
+        if (!novaDataISO) novaDataISO = addOneMonthFromToday();
 
-            <div class="sale-footer-actions">
-              <span class="sale-total-text">VALOR TOTAL DAS COMPRAS: R$ ${s.total.toFixed(2)}</span>
-              <div class="sale-actions-right">
-                ${waButton}
-                ${deleteBtn}
-              </div>
-            </div>
-          </div>
+        const novaDataBR = formatarDataBR(novaDataISO);
+        const valorFormat = `R$ ${cliente.valor.toFixed(2)}`;
+
+        let nomePainelProvedor = 'ITV';
+        if (painel === 'central') nomePainelProvedor = config.nomePainel1 || 'CENTRAL';
+        else if (painel === 'warez') nomePainelProvedor = config.nomePainel2 || 'WAREZ';
+        else if (painel === 'zeus') nomePainelProvedor = config.nomePainel3 || 'ZEUS';
+        else if (painel === 'itvplayer') nomePainelProvedor = 'ITVPlayer';
+
+        const msg = `✅𝕊𝔼𝕌 ℙ𝔸𝔾𝔸𝕄𝔼ℕ𝕋𝕆 𝔽𝕆𝕀 ℂ𝕆ℕ𝔽𝕀ℝ𝕄𝔸𝔻𝕆!!\n\nNome: ${cliente.nome}\nPlano Familia: ${valorFormat}\nProvedor: ${nomePainelProvedor}\nUsuário: ${cliente.user}\nSenha: ${cliente.pass}\nUrl: ${cliente.url}\nVence: ${novaDataBR}\n\nDivirta-se!!`;
+
+        if(cliente.tel) {
+            window.open(`https://wa.me/${cliente.tel.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`);
+        } else alert("Número não cadastrado!");
+
+        db.collection("usuarios").doc(usuarioLogadoUid).collection("clientes").doc(id).update({
+            data: novaDataISO,
+            status: 'ativo',
+            ultimoPagamento: new Date().toISOString()
+        }).catch(e => alert("Erro ao renovar: "+e.message));
+    }
+    
+    function marcarAReceber(id) {
+        const cliente = clientes.find(c => c.id === id);
+        if(!cliente) return;
+        const painel = cliente.painel || 'central';
+        if(!consumirCredito(painel)) return;
+        const novaDataISO = addOneMonthFromToday();
+        const novaDataBR = formatarDataBR(novaDataISO);
+        const valorFormat = `R$ ${cliente.valor.toFixed(2)}`;
+        const msg = `⛔️𝕊𝔼𝕌 ℙ𝔸𝔾𝔸𝕄𝔼ℕ𝕋𝕆 ℕ𝔸𝕆 𝔽𝕆𝕀 ℂ𝕆ℕ𝔽𝕀ℝ𝕄𝔸𝔻𝕆!!\n\nNome: ${cliente.nome}\nPlano Familia: ${valorFormat}\nProvedor: ${cliente.serv || 'ITV'}\nUsuário: ${cliente.user}\nSenha: ${cliente.pass}\nUrl: ${cliente.url}\nVence: ${novaDataBR}\n\nDivirta-se!!`;
+        if(cliente.tel) window.open(`https://wa.me/${cliente.tel.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`);
+        else alert("Número não cadastrado!");
+        db.collection("usuarios").doc(usuarioLogadoUid).collection("clientes").doc(id).update({
+            data: novaDataISO,
+            status: 'apagar'
+        });
+    }
+    
+    function pagarCliente(id) {
+        const cliente = clientes.find(c => c.id === id);
+        if(!cliente) return;
+        const dataAtualBR = formatarDataBR(cliente.data);
+        const valorFormat = `R$ ${cliente.valor.toFixed(2)}`;
+        const msg = `✅𝕊𝔼𝕌 ℙ𝔸𝔾𝔸𝕄𝔼ℕ𝕋𝕆 𝔽𝕆𝕀 ℂ𝕆ℕ𝔽𝕀ℝ𝕄𝔸𝔻𝕆!!\n\nNome: ${cliente.nome}\nPlano Familia: ${valorFormat}\nProvedor: ${cliente.serv || 'ITV'}\nUsuário: ${cliente.user}\nSenha: ${cliente.pass}\nUrl: ${cliente.url}\nVence: ${dataAtualBR}\n\nDivirta-se!!`;
+        if(cliente.tel) window.open(`https://wa.me/${cliente.tel.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`);
+        else alert("Número não cadastrado!");
+        db.collection("usuarios").doc(usuarioLogadoUid).collection("clientes").doc(id).update({
+            status: 'ativo',
+            ultimoPagamento: new Date().toISOString()
+        });
+    }
+
+    function compartilharCliente(id) {
+        const c = clientes.find(i => i.id === id);
+        if(!c) return;
+        if(!c.tel) return alert("Telefone não cadastrado!");
+        const msg = `📺 *Dados de Acesso ITV*\n\n👤 Usuário: ${c.user || '-'}\n🔑 Senha: ${c.pass || '-'}\n🔗 Url: ${c.url || '-'}`;
+        window.open(`https://wa.me/${c.tel.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`);
+    }
+    
+    function abrirAcoesCliente(id) {
+        const c = clientes.find(i => i.id === id);
+        if(!c) return;
+        
+        document.getElementById('acoesTitulo').innerText = `👤 ${c.nome}`;
+        document.getElementById('acoesSubtitulo').innerText = c.status === 'apagar' ? '⏳ Status: A RECEBER' : '';
+        
+        let infoHtml = `
+            <div class="info-item info-full"><span class="info-label">Nome:</span><span class="info-value">${c.nome}</span></div>
+            <div class="info-item"><span class="info-label">Usuário:</span><span class="info-value">${c.user || '-'}</span></div>
+            <div class="info-item"><span class="info-label">Senha:</span><span class="info-value">${c.pass || '-'}</span></div>
+            <div class="info-item"><span class="info-label">Valor:</span><span class="info-value">R$ ${c.valor.toFixed(2)}</span></div>
+            <div class="info-item"><span class="info-label">Painel:</span><span class="info-value">${(c.painel || 'central').toUpperCase()}</span></div>
+            <div class="info-item info-full"><span class="info-label">Vencimento:</span><span class="info-value">${formatarDataBR(c.data)}</span></div>
         `;
-      }).join('');
+        document.getElementById('acoesInfoResumo').innerHTML = infoHtml;
+        
+        const grid = document.getElementById('acoesGrid');
+        
+        if(c.status === 'deletado') {
+            grid.innerHTML = `
+                <div class="modal-acoes-row">
+                    <button class="btn btn-info" onclick="restore('${c.id}'); bootstrap.Modal.getInstance(document.getElementById('modalAcoes')).hide();">♻️ RESTAURAR</button>
+                    <button class="btn btn-danger" onclick="hardDelete('${c.id}'); bootstrap.Modal.getInstance(document.getElementById('modalAcoes')).hide();">🗑️ EXCLUIR PERM</button>
+                </div>
+            `;
+        } else if(c.status === 'apagar') {
+            grid.innerHTML = `
+                <div class="modal-acoes-row">
+                    <button class="btn btn-success" onclick="pagarCliente('${c.id}'); bootstrap.Modal.getInstance(document.getElementById('modalAcoes')).hide();">✅ PAGAR</button>
+                    <button class="btn bg-lilas" onclick="editCliente('${c.id}'); bootstrap.Modal.getInstance(document.getElementById('modalAcoes')).hide();">✏️ EDITAR</button>
+                </div>
+            `;
+        } else {
+            grid.innerHTML = `
+                <div class="modal-acoes-row">
+                    <button class="btn" style="background-color:#25D366;" onclick="openWhatsApp('${c.id}'); bootstrap.Modal.getInstance(document.getElementById('modalAcoes')).hide();"><i class="bi bi-whatsapp"></i> ZAP</button>
+                    <button class="btn btn-success" onclick="sendCobrancaZap('${c.id}'); bootstrap.Modal.getInstance(document.getElementById('modalAcoes')).hide();">💰 COBRAR</button>
+                    <button class="btn btn-warning text-dark" onclick="renovarCliente('${c.id}'); bootstrap.Modal.getInstance(document.getElementById('modalAcoes')).hide();">🔄 RENOVAR</button>
+                    <button class="btn btn-secondary" onclick="marcarAReceber('${c.id}'); bootstrap.Modal.getInstance(document.getElementById('modalAcoes')).hide();">⏳ A RECEBER</button>
+                </div>
+                <div class="modal-acoes-row">
+                    <button class="btn btn-info" onclick="compartilharCliente('${c.id}'); bootstrap.Modal.getInstance(document.getElementById('modalAcoes')).hide();">📤 COMPARTILHAR</button>
+                    <button class="btn bg-lilas" onclick="editCliente('${c.id}'); bootstrap.Modal.getInstance(document.getElementById('modalAcoes')).hide();">✏️ EDITAR</button>
+                    <button class="btn btn-danger" onclick="softDelete('${c.id}'); bootstrap.Modal.getInstance(document.getElementById('modalAcoes')).hide();">🗑️ DELETAR</button>
+                </div>
+            `;
+        }
+        new bootstrap.Modal(document.getElementById('modalAcoes')).show();
     }
-    document.getElementById('statSales').textContent = window.sales.length;
-    const revenue = window.sales.reduce((s, sale) => s + sale.total, 0);
-    document.getElementById('statRevenue').textContent = 'R$ ' + revenue.toFixed(0);
-  }
-
-  function clearSaleSearch() { document.getElementById('searchSale').value = ''; renderSales(); }
-  function deleteSale(id) {
-    if (!confirm('Deseja realmente deletar esta venda?')) return;
-    if (window.deleteSaleFirebase) window.deleteSaleFirebase(id);
-    toast('Venda deletada!', 'success');
-  }
-
-  function openCashModal() {
-    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-    document.getElementById('cashTotalDisplay').textContent = 'R$ ' + total.toFixed(2);
-    document.getElementById('cashReceived').value = '';
-    document.getElementById('cashTroco').textContent = 'R$ 0,00';
-    document.getElementById('cashModal').classList.add('active');
-  }
-  function closeCashModal() { document.getElementById('cashModal').classList.remove('active'); }
-  function updateTroco() {
-    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-    const received = parseFloat(document.getElementById('cashReceived').value) || 0;
-    const troco = received - total;
-    const trocoEl = document.getElementById('cashTroco');
-    if (received > 0) {
-      trocoEl.textContent = 'R$ ' + (troco >= 0 ? troco.toFixed(2) : '0,00');
-      trocoEl.style.color = troco >= 0 ? 'var(--success)' : 'var(--danger)';
+    
+    function renderClientes() {
+        const listaDiv = document.getElementById('listaClientes');
+        const searchTerm = document.getElementById('search').value.toLowerCase();
+        listaDiv.innerHTML = "";
+        let counts = { ativos:0, vencer:0, exp:0, apagar:0, del:0 };
+        const hoje = new Date();
+        
+        clientes.forEach(c => {
+            let partes = c.data.split('-');
+            let dataVenc = new Date(partes[0], partes[1] - 1, partes[2]);
+            let diffDays = Math.ceil((dataVenc - hoje) / (1000*3600*24));
+            let statusReal = c.status;
+            if(c.status !== 'deletado' && c.status !== 'apagar') {
+                if(diffDays < 0) statusReal = 'expirado';
+                else if(diffDays <= 3) statusReal = 'vencer';
+                else statusReal = 'ativo';
+            }
+            if(statusReal === 'ativo') counts.ativos++;
+            if(statusReal === 'vencer') counts.vencer++;
+            if(statusReal === 'expirado') counts.exp++;
+            if(c.status === 'apagar') counts.apagar++;
+            if(c.status === 'deletado') counts.del++;
+            
+            if(currentFilter === 'ativos' && !(statusReal === 'ativo')) return;
+            if(currentFilter === 'vencer' && statusReal !== 'vencer') return;
+            if(currentFilter === 'expirados' && statusReal !== 'expirado') return;
+            if(currentFilter === 'apagar' && c.status !== 'apagar') return;
+            if(currentFilter === 'deletados' && c.status !== 'deletado') return;
+            if(!c.nome.toLowerCase().includes(searchTerm)) return;
+            
+            let badgeClass = 'bg-success';
+            if(statusReal === 'expirado') badgeClass = 'bg-danger';
+            else if(statusReal === 'vencer') badgeClass = 'bg-warning text-dark';
+            let dataExib = c.data.split('-').reverse().join('/');
+            
+            listaDiv.innerHTML += `
+                <div class="card-cliente" onclick="abrirAcoesCliente('${c.id}')">
+                    <div class="d-flex justify-content-between align-items-start flex-wrap">
+                        <h5 class="mb-1">${c.nome}</h5>
+                        <span class="badge ${badgeClass}">${dataExib}</span>
+                    </div>
+                    <div class="cliente-info">
+                        <div class="info-item"><span class="info-label">Usuário:</span><span class="info-value">${c.user || '-'}</span></div>
+                        <div class="info-item"><span class="info-label">Senha:</span><span class="info-value">${c.pass || '-'}</span></div>
+                        <div class="info-item"><span class="info-label">Valor:</span><span class="info-value">R$ ${c.valor.toFixed(2)}</span></div>
+                    </div>
+                </div>
+            `;
+        });
+        
+        document.getElementById('countAtivos').innerText = counts.ativos;
+        document.getElementById('countVencer').innerText = counts.vencer;
+        document.getElementById('countExp').innerText = counts.exp;
+        document.getElementById('countPagar').innerText = counts.apagar;
+        document.getElementById('countDel').innerText = counts.del;
+        renderFinanceiro();
     }
-  }
-
-  function openPixModal() { loadPixQR(); document.getElementById('pixModal').classList.add('active'); }
-  function closePixModal() { document.getElementById('pixModal').classList.remove('active'); }
-  function loadPixQR() {
-    const qr = localStorage.getItem('pdv_pix_qr');
-    const placeholder = document.getElementById('pixQrPlaceholder');
-    let mediaEl = document.getElementById('pixQrImage');
-    if (qr) {
-      mediaEl.src = qr;
-      mediaEl.style.display = 'block';
-      placeholder.style.display = 'none';
-    } else {
-      mediaEl.style.display = 'none';
-      placeholder.style.display = 'flex';
+    
+    function sendCobrancaZap(id) {
+        const c = clientes.find(i => i.id === id);
+        if(!c) return;
+        const msgCobranca = `📩 𝕞𝕤𝕘-𝕒𝕦𝕥𝕠𝕞á𝕥𝕚𝕔𝕒📩\n🚨🚨🚨\nOlá ${c.nome}!!\nSua lista de TV expirou em ${c.data.split('-').reverse().join('/')}\nPara renovar, faça um Pix 💠\n💰Plano: R$ ${c.valor.toFixed(2)}\n${config.msg || ""}`;
+        if(c.tel) window.open(`https://wa.me/${c.tel.replace(/\D/g,'')}?text=${encodeURIComponent(msgCobranca)}`);
+        else alert("Número não cadastrado!");
     }
-  }
-  function handlePixUpload(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      localStorage.setItem('pdv_pix_qr', e.target.result);
-      loadPixQR();
-      toast('Pix salvo!', 'success');
-    };
-    reader.readAsDataURL(file);
-  }
-
-  function openCardModal() { loadCardApp(); document.getElementById('cardModal').classList.add('active'); }
-  function closeCardModal() { document.getElementById('cardModal').classList.remove('active'); }
-  function loadCardApp() {
-    const app = JSON.parse(localStorage.getItem('pdv_card_app') || 'null');
-    const display = document.getElementById('cardAppDisplay');
-    const placeholder = document.getElementById('cardAppPlaceholder');
-    if (app && app.name) {
-      display.innerHTML = `<div style="background: var(--bg-dark); padding: 20px; border-radius: var(--radius-sm); border: 1.5px solid var(--accent-orange);"><div style="font-size: 16px; font-weight: 700; color: var(--text-white); margin-bottom: 12px;">${escapeHtml(app.name)}</div><button class="btn btn-primary" onclick="window.location.href='${app.link}'">Abrir App</button></div>`;
-      display.style.display = 'block';
-      placeholder.style.display = 'none';
-    } else {
-      display.style.display = 'none';
-      placeholder.style.display = 'flex';
+    function openWhatsApp(id) {
+        const c = clientes.find(i => i.id === id);
+        if(c && c.tel) window.open(`https://wa.me/${c.tel.replace(/\D/g,'')}`);
+        else alert("Telefone não informado.");
     }
-  }
-  function openCardSettings() { document.getElementById('cardSettingsModal').classList.add('active'); }
-  function closeCardSettings() { document.getElementById('cardSettingsModal').classList.remove('active'); }
-  function saveCardApp(name, link) {
-    localStorage.setItem('pdv_card_app', JSON.stringify({ name, link }));
-    closeCardSettings();
-    loadCardApp();
-    toast(`Atalho para ${name} criado!`, 'success');
-  }
-  function promptCustomApp() {
-    const name = prompt("Nome do aplicativo:");
-    if (!name) return;
-    const link = prompt("Link/esquema (ex: ton://):");
-    if (!link) return;
-    saveCardApp(name, link);
-  }
-
-  document.getElementById('manualCode').addEventListener('keypress', (e) => { if (e.key === 'Enter') addByCode(); });
-  renderCart();
+    
+    function renderFinanceiro() {
+        const dataFiltro = document.getElementById('filterMes').value;
+        const mesFiltro = dataFiltro.slice(0, 7); 
+        let recebidoMes = 0;
+        let totalGeral = 0;
+        let totalActive = 0;
+        
+        clientes.forEach(c => {
+            if(c.status !== 'deletado') {
+                let val = parseFloat(c.valor) || 0;
+                totalGeral += val;
+                totalActive++;
+                
+                let mesPagamentoLocal = "";
+                if (c.ultimoPagamento) {
+                    const dataPagamento = new Date(c.ultimoPagamento);
+                    const ano = dataPagamento.getFullYear();
+                    const mes = String(dataPagamento.getMonth() + 1).padStart(2, '0');
+                    mesPagamentoLocal = `${ano}-${mes}`;
+                }
+                
+                if(mesPagamentoLocal === mesFiltro) {
+                    recebidoMes += val;
+                }
+            }
+        });
+        
+        let aReceber = totalGeral - recebidoMes;
+        
+        document.getElementById('finRecebido').innerText = `R$ ${recebidoMes.toFixed(2)}`;
+        document.getElementById('finPendente').innerText = `R$ ${aReceber.toFixed(2)}`;
+        document.getElementById('finTotalClientes').innerText = totalActive;
+        document.getElementById('finGeral').innerText = `R$ ${totalGeral.toFixed(2)}`;
+    }
+    
+    function filterData(f) { currentFilter = f; renderClientes(); }
+    function softDelete(id) { if(usuarioLogadoUid) db.collection("usuarios").doc(usuarioLogadoUid).collection("clientes").doc(id).update({ status: 'deletado' }); }
+    function restore(id) { if(usuarioLogadoUid) db.collection("usuarios").doc(usuarioLogadoUid).collection("clientes").doc(id).update({ status: 'ativo' }); }
+    function hardDelete(id) { if(confirm("Excluir permanentemente?")) db.collection("usuarios").doc(usuarioLogadoUid).collection("clientes").doc(id).delete(); }
+    function accessPanel(n) { let u = config['p'+n]; if(u) window.open(u); else alert("Configure a URL no menu lateral."); }
+    function editCliente(id) {
+        let c = clientes.find(i => i.id === id);
+        if(c) {
+            document.getElementById('editId').value = c.id;
+            document.getElementById('cNome').value = c.nome; document.getElementById('cUser').value = c.user; document.getElementById('cPass').value = c.pass;
+            document.getElementById('cValor').value = c.valor; document.getElementById('cData').value = c.data; document.getElementById('cServ').value = c.serv || '';
+            document.getElementById('cUrl').value = c.url; document.getElementById('cTel').value = c.tel; document.getElementById('cObs').value = c.obs;
+            document.getElementById('cPainel').value = c.painel || 'central';
+            new bootstrap.Modal(document.getElementById('modalCadastro')).show();
+        }
+    }    
+    window.renovarCliente = renovarCliente;
+    window.marcarAReceber = marcarAReceber;
+    window.pagarCliente = pagarCliente;
+    window.compartilharCliente = compartilharCliente;
+    window.abrirAcoesCliente = abrirAcoesCliente;
+    window.sendCobrancaZap = sendCobrancaZap;
+    window.openWhatsApp = openWhatsApp;
+    window.editCliente = editCliente;
+    window.softDelete = softDelete;
+    window.restore = restore;
+    window.hardDelete = hardDelete;
+    window.filterData = filterData;
+    window.accessPanel = accessPanel;
+    window.saveSettings = saveSettings;
+    window.showModalCadastro = showModalCadastro;
+    window.toggleMenuSecao = toggleMenuSecao;
+    window.ajustarCredito = ajustarCredito;
+    window.atualizarDisplayCredito = atualizarDisplayCredito;
+    window.abrirBancoItv = abrirBancoItv;
+    window.mudarViewBanco = mudarViewBanco;
+    window.calcularTotalBanco = calcularTotalBanco;
+    window.salvarEmprestimo = salvarEmprestimo;
+    window.pagarParcelaBanco = pagarParcelaBanco;
+    window.cobrarWhatsAppBanco = cobrarWhatsAppBanco;
+    window.excluirEmprestimo = excluirEmprestimo;
+    window.editarEmprestimo = editarEmprestimo;
 </script>
 </body>
 </html>
