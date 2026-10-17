@@ -731,19 +731,46 @@
     text-align: right;
   }
 
-  .sale-total-footer {
+  .sale-footer-actions {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: 10px;
     padding-top: 8px;
     border-top: 1px solid var(--border);
+    gap: 10px;
+    flex-wrap: wrap;
   }
   .sale-total-text {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 800;
     color: var(--success);
   }
+  .sale-actions-right {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .btn-whatsapp-sale {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    height: 34px;
+    padding: 0 12px;
+    border: none;
+    border-radius: 8px;
+    background: var(--success);
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+  .btn-whatsapp-sale:active { transform: scale(0.94); }
 
   .delete-inline-btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 4px; height: 34px; padding: 0 10px;
@@ -2130,6 +2157,42 @@
     toast('Cliente excluído', 'success'); 
   }
 
+  function sendSaleWhatsApp(saleId) {
+    const s = window.sales.find(item => item.id === saleId);
+    if (!s) return;
+    const rawWhatsapp = s.client && s.client.whatsapp ? s.client.whatsapp.replace(/\D/g, '') : '';
+    if (!rawWhatsapp) {
+      toast('Este cliente não possui WhatsApp cadastrado!', 'error');
+      return;
+    }
+
+    const d = new Date(s.date);
+    const dateStr = d.toLocaleDateString('pt-BR');
+    const timeStr = d.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+    const saleNumberStr = String(s.id).slice(-6);
+    const clientNameStr = s.client && s.client.name ? s.client.name : 'Não informado';
+
+    let msg = `🛒 *COMPROVANTE DE COMPRA - GORDO EXPRESS*\n\n`;
+    msg += `None: ${clientNameStr}\n`;
+    msg += `WhatsApp: ${formatWhatsapp(rawWhatsapp)}\n`;
+    msg += `Número da Venda: #${saleNumberStr}\n`;
+    msg += `Data: ${dateStr} Hora: ${timeStr}\n\n`;
+    msg += `*PRODUTOS*\n`;
+
+    s.items.forEach(i => {
+      const itemTotal = i.price * i.qty;
+      msg += `• Nome: ${i.name}\n`;
+      msg += `  Quantidade: ${i.qty}\n`;
+      msg += `  Valor unitário: R$ ${i.price.toFixed(2)}\n`;
+      msg += `  Valor: ${i.qty} X R$ ${i.price.toFixed(2)} = R$ ${itemTotal.toFixed(2)}\n\n`;
+    });
+
+    msg += `*VALOR TOTAL DAS COMPRAS: R$ ${s.total.toFixed(2)}*`;
+
+    const url = `https://wa.me/55${rawWhatsapp}?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank');
+  }
+
   function renderSales() {
     const list = document.getElementById('salesList');
     const searchInput = document.getElementById('searchSale');
@@ -2161,6 +2224,9 @@
         const clientNameStr = s.client && s.client.name ? escapeHtml(s.client.name) : 'Não informado';
         const clientWhatsappStr = s.client && s.client.whatsapp ? escapeHtml(formatWhatsapp(s.client.whatsapp)) : 'Não informado';
         const saleNumberStr = String(s.id).slice(-6);
+
+        const hasWa = s.client && s.client.whatsapp && s.client.whatsapp.replace(/\D/g, '').length > 0;
+        const waButton = hasWa ? `<button class="btn-whatsapp-sale" onclick="sendSaleWhatsApp(${s.id})">💬 WhatsApp</button>` : '';
 
         const itemsDetailsHtml = s.items.map(i => {
           const itemTotal = i.price * i.qty;
@@ -2210,9 +2276,12 @@
             <div class="sale-products-title">PRODUTOS</div>
             <div>${itemsDetailsHtml}</div>
 
-            <div class="sale-total-footer">
+            <div class="sale-footer-actions">
               <span class="sale-total-text">VALOR TOTAL DAS COMPRAS: R$ ${s.total.toFixed(2)}</span>
-              ${deleteBtn}
+              <div class="sale-actions-right">
+                ${waButton}
+                ${deleteBtn}
+              </div>
             </div>
           </div>
         `;
