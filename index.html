@@ -266,7 +266,7 @@
     z-index: 100;
   }
   @media (min-width: 768px) {
-    .bottom-nav { display: none !important; } /* No desktop usa o menu topo/lateral */
+    .bottom-nav { display: none !important; }
   }
   .nav-btn {
     background: none; border: none; cursor: pointer; color: var(--text-white);
@@ -675,12 +675,33 @@
   .sale-id { font-weight: 700; font-size: 13px; color: var(--accent-orange); }
   .sale-date { font-size: 12px; color: var(--text-muted); }
   .sale-total { font-size: 18px; font-weight: 800; color: var(--success); }
-  .sale-items-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-  .sale-item-chip { display: flex; align-items: center; gap: 6px; background: var(--bg-dark); padding: 4px 8px; border-radius: 6px; font-size: 11px; max-width: 100%; }
-  .sale-item-chip img, .sale-item-chip video { width: 20px; height: 20px; border-radius: 4px; object-fit: cover; }
-  .sale-item-chip-text { display: flex; flex-direction: column; line-height: 1.2; }
-  .sale-item-chip-name { font-weight: 600; color: var(--text-white); }
-  .sale-item-chip-desc { font-size: 10px; color: var(--text-muted); font-style: italic; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
+  
+  .sale-details-block {
+    background: var(--bg-dark);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--text-light);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .sale-details-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .sale-details-label {
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+  .sale-details-val {
+    color: var(--text-white);
+    font-weight: 500;
+    text-align: right;
+  }
 
   .delete-inline-btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 4px; height: 34px; padding: 0 10px;
@@ -825,7 +846,7 @@
     </div>
   </div>
 
-  <!-- INNER VIEW: PDV (Compactado para não rolar no Desktop) -->
+  <!-- INNER VIEW: PDV -->
   <div class="inner-view" id="viewPDV">
     <div class="inner-header">
       <button class="back-btn" onclick="goHome()">←</button>
@@ -1006,7 +1027,7 @@
     </div>
   </div>
 
-  <!-- BOTTOM NAV (Apenas Celular) -->
+  <!-- BOTTOM NAV -->
   <div class="bottom-nav" id="bottomNav">
     <button class="nav-btn" onclick="goHome()" title="Início">
       <svg viewBox="0 0 28 28" fill="white">
@@ -2094,10 +2115,58 @@
       list.innerHTML = hintHtml + filtered.map(s => {
         const d = new Date(s.date);
         const dateStr = d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
-        const itemsChips = s.items.map(i => `<div class="sale-item-chip"><span class="sale-item-chip-name">${i.qty}× ${escapeHtml(i.name)}</span></div>`).join('');
         const deleteBtn = deleteMode ? `<button class="delete-inline-btn" onclick="deleteSale(${s.id})">🗑️ Deletar</button>` : '';
 
-        return `<div class="sale-item"><div class="sale-header"><div><div class="sale-id">Venda #${String(s.id).slice(-6)}</div><div class="sale-date">${dateStr}</div></div><div class="sale-total-wrap"><div class="sale-total">R$ ${s.total.toFixed(2)}</div>${deleteBtn}</div></div><div class="sale-items-list">${itemsChips}</div></div>`;
+        const clientNameStr = s.client && s.client.name ? escapeHtml(s.client.name) : 'Cliente não identificado';
+        const clientWhatsappStr = s.client && s.client.whatsapp ? escapeHtml(formatWhatsapp(s.client.whatsapp)) : 'Não informado';
+
+        const itemsDetailsHtml = s.items.map(i => {
+          const itemTotal = i.price * i.qty;
+          return `
+            <div class="sale-details-block">
+              <div class="sale-details-row">
+                <span class="sale-details-label">Nome:</span>
+                <span class="sale-details-val">${clientNameStr}</span>
+              </div>
+              <div class="sale-details-row">
+                <span class="sale-details-label">WhatsApp:</span>
+                <span class="sale-details-val">${clientWhatsappStr}</span>
+              </div>
+              <div class="sale-details-row">
+                <span class="sale-details-label">Produto:</span>
+                <span class="sale-details-val">${escapeHtml(i.name)}</span>
+              </div>
+              <div class="sale-details-row">
+                <span class="sale-details-label">Quantidade:</span>
+                <span class="sale-details-val">${i.qty}</span>
+              </div>
+              <div class="sale-details-row">
+                <span class="sale-details-label">Valor unitário:</span>
+                <span class="sale-details-val">R$ ${i.price.toFixed(2)}</span>
+              </div>
+              <div class="sale-details-row">
+                <span class="sale-details-label">Valor:</span>
+                <span class="sale-details-val">${i.qty} X R$ ${i.price.toFixed(2)} = R$ ${itemTotal.toFixed(2)}</span>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        return `
+          <div class="sale-item">
+            <div class="sale-header">
+              <div>
+                <div class="sale-id">Venda #${String(s.id).slice(-6)}</div>
+                <div class="sale-date">${dateStr}</div>
+              </div>
+              <div class="sale-total-wrap">
+                <div class="sale-total">VALOR TOTAL: R$ ${s.total.toFixed(2)}</div>
+                ${deleteBtn}
+              </div>
+            </div>
+            <div>${itemsDetailsHtml}</div>
+          </div>
+        `;
       }).join('');
     }
     document.getElementById('statSales').textContent = window.sales.length;
