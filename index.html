@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
     <link rel="icon" type="image/png" href="https://github.com/itv5ce-afk/LOGO_ITVPLAYER/raw/refs/heads/main/20211122_192815.ico">
-    <title>ITVClientes.3.0 - Dashboard</title>
+    <title>ITVClientes.3.0</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
@@ -112,149 +112,330 @@
             .navbar-brand-bottom { font-size: 0.85rem; }
         }
 
-        /* =========================================================================
-           NOVO: DESIGN DE DASHBOARD PARA DESKTOP (TELAS LARGAS)
-           ========================================================================= */
-        .desktop-topbar {
-            display: none; /* Oculto no mobile */
-            position: fixed;
-            top: 0;
-            left: 280px;
-            right: 0;
-            height: 70px;
-            background: rgba(17, 17, 17, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid #222;
-            z-index: 1010;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 30px;
-        }
-        .desktop-search {
-            width: 100%;
-            max-width: 400px;
-        }
-        .desktop-user-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .desktop-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #9933ff, #0d6efd);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 1.1rem;
+        /* ============================================================
+           DESKTOP FULL SCREEN DASHBOARD STYLES
+           ============================================================ */
+        .desktop-sidebar { display: none; }
+        .desktop-view-section { display: none; }
+        
+        @media (min-width: 992px) {
+            /* Hide mobile-only elements on desktop */
+            .navbar { display: none !important; }
+            #mySidenav { display: none !important; }
+            body { padding-bottom: 0; }
+            
+            /* Desktop Sidebar */
+            .desktop-sidebar {
+                display: flex !important;
+                width: 280px;
+                height: 100vh;
+                position: fixed;
+                left: 0;
+                top: 0;
+                background-color: #111;
+                border-right: 1px solid #333;
+                flex-direction: column;
+                z-index: 1050;
+                overflow-y: auto;
+            }
+            
+            /* Main Content Adjustment for Desktop */
+            .container.mt-2 {
+                display: none; /* Hide mobile container on desktop */
+            }
+            
+            #desktop-views {
+                display: block !important;
+                margin-left: 280px;
+                width: calc(100% - 280px);
+                height: 100vh;
+                overflow-y: auto;
+                padding: 30px 40px;
+                background-color: #000;
+            }
+
+            /* Desktop Sidebar Styling */
+            .desktop-sidebar .sidebar-header {
+                padding: 24px 20px;
+                border-bottom: 1px solid #333;
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+            }
+            .desktop-sidebar .sidebar-header h4 {
+                color: #fff;
+                font-weight: 700;
+                margin: 0;
+                font-size: 1.2rem;
+            }
+            .desktop-sidebar .sidebar-menu {
+                padding: 20px 0;
+                flex: 1;
+                overflow-y: auto;
+            }
+            .desktop-sidebar .menu-item {
+                padding: 14px 24px;
+                color: #ccc;
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                font-size: 0.95rem;
+                font-weight: 500;
+                transition: all 0.2s;
+                cursor: pointer;
+                border: none;
+                background: transparent;
+                width: 100%;
+                text-align: left;
+            }
+            .desktop-sidebar .menu-item:hover, .desktop-sidebar .menu-item.active {
+                background-color: #1a1a1a;
+                color: #9933ff;
+                border-left: 3px solid #9933ff;
+            }
+            .desktop-sidebar .menu-item .bi { font-size: 1.2rem; }
+            
+            .desktop-sidebar .submenu {
+                background-color: #0a0a0a;
+                padding: 8px 0;
+                display: none;
+                border-left: 3px solid transparent;
+            }
+            .desktop-sidebar .submenu.open { display: block; }
+            
+            .desktop-sidebar .submenu-item {
+                padding: 10px 24px 10px 56px;
+                color: #888;
+                text-decoration: none;
+                display: block;
+                font-size: 0.85rem;
+                cursor: pointer;
+                transition: all 0.2s;
+            }
+            .desktop-sidebar .submenu-item:hover {
+                color: #fff;
+                background-color: #151515;
+            }
+            
+            /* Desktop specific view containers */
+            .desktop-view-section.active {
+                display: block;
+                animation: fadeIn 0.3s ease;
+            }
+            
+            /* Make financial cards bigger on desktop */
+            .card-financeiro { padding: 20px; border-radius: 16px; }
+            .stat-val { font-size: 1.8rem; }
+            
+            /* Grid for client list on desktop */
+            #listaClientesDesktop {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+                gap: 16px;
+            }
+            #listaClientesDesktop .card-cliente { margin-bottom: 0; }
         }
 
-        @media (min-width: 992px) {
-            /* Ajuste do Body para acomodar Sidebar e Topbar */
-            body { 
-                padding-bottom: 0; 
-                padding-left: 280px; 
-                padding-top: 70px;
-                background-color: #0a0c10;
-            }
-            
-            /* Ocultar navegação mobile */
-            .navbar { display: none !important; }
-            
-            /* Sidebar fixa e elegante */
-            #mySidenav { 
-                width: 280px !important; 
-                box-shadow: 4px 0 24px rgba(0,0,0,0.5); 
-                border-right: 1px solid #222;
-                padding-top: 20px !important;
-            }
-            .closebtn { display: none !important; }
-            .menu-btn-group { padding: 20px; }
-            .menu-btn-principal { justify-content: flex-start; padding: 16px; font-size: 1rem; }
-            .menu-secao { padding: 0 20px 20px 20px; }
-            
-            /* Exibir Topbar */
-            .desktop-topbar { display: flex !important; }
-            
-            /* Container principal mais largo */
-            .container { max-width: 1400px; padding-top: 20px; }
-            
-            /* Grid de Clientes estilo Dashboard */
-            #listaClientes { 
-                display: grid; 
-                grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); 
-                gap: 16px; 
-            }
-            .card-cliente { 
-                margin-bottom: 0; 
-                height: 100%; 
-                display: flex; 
-                flex-direction: column; 
-                justify-content: space-between;
-                border: 1px solid #2a2e38;
-            }
-            .card-cliente:hover {
-                border-color: #9933ff;
-                transform: translateY(-2px);
-                box-shadow: 0 8px 24px rgba(153, 51, 255, 0.15);
-            }
-            
-            /* Cards Financeiros Aprimorados */
-            .card-financeiro { 
-                padding: 20px; 
-                border-radius: 16px;
-                background: linear-gradient(145deg, #1a1d24, #14161b);
-                border: 1px solid #2a2e38;
-                border-left: 4px solid #9933ff;
-                height: 100%;
-            }
-            .stat-val { font-size: 1.8rem; }
-            .stat-label { font-size: 0.8rem; }
-            
-            /* Filtros em linha no desktop */
-            .filter-buttons { 
-                flex-wrap: nowrap; 
-                overflow-x: auto; 
-                padding-bottom: 4px;
-            }
-            .filter-buttons button { min-width: 120px; }
-            
-            /* Modais mais largos no desktop */
-            .modal-dialog { max-width: 600px; }
-            .modal-banco-itv .modal-dialog { max-width: 1100px; }
-            
-            /* Ajuste de inputs no painel de configuração */
-            .painel-config-card { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
-            .painel-config-card > div { grid-column: 1 / -1; }
-            .painel-config-card > label, .painel-config-card > .creditos-display { grid-column: span 1; }
-            .painel-config-card > .btn { grid-column: 1 / -1; margin-top: 10px; }
+        @media (max-width: 991px) {
+            #desktop-views { display: none !important; }
         }
     </style>
 </head>
 <body>
 
-<!-- NOVO: Topbar para Desktop -->
-<div class="desktop-topbar">
-    <div class="d-flex align-items-center gap-3">
-        <h5 class="m-0 fw-bold text-white"><i class="bi bi-shield-lock text-success me-2"></i>ITVPlayer Dashboard</h5>
-    </div>
-    <div class="desktop-search">
-        <input type="text" id="searchDesktop" class="form-control" placeholder="🔍 Buscar cliente por nome..." onkeyup="document.getElementById('search').value = this.value; renderClientes()">
-    </div>
-    <div class="desktop-user-info">
-        <button class="btn btn-outline-light btn-sm rounded-pill" onclick="toggleFullScreen()" title="Tela Cheia">
+<!-- DESKTOP SIDEBAR (Full Screen Dashboard) -->
+<div class="desktop-sidebar">
+    <div class="sidebar-header">
+        <div>
+            <h4 class="text-white mb-0"><i class="bi bi-play-circle-fill text-success"></i> ITVPlayer</h4>
+            <small class="text-secondary" id="userEmailDisplayDesktop">carregando...</small>
+        </div>
+        <button class="btn btn-sm btn-outline-light mt-2" onclick="toggleFullScreen()" title="Tela Cheia">
             <i class="bi bi-arrows-fullscreen"></i>
         </button>
-        <div class="text-end d-none d-md-block">
-            <div class="fw-bold small" id="userEmailDisplayTop">Usuário</div>
-            <div class="text-secondary" style="font-size: 0.7rem;">Administrador</div>
+    </div>
+    
+    <div class="sidebar-menu">
+        <button class="menu-item active" onclick="showDesktopView('dashboard')">
+            <i class="bi bi-speedometer2"></i> DASHBOARD
+        </button>
+        
+        <button class="menu-item" onclick="abrirBancoItv()">
+            <i class="bi bi-bank2"></i> BANCO ITV
+        </button>
+        
+        <button class="menu-item" onclick="toggleDesktopSubmenu('sub-clientes')">
+            <i class="bi bi-people-fill"></i> CLIENTES <i class="bi bi-chevron-down ms-auto"></i>
+        </button>
+        <div id="sub-clientes" class="submenu">
+            <a class="submenu-item" onclick="showModalCadastro()">CADASTRAR</a>
+            <a class="submenu-item" onclick="showDesktopView('clientes-gerenciar')">GERENCIAR</a>
+            <a class="submenu-item" onclick="showDesktopView('conf-cobranca')">CONF COBRANÇA</a>
+            <a class="submenu-item" onclick="showDesktopView('conf-painel')">CONF PAINEL</a>
         </div>
-        <div class="desktop-avatar" id="userAvatar">U</div>
+
+        <button class="menu-item" onclick="toggleDesktopSubmenu('sub-revendedores')">
+            <i class="bi bi-person-badge-fill"></i> REVENDEDORES <i class="bi bi-chevron-down ms-auto"></i>
+        </button>
+        <div id="sub-revendedores" class="submenu">
+            <a class="submenu-item" onclick="showModalCadastro()">CADASTRAR</a>
+            <a class="submenu-item" onclick="showDesktopView('revendedores-gerenciar')">GERENCIAR</a>
+        </div>
+
+        <div class="mt-auto pt-3 border-top border-secondary">
+            <button class="menu-item text-danger" onclick="handleLogout()">
+                <i class="bi bi-box-arrow-right"></i> SAIR
+            </button>
+        </div>
     </div>
 </div>
 
+<!-- DESKTOP VIEWS CONTAINER -->
+<div id="desktop-views">
+    <!-- VIEW: DASHBOARD & CLIENTES GERENCIAR -->
+    <div id="view-dashboard-desktop" class="desktop-view-section active">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="text-white m-0"><i class="bi bi-speedometer2 text-success"></i> Dashboard</h3>
+            <button class="btn btn-success rounded-pill px-4" onclick="showModalCadastro()"><i class="bi bi-plus-lg"></i> Novo Cliente</button>
+        </div>
+        
+        <div id="adminPanelDesk" class="mb-4 p-3" style="background: #111; border-radius: 16px; border: 1px solid #333;">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                <h5 class="m-0 text-white"><i class="bi bi-cash-stack text-success"></i> Financeiro</h5>
+                <input type="date" id="filterMesDesktop" class="form-control w-auto bg-dark text-white border-secondary" style="max-width: 170px;" onchange="document.getElementById('filterMes').value=this.value; renderFinanceiro();">
+            </div>
+            <div class="row g-3">
+                <div class="col-6 col-xl-3"><div class="card-financeiro"><div class="stat-label">Recebido (Mês)</div><div class="stat-val" id="finRecebidoDesk">R$ 0,00</div></div></div>
+                <div class="col-6 col-xl-3"><div class="card-financeiro" style="border-left-color: #ffc107;"><div class="stat-label">A Receber</div><div class="stat-val text-warning" id="finPendenteDesk">R$ 0,00</div></div></div>
+                <div class="col-6 col-xl-3"><div class="card-financeiro" style="border-left-color: #0dcaf0;"><div class="stat-label">Total Clientes</div><div class="stat-val text-info" id="finTotalClientesDesk">0</div></div></div>
+                <div class="col-6 col-xl-3"><div class="card-financeiro" style="border-left-color: #00ff00;"><div class="stat-label">Lucro Geral</div><div class="stat-val" id="finGeralDesk" style="color: #00ff00;">R$ 0,00</div></div></div>
+            </div>
+        </div>
+
+        <button class="btn btn-success w-100 mb-4 rounded-pill fw-bold py-3" onclick="abrirBancoItv()" style="background: linear-gradient(135deg, #0d6efd, #0a58ca); border: none; box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);">
+            <i class="bi bi-bank2 me-2"></i> BANCO ITV - Gestão de Empréstimos
+        </button>
+
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <input type="text" id="searchDesktop" class="form-control form-control-lg" placeholder="🔍 Buscar cliente por nome..." onkeyup="document.getElementById('search').value=this.value; renderClientes();">
+            </div>
+            <div class="col-md-4">
+                <div class="filter-buttons h-100">
+                    <button class="btn-small bg-primary" onclick="filterData('ativos')">ATIVOS <span id="countAtivosDesk">0</span></button>
+                    <button class="btn-small" style="background-color: orange;" onclick="filterData('vencer')">A VENCER <span id="countVencerDesk">0</span></button>
+                    <button class="btn-small bg-danger" onclick="filterData('expirados')">EXPIRADOS <span id="countExpDesk">0</span></button>
+                    <button class="btn-small bg-info" onclick="filterData('apagar')">A RECEBER <span id="countPagarDesk">0</span></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-buttons-painel mb-3" id="paineisAtivosDesktop"></div>
+        <div id="listaClientesDesktop" class="mt-3"></div>
+    </div>
+
+    <!-- VIEW: CONF COBRANÇA -->
+    <div id="view-conf-cobranca-desktop" class="desktop-view-section">
+        <h3 class="text-white mb-4"><i class="bi bi-chat-dots-fill text-success"></i> Configurar Mensagem de Cobrança</h3>
+        <div class="card-financeiro" style="max-width: 800px;">
+            <label class="form-label text-white">Mensagem Padrão (use quebras de linha):</label>
+            <textarea id="cfgMsgDesktop" class="form-control mb-3" rows="6" placeholder="Digite a mensagem que será enviada..."></textarea>
+            <button class="btn btn-success rounded-pill px-4" onclick="saveSettingsDesktop()">💾 Salvar Mensagem</button>
+        </div>
+    </div>
+
+    <!-- VIEW: CONF PAINEL -->
+    <div id="view-conf-painel-desktop" class="desktop-view-section">
+        <h3 class="text-white mb-4"><i class="bi bi-hdd-stack-fill text-info"></i> Configuração dos Painéis</h3>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="painel-config-card h-100">
+                    <div class="toggle-container mb-3">
+                        <h6 class="m-0 text-white"><i class="bi bi-broadcast text-info"></i> <span id="painel1LabelDesk">Painel 1 (CENTRAL)</span></h6>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="togglePainel1Desk" onchange="saveSettingsDesktop()">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <label class="small text-secondary">📝 Nome do Painel:</label>
+                    <input type="text" id="nomePainel1Desk" class="form-control mb-2" placeholder="Nome personalizado" onchange="saveSettingsDesktop()">
+                    <label class="small text-secondary">🔗 Link do Painel:</label>
+                    <input type="text" id="url1Desk" class="form-control mb-3" placeholder="https://...">
+                    <label class="small text-secondary">💳 Créditos:</label>
+                    <div class="creditos-display">
+                        <div class="cred-value" id="credCentralDisplayDesk">0</div>
+                        <div class="creditos-controls">
+                            <button class="btn-menos" onclick="ajustarCredito('central', -1)">−</button>
+                            <input type="number" id="credCentralDesk" class="form-control" value="0" min="0" onchange="atualizarDisplayCredito('central')">
+                            <button class="btn-mais" onclick="ajustarCredito('central', 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="painel-config-card h-100">
+                    <div class="toggle-container mb-3">
+                        <h6 class="m-0 text-white"><i class="bi bi-lightning-fill text-warning"></i> <span id="painel2LabelDesk">Painel 2 (WAREZ)</span></h6>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="togglePainel2Desk" onchange="saveSettingsDesktop()">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <label class="small text-secondary">📝 Nome do Painel:</label>
+                    <input type="text" id="nomePainel2Desk" class="form-control mb-2" placeholder="Nome personalizado" onchange="saveSettingsDesktop()">
+                    <label class="small text-secondary">🔗 Link do Painel:</label>
+                    <input type="text" id="url2Desk" class="form-control mb-3" placeholder="https://...">
+                    <label class="small text-secondary">💳 Créditos:</label>
+                    <div class="creditos-display">
+                        <div class="cred-value" id="credWarezDisplayDesk">0</div>
+                        <div class="creditos-controls">
+                            <button class="btn-menos" onclick="ajustarCredito('warez', -1)">−</button>
+                            <input type="number" id="credWarezDesk" class="form-control" value="0" min="0" onchange="atualizarDisplayCredito('warez')">
+                            <button class="btn-mais" onclick="ajustarCredito('warez', 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="painel-config-card h-100">
+                    <div class="toggle-container mb-3">
+                        <h6 class="m-0 text-white"><i class="bi bi-fire text-danger"></i> <span id="painel3LabelDesk">Painel 3 (ZEUS)</span></h6>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="togglePainel3Desk" onchange="saveSettingsDesktop()">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <label class="small text-secondary">📝 Nome do Painel:</label>
+                    <input type="text" id="nomePainel3Desk" class="form-control mb-2" placeholder="Nome personalizado" onchange="saveSettingsDesktop()">
+                    <label class="small text-secondary">🔗 Link do Painel:</label>
+                    <input type="text" id="url3Desk" class="form-control mb-3" placeholder="https://...">
+                    <label class="small text-secondary">💳 Créditos:</label>
+                    <div class="creditos-display">
+                        <div class="cred-value" id="credZeusDisplayDesk">0</div>
+                        <div class="creditos-controls">
+                            <button class="btn-menos" onclick="ajustarCredito('zeus', -1)">−</button>
+                            <input type="number" id="credZeusDesk" class="form-control" value="0" min="0" onchange="atualizarDisplayCredito('zeus')">
+                            <button class="btn-mais" onclick="ajustarCredito('zeus', 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-success rounded-pill px-4 mt-4" onclick="saveSettingsDesktop()">💾 Salvar Todas as Configurações</button>
+    </div>
+
+    <!-- VIEW: REVENDEDORES -->
+    <div id="view-revendedores-desktop" class="desktop-view-section">
+        <h3 class="text-white mb-4"><i class="bi bi-person-badge-fill text-warning"></i> Gestão de Revendedores</h3>
+        <div class="card-financeiro">
+            <p class="text-secondary mb-3">Utilize o sistema de clientes para gerenciar revendedores. Adicione "REV" no nome ou utilize o campo de observações para identificação.</p>
+            <button class="btn btn-primary rounded-pill px-4" onclick="showModalCadastro()"><i class="bi bi-plus-lg"></i> Cadastrar Novo Revendedor</button>
+        </div>
+    </div>
+</div>
+
+<!-- MOBILE AUTH OVERLAY -->
 <div id="authOverlay">
     <div class="auth-card">
         <div class="text-center mb-4">
@@ -283,18 +464,11 @@
     <button class="btn btn-primary" onclick="unlockApp()">Desbloquear</button>
 </div>
 
-<!-- MENU LATERAL REESTRUTURADO COM 3 BOTÕES -->
+<!-- MOBILE SIDE MENU -->
 <div id="mySidenav" class="menu-lateral">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()" style="position:absolute; top:10px; right:20px; font-size:32px;">&times;</a>
     
-    <div class="text-center mb-4 px-3 d-none d-lg-block">
-        <h5 class="fw-bold text-white mb-0">ITVPlayer</h5>
-        <small class="text-secondary">Painel de Controle</small>
-    </div>
-    <hr class="border-secondary d-none d-lg-block">
-
     <div class="menu-btn-group">
-        <!-- 1° Botão - Conf Cobrança -->
         <button class="menu-btn-principal" onclick="toggleMenuSecao('secCobranca', this)">
             <i class="bi bi-chat-dots-fill"></i>
             <span>Conf Cobrança</span>
@@ -305,15 +479,12 @@
             <button class="btn btn-success w-100" onclick="saveSettings()">💾 Salvar Mensagem</button>
         </div>
 
-        <!-- 2° Botão - Conf Painel -->
         <button class="menu-btn-principal" onclick="toggleMenuSecao('secPaineis', this)">
             <i class="bi bi-hdd-stack-fill"></i>
             <span>Conf Painel</span>
         </button>
         <div class="menu-secao" id="secPaineis">
             <h6>⚙️ Configuração dos Painéis</h6>
-
-            <!-- Painel CENTRAL -->
             <div class="painel-config-card">
                 <div class="toggle-container">
                     <h6 class="m-0"><i class="bi bi-broadcast text-info"></i> <span id="painel1Label">Painel 1 (CENTRAL)</span></h6>
@@ -339,8 +510,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Painel WAREZ -->
             <div class="painel-config-card">
                 <div class="toggle-container">
                     <h6 class="m-0"><i class="bi bi-lightning-fill text-warning"></i> <span id="painel2Label">Painel 2 (WAREZ)</span></h6>
@@ -366,8 +535,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Painel ZEUS -->
             <div class="painel-config-card">
                 <div class="toggle-container">
                     <h6 class="m-0"><i class="bi bi-fire text-danger"></i> <span id="painel3Label">Painel 3 (ZEUS)</span></h6>
@@ -393,19 +560,17 @@
                     </div>
                 </div>
             </div>
-
             <button class="btn btn-success w-100 mt-2" onclick="saveSettings()">💾 Salvar Configurações</button>
         </div>
 
-        <!-- 3° Botão - Sair -->
-        <button class="menu-btn-principal" onclick="handleLogout()" style="background: linear-gradient(135deg, #5a1a1a, #1a1a1a); border-color: #dc3545; margin-top: auto;">
+        <button class="menu-btn-principal" onclick="handleLogout()" style="background: linear-gradient(135deg, #5a1a1a, #1a1a1a); border-color: #dc3545;">
             <i class="bi bi-box-arrow-right" style="color: #dc3545;"></i>
             <span>Sair</span>
         </button>
     </div>
 </div>
 
-<!-- NOVA NAVBAR FIXA NA PARTE INFERIOR (MOBILE) -->
+<!-- MOBILE BOTTOM NAVBAR -->
 <nav class="navbar">
     <div class="navbar-inferior">
         <div class="nav-left">
@@ -423,13 +588,14 @@
     </div>
 </nav>
 
+<!-- MOBILE MAIN CONTAINER -->
 <div class="container mt-2">
     <div id="adminPanel" class="mb-4 p-2">
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
             <h5 class="m-0"><i class="bi bi-cash-stack text-success"></i> Financeiro</h5>
             <input type="date" id="filterMes" class="form-control w-auto bg-dark text-white border-secondary" style="max-width: 170px;">
         </div>
-        <div class="row g-3">
+        <div class="row g-2">
             <div class="col-6 col-md-3"><div class="card-financeiro"><div class="stat-label">Recebido (Mês)</div><div class="stat-val" id="finRecebido">R$ 0,00</div></div></div>
             <div class="col-6 col-md-3"><div class="card-financeiro" style="border-left-color: #ffc107;"><div class="stat-label">A Receber</div><div class="stat-val text-warning" id="finPendente">R$ 0,00</div></div></div>
             <div class="col-6 col-md-3"><div class="card-financeiro" style="border-left-color: #0dcaf0;"><div class="stat-label">Total Clientes</div><div class="stat-val text-info" id="finTotalClientes">0</div></div></div>
@@ -438,13 +604,11 @@
         <hr class="border-secondary">
     </div>
 
-    <!-- BOTÃO BANCO ITV ACIMA DA BUSCA -->
     <button class="btn btn-success w-100 mb-3 rounded-pill fw-bold py-2" onclick="abrirBancoItv()" style="background: linear-gradient(135deg, #0d6efd, #0a58ca); border: none; box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);">
         <i class="bi bi-bank2 me-2"></i> BANCO ITV - Gestão de Empréstimos
     </button>
 
-    <!-- Busca Mobile (oculta no desktop via CSS se desejar, mas mantida para compatibilidade) -->
-    <input type="text" id="search" class="form-control mb-3 d-lg-none" placeholder="🔍 Buscar cliente por nome..." onkeyup="document.getElementById('searchDesktop').value = this.value; renderClientes()">
+    <input type="text" id="search" class="form-control mb-3" placeholder="🔍 Buscar cliente por nome..." onkeyup="renderClientes()">
 
     <div class="nav-buttons-painel" id="paineisAtivos"></div>
 
@@ -490,7 +654,7 @@
     </div>
 </div>
 
-<!-- Modal de Ações do Cliente (abre ao clicar no card) -->
+<!-- Modal de Ações do Cliente -->
 <div class="modal fade" id="modalAcoes" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content bg-dark text-white">
@@ -510,9 +674,7 @@
     </div>
 </div>
 
-<!-- ========================================================================
-     NOVO MODAL: BANCO ITV (Aplicativo de Empréstimos)
-     ======================================================================== -->
+<!-- Modal Banco ITV -->
 <div class="modal fade modal-banco-itv" id="modalBancoItv" tabindex="-1" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
@@ -525,14 +687,12 @@
             </div>
             
             <div class="px-3 px-md-4">
-                <!-- Navegação Interna do App -->
                 <div class="banco-nav">
                     <button class="banco-nav-btn active" onclick="mudarViewBanco('dashboard', this)"><i class="bi bi-pie-chart me-1"></i> Painel</button>
                     <button class="banco-nav-btn" onclick="mudarViewBanco('lista', this)"><i class="bi bi-people me-1"></i> Clientes</button>
                     <button class="banco-nav-btn" onclick="mudarViewBanco('novo', this)"><i class="bi bi-plus-circle me-1"></i> Novo</button>
                 </div>
 
-                <!-- VIEW 1: DASHBOARD FINANCEIRO -->
                 <div id="view-dashboard" class="view-section active">
                     <div class="row g-3 mb-4">
                         <div class="col-6 col-md-3">
@@ -564,23 +724,19 @@
                     <div id="listaAtrasadosBanco"></div>
                 </div>
 
-                <!-- VIEW 2: LISTA DE CLIENTES -->
                 <div id="view-lista" class="view-section">
                     <input type="text" id="searchBanco" class="form-control mb-3" placeholder="🔍 Buscar no Banco ITV..." onkeyup="renderizarListaBanco()">
                     <div id="listaEmprestimosBanco"></div>
                 </div>
 
-                <!-- VIEW 3: NOVO EMPRÉSTIMO -->
                 <div id="view-novo" class="view-section">
                     <div class="fintech-card">
                         <h5 class="mb-3"><i class="bi bi-file-earmark-plus me-2"></i>Cadastrar Novo Empréstimo</h5>
                         <input type="hidden" id="bancoEditId">
                         <label class="small text-secondary">Nome Completo:</label>
                         <input type="text" id="bancoNome" class="form-control mb-2">
-                        
                         <label class="small text-secondary">WhatsApp (com DDD):</label>
                         <input type="tel" id="bancoTelefone" class="form-control mb-2" placeholder="55999999999">
-                        
                         <div class="row g-2 mb-2">
                             <div class="col-6">
                                 <label class="small text-secondary">Valor Emprestado (R$):</label>
@@ -591,14 +747,12 @@
                                 <input type="number" id="bancoJuros" class="form-control" step="0.01" value="0" oninput="calcularTotalBanco()">
                             </div>
                         </div>
-                        
                         <div class="fintech-card bg-dark border-primary mb-2">
                             <div class="d-flex justify-content-between">
                                 <span class="text-secondary">Valor Total a Receber:</span>
                                 <span class="fw-bold text-success" id="bancoValorTotalDisplay">R$ 0,00</span>
                             </div>
                         </div>
-
                         <div class="row g-2 mb-2">
                             <div class="col-6">
                                 <label class="small text-secondary">Nº de Parcelas:</label>
@@ -609,16 +763,13 @@
                                 <input type="date" id="bancoDataVenc" class="form-control">
                             </div>
                         </div>
-
                         <label class="small text-secondary">Observações:</label>
                         <textarea id="bancoObs" class="form-control mb-3" rows="2"></textarea>
-
                         <button class="btn btn-primary w-100 py-2 fw-bold rounded-pill" onclick="salvarEmprestimo()">
                             <i class="bi bi-check-circle me-2"></i>Salvar Empréstimo
                         </button>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -644,24 +795,89 @@
 
     let clientes = [];
     let config = { 
-        msg: "", 
-        p1: "", p2: "", p3: "", 
+        msg: "", p1: "", p2: "", p3: "", 
         credCentral: 0, credWarez: 0, credZeus: 0,
-        nomePainel1: "CENTRAL",
-        nomePainel2: "WAREZ",
-        nomePainel3: "ZEUS",
-        togglePainel1: true,
-        togglePainel2: true,
-        togglePainel3: true
+        nomePainel1: "CENTRAL", nomePainel2: "WAREZ", nomePainel3: "ZEUS",
+        togglePainel1: true, togglePainel2: true, togglePainel3: true
     };
     let currentFilter = 'ativos';
     let usuarioLogadoUid = null;
-
-    // =========================================================================
-    // VARIÁVEIS E FUNÇÕES DO BANCO ITV
-    // =========================================================================
     let emprestimos = [];
 
+    // =========================================================================
+    // DESKTOP & FULLSCREEN FUNCTIONS
+    // =========================================================================
+    function toggleFullScreen() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(err => {
+                console.log(`Error attempting to enable full-screen mode: ${err.message}`);
+            });
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+    }
+
+    function toggleDesktopSubmenu(id) {
+        const submenu = document.getElementById(id);
+        if (submenu) submenu.classList.toggle('open');
+    }
+
+    function showDesktopView(viewName) {
+        document.querySelectorAll('.desktop-view-section').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.desktop-sidebar .menu-item').forEach(el => el.classList.remove('active'));
+        
+        if (viewName === 'dashboard' || viewName === 'clientes-gerenciar') {
+            document.getElementById('view-dashboard-desktop').classList.add('active');
+            if(viewName === 'clientes-gerenciar') {
+                setTimeout(() => {
+                    const searchDesk = document.getElementById('searchDesktop');
+                    if(searchDesk) searchDesk.focus();
+                }, 100);
+            }
+        } else if (viewName === 'conf-cobranca') {
+            document.getElementById('view-conf-cobranca-desktop').classList.add('active');
+        } else if (viewName === 'conf-painel') {
+            document.getElementById('view-conf-painel-desktop').classList.add('active');
+        } else if (viewName === 'revendedores-cadastrar' || viewName === 'revendedores-gerenciar') {
+            document.getElementById('view-revendedores-desktop').classList.add('active');
+        }
+    }
+
+    function saveSettingsDesktop() {
+        if(!usuarioLogadoUid) return;
+        config = {
+            msg: document.getElementById('cfgMsgDesktop')?.value || document.getElementById('cfgMsg').value,
+            p1: document.getElementById('url1Desk')?.value || document.getElementById('url1').value,
+            p2: document.getElementById('url2Desk')?.value || document.getElementById('url2').value,
+            p3: document.getElementById('url3Desk')?.value || document.getElementById('url3').value,
+            credCentral: parseInt(document.getElementById('credCentralDesk')?.value || document.getElementById('credCentral').value) || 0,
+            credWarez: parseInt(document.getElementById('credWarezDesk')?.value || document.getElementById('credWarez').value) || 0,
+            credZeus: parseInt(document.getElementById('credZeusDesk')?.value || document.getElementById('credZeus').value) || 0,
+            nomePainel1: document.getElementById('nomePainel1Desk')?.value || document.getElementById('nomePainel1').value || "CENTRAL",
+            nomePainel2: document.getElementById('nomePainel2Desk')?.value || document.getElementById('nomePainel2').value || "WAREZ",
+            nomePainel3: document.getElementById('nomePainel3Desk')?.value || document.getElementById('nomePainel3').value || "ZEUS",
+            togglePainel1: document.getElementById('togglePainel1Desk')?.checked ?? document.getElementById('togglePainel1').checked,
+            togglePainel2: document.getElementById('togglePainel2Desk')?.checked ?? document.getElementById('togglePainel2').checked,
+            togglePainel3: document.getElementById('togglePainel3Desk')?.checked ?? document.getElementById('togglePainel3').checked
+        };
+        db.collection("usuarios").doc(usuarioLogadoUid).collection("config").doc("geral").set(config).then(() => {
+            atualizarBadgesCreditos();
+            document.getElementById('painel1Label').innerText = `Painel 1 (${config.nomePainel1})`;
+            document.getElementById('painel2Label').innerText = `Painel 2 (${config.nomePainel2})`;
+            document.getElementById('painel3Label').innerText = `Painel 3 (${config.nomePainel3})`;
+            if(document.getElementById('painel1LabelDesk')) document.getElementById('painel1LabelDesk').innerText = `Painel 1 (${config.nomePainel1})`;
+            if(document.getElementById('painel2LabelDesk')) document.getElementById('painel2LabelDesk').innerText = `Painel 2 (${config.nomePainel2})`;
+            if(document.getElementById('painel3LabelDesk')) document.getElementById('painel3LabelDesk').innerText = `Painel 3 (${config.nomePainel3})`;
+            renderPaineisAtivos();
+            alert("✅ Configurações salvas!");
+        }).catch(err => alert("Erro: "+err.message));
+    }
+
+    // =========================================================================
+    // BANCO ITV FUNCTIONS
+    // =========================================================================
     function abrirBancoItv() {
         new bootstrap.Modal(document.getElementById('modalBancoItv')).show();
         carregarDadosBanco();
@@ -715,8 +931,6 @@
             dataCriacao: new Date().toISOString()
         };
 
-        const modalEl = document.getElementById('modalBancoItv');
-        
         if(id === "") {
             db.collection("usuarios").doc(usuarioLogadoUid).collection("emprestimos").add(dados).then(() => {
                 limparFormBanco();
@@ -747,7 +961,6 @@
     function renderizarDashboardBanco() {
         let totalEmprestado = 0, totalRecebido = 0, totalPendente = 0, totalLucro = 0;
         let atrasadosHtml = '';
-
         const hoje = new Date();
 
         emprestimos.forEach(e => {
@@ -794,7 +1007,6 @@
         document.getElementById('bancoTotalRecebido').innerText = totalRecebido.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         document.getElementById('bancoTotalPendente').innerText = totalPendente.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         document.getElementById('bancoTotalLucro').innerText = totalLucro.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        
         document.getElementById('listaAtrasadosBanco').innerHTML = atrasadosHtml || '<div class="text-center text-secondary py-3">Nenhum empréstimo atrasado. 🎉</div>';
     }
 
@@ -818,18 +1030,13 @@
             let statusClass = 'status-ativo';
             let statusText = 'ATIVO';
             
-            if(e.status === 'pago') { 
-                statusClass = 'status-pago'; 
-                statusText = 'PAGO'; 
-            } else if (e.dataVencimento) {
+            if(e.status === 'pago') { statusClass = 'status-pago'; statusText = 'PAGO'; } 
+            else if (e.dataVencimento) {
                 let partes = e.dataVencimento.split('-');
                 if (partes.length === 3) {
                     let dataVenc = new Date(partes[0], partes[1] - 1, partes[2]);
                     dataVenc.setMonth(dataVenc.getMonth() + parcelasPagas);
-                    if(dataVenc < new Date()) { 
-                        statusClass = 'status-atrasado'; 
-                        statusText = 'ATRASADO'; 
-                    }
+                    if(dataVenc < new Date()) { statusClass = 'status-atrasado'; statusText = 'ATRASADO'; }
                 }
             }
 
@@ -878,13 +1085,11 @@
         if(!e) return;
         const parcelas = parseInt(e.parcelas) || 1;
         const parcelasPagas = parseInt(e.parcelasPagas) || 0;
-        
         if(parcelasPagas >= parcelas) return alert("Este empréstimo já está quitado!");
 
         if(confirm(`Confirmar recebimento da parcela ${parcelasPagas + 1} de ${e.nome}?`)) {
             const novasParcelasPagas = parcelasPagas + 1;
             const novoStatus = novasParcelasPagas >= parcelas ? 'pago' : 'ativo';
-            
             let novaDataVencISO = e.dataVencimento;
             if (e.dataVencimento) {
                 let partes = e.dataVencimento.split('-');
@@ -896,10 +1101,7 @@
             }
 
             db.collection("usuarios").doc(usuarioLogadoUid).collection("emprestimos").doc(id).update({
-                parcelasPagas: novasParcelasPagas,
-                status: novoStatus,
-                dataVencimento: novaDataVencISO,
-                ultimoPagamento: new Date().toISOString()
+                parcelasPagas: novasParcelasPagas, status: novoStatus, dataVencimento: novaDataVencISO, ultimoPagamento: new Date().toISOString()
             }).then(() => {
                 if(e.telefone) {
                     const valorTotalFmt = parseFloat(e.valorTotal).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -907,18 +1109,12 @@
                     const valorParcelaFmt = valorParcela.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
                     const pendente = Math.max(0, parseFloat(e.valorTotal) - (valorParcela * novasParcelasPagas));
                     const pendenteFmt = pendente.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-                    const proximaDataFmt = formatarDataBR(novaDataVencISO);
-                    
-                    const proximaDataTexto = novoStatus === 'pago' ? 'EMPRÉSTIMO QUITADO! 🎉' : proximaDataFmt;
-
+                    const proximaDataTexto = novoStatus === 'pago' ? 'EMPRÉSTIMO QUITADO! 🎉' : formatarDataBR(novaDataVencISO);
                     const msg = `📩 𝕞𝕤𝕘-𝕒𝕦𝕥𝕠𝕞á𝕥𝕚𝕔𝕒📩\n✅*BANCO ITV* - 𝕊𝔼𝕌 ℙ𝔸𝔾𝔸𝕄𝔼ℕ𝕋𝕆 𝔽𝕆𝕀 ℂ𝕆ℕ𝔽𝕀ℝ𝕄𝔸𝔻𝕆!!\n\nOlá ${e.nome},\nValor do Empréstimo R$: ${valorTotalFmt}.\n\nRecebemos sua parcela nº: ${novasParcelasPagas}/${parcelas}.\nValor da Parcela R$: ${valorParcelaFmt}.\nValor Pendente R$: ${pendenteFmt}.\nData do Próximo Parcela: ${proximaDataTexto}`;
-                    
                     window.open(`https://wa.me/${e.telefone.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`);
                 }
                 alert("✅ Parcela registrada com sucesso!");
-            }).catch(err => {
-                alert("Erro ao registrar parcela: " + err.message);
-            });
+            }).catch(err => alert("Erro ao registrar parcela: " + err.message));
         }
     }
 
@@ -926,42 +1122,12 @@
         const e = emprestimos.find(x => x.id === id);
         if(!e) return alert("Cliente não encontrado!");
         if(!e.telefone) return alert("Telefone não cadastrado!");
-        
         const parcelas = parseInt(e.parcelas) || 1;
         const parcelasPagas = parseInt(e.parcelasPagas) || 0;
         const valorTotal = parseFloat(e.valorTotal) || 0;
         const valorParcela = valorTotal / parcelas;
         const valorPendente = Math.max(0, valorTotal - (valorParcela * parcelasPagas));
-        
-        const valorTotalFmt = valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        const valorParcelaFmt = valorParcela.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        const valorPendenteFmt = valorPendente.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        const dataVencFmt = formatarDataBR(e.dataVencimento);
-
-        const msg = `📩 𝕞𝕤𝕘-𝕒𝕦𝕥𝕠𝕞á𝕥𝕚𝕔𝕒📩
-⛔️*BANCO ITV* -  𝕊𝔼𝕌 ℙ𝔸𝔾𝔸𝕄𝔼ℕ𝕋𝕆 ℕ𝔸𝕆 𝔽𝕆𝕀 ℂ𝕆ℕ𝔽𝕀ℝ𝕄𝔸𝔻𝕆!!
-
-Olá ${e.nome},
-Valor do Empréstimo R$: ${valorTotalFmt}.
-
-Sua parcela nº: ${parcelasPagas + 1}/${parcelas}.
-Valor da Parcela R$: ${valorParcelaFmt}.
-Valor Pendente R$: ${valorPendenteFmt}.
-Data: ${dataVencFmt}
-
-Por favor, regularize para evitar juros adicionais, 
-
-Faça um Pix 💠
-💰VALOR: ${valorParcelaFmt}
-
-🏦Banco: *Pic Pay*
-👤Nome: *Maria lucilene* 
-📲Opção: *Celular*
-🔑 Chaves: *(85)996498573*
-
-_Após o pagamento, encaminhar o comprovante.
-🤝 Obrigado!.`;
-        
+        const msg = `📩 𝕞𝕤𝕘-𝕒𝕦𝕥𝕠𝕞á𝕥𝕚𝕔𝕒📩\n⛔️*BANCO ITV* - 𝕊𝔼𝕌 ℙ𝔸𝔾𝔸𝕄𝔼ℕ𝕋𝕆 ℕ𝔸𝕆 𝔽𝕆𝕀 ℂ𝕆ℕ𝔽𝕀ℝ𝕄𝔸𝔻𝕆!!\n\nOlá ${e.nome},\nValor do Empréstimo R$: ${valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}.\n\nSua parcela nº: ${parcelasPagas + 1}/${parcelas}.\nValor da Parcela R$: ${valorParcela.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}.\nValor Pendente R$: ${valorPendente.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}.\nData: ${formatarDataBR(e.dataVencimento)}\n\nPor favor, regularize para evitar juros adicionais.\nFaça um Pix 💠\n💰VALOR: ${valorParcela.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}\n🏦Banco: *Pic Pay*\n👤Nome: *Maria lucilene*\n📲Opção: *Celular*\n🔑 Chaves: *(85)996498573*\n_Após o pagamento, encaminhar o comprovante.\n🤝 Obrigado!.`;
         window.open(`https://wa.me/${e.telefone.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`);
     }
 
@@ -972,34 +1138,25 @@ _Após o pagamento, encaminhar o comprovante.
     }
 
     // =========================================================================
-    // FIM DAS FUNÇÕES DO BANCO ITV
+    // CORE APP FUNCTIONS
     // =========================================================================
-
     const hojeLocal = new Date();
-    const anoLocal = hojeLocal.getFullYear();
-    const mesLocal = String(hojeLocal.getMonth() + 1).padStart(2, '0');
-    const diaLocal = String(hojeLocal.getDate()).padStart(2, '0');
-    document.getElementById('filterMes').value = `${anoLocal}-${mesLocal}-${diaLocal}`;
+    document.getElementById('filterMes').value = `${hojeLocal.getFullYear()}-${String(hojeLocal.getMonth() + 1).padStart(2, '0')}-${String(hojeLocal.getDate()).padStart(2, '0')}`;
     
     auth.onAuthStateChanged(user => {
         if (user) {
             usuarioLogadoUid = user.uid;
-            const email = user.email || "";
-            document.getElementById('userEmailDisplay').innerText = email;
-            document.getElementById('userEmailDisplayTop').innerText = email;
-            document.getElementById('userAvatar').innerText = email.charAt(0).toUpperCase();
+            const emailText = user.email || "";
+            document.getElementById('userEmailDisplay').innerText = emailText;
+            const deskEmail = document.getElementById('userEmailDisplayDesktop');
+            if(deskEmail) deskEmail.innerText = emailText;
             document.getElementById('authOverlay').style.display = 'none';
             syncConfigAndClients();
-            
-            // Solicitar tela cheia automaticamente no desktop (opcional, pode ser bloqueado pelo navegador)
-            if(window.innerWidth >= 992) {
-                // toggleFullScreen(); // Descomente se quiser forçar fullscreen ao logar (pode ser bloqueado por políticas do navegador sem interação do usuário)
-            }
         } else {
             usuarioLogadoUid = null;
             document.getElementById('userEmailDisplay').innerText = "";
-            document.getElementById('userEmailDisplayTop').innerText = "Usuário";
-            document.getElementById('userAvatar').innerText = "U";
+            const deskEmail = document.getElementById('userEmailDisplayDesktop');
+            if(deskEmail) deskEmail.innerText = "";
             document.getElementById('authOverlay').style.display = 'flex';
             document.getElementById('adminLock').style.display = 'none';
         }
@@ -1014,9 +1171,7 @@ _Após o pagamento, encaminhar o comprovante.
     function handleLogout() { auth.signOut().then(() => closeNav()); }
     function openNav() { document.getElementById("mySidenav").style.width = "300px"; }
     function closeNav() {
-        if(window.innerWidth < 992) {
-            document.getElementById("mySidenav").style.width = "0";
-        }
+        document.getElementById("mySidenav").style.width = "0";
         document.querySelectorAll('.menu-secao').forEach(s => s.classList.remove('active'));
         document.querySelectorAll('.menu-btn-principal').forEach(b => b.classList.remove('active'));
     }
@@ -1027,30 +1182,37 @@ _Após o pagamento, encaminhar o comprovante.
         const estaAberta = secao.classList.contains('active');
         document.querySelectorAll('.menu-secao').forEach(s => s.classList.remove('active'));
         document.querySelectorAll('.menu-btn-principal').forEach(b => b.classList.remove('active'));
-        if (!estaAberta) {
-            secao.classList.add('active');
-            btn.classList.add('active');
-        }
+        if (!estaAberta) { secao.classList.add('active'); btn.classList.add('active'); }
     }
 
     function ajustarCredito(painel, delta) {
         const inputId = 'cred' + painel.charAt(0).toUpperCase() + painel.slice(1);
-        const input = document.getElementById(inputId);
+        const inputIdDesk = inputId + 'Desk';
+        const input = document.getElementById(inputId) || document.getElementById(inputIdDesk);
+        if(!input) return;
         let val = parseInt(input.value) || 0;
         val = Math.max(0, val + delta);
-        input.value = val;
+        if(document.getElementById(inputId)) document.getElementById(inputId).value = val;
+        if(document.getElementById(inputIdDesk)) document.getElementById(inputIdDesk).value = val;
         atualizarDisplayCredito(painel);
     }
+
     function atualizarDisplayCredito(painel) {
         const inputId = 'cred' + painel.charAt(0).toUpperCase() + painel.slice(1);
         const displayId = 'cred' + painel.charAt(0).toUpperCase() + painel.slice(1) + 'Display';
-        const val = parseInt(document.getElementById(inputId).value) || 0;
-        document.getElementById(displayId).innerText = val;
+        const displayIdDesk = displayId + 'Desk';
+        const val = parseInt(document.getElementById(inputId)?.value || document.getElementById(inputId + 'Desk')?.value) || 0;
+        if(document.getElementById(displayId)) document.getElementById(displayId).innerText = val;
+        if(document.getElementById(displayIdDesk)) document.getElementById(displayIdDesk).innerText = val;
     }
+
     function atualizarBadgesCreditos() {
         document.getElementById('credCentralDisplay').innerText = config.credCentral || 0;
         document.getElementById('credWarezDisplay').innerText = config.credWarez || 0;
         document.getElementById('credZeusDisplay').innerText = config.credZeus || 0;
+        if(document.getElementById('credCentralDisplayDesk')) document.getElementById('credCentralDisplayDesk').innerText = config.credCentral || 0;
+        if(document.getElementById('credWarezDisplayDesk')) document.getElementById('credWarezDisplayDesk').innerText = config.credWarez || 0;
+        if(document.getElementById('credZeusDisplayDesk')) document.getElementById('credZeusDisplayDesk').innerText = config.credZeus || 0;
     }
 
     function consumirCredito(painel) {
@@ -1077,43 +1239,44 @@ _Após o pagamento, encaminhar o comprovante.
         db.collection("usuarios").doc(usuarioLogadoUid).collection("config").doc("geral").onSnapshot(doc => {
             if(doc.exists) {
                 config = doc.data();
-                config.msg = config.msg || "";
-                config.p1 = config.p1 || "";
-                config.p2 = config.p2 || "";
-                config.p3 = config.p3 || "";                
-                config.credCentral = parseInt(config.credCentral) || 0;
-                config.credWarez = parseInt(config.credWarez) || 0;
-                config.credZeus = parseInt(config.credZeus) || 0;
-                config.nomePainel1 = config.nomePainel1 || "CENTRAL";
-                config.nomePainel2 = config.nomePainel2 || "WAREZ";
-                config.nomePainel3 = config.nomePainel3 || "ZEUS";
+                config.msg = config.msg || ""; config.p1 = config.p1 || ""; config.p2 = config.p2 || ""; config.p3 = config.p3 || "";                
+                config.credCentral = parseInt(config.credCentral) || 0; config.credWarez = parseInt(config.credWarez) || 0; config.credZeus = parseInt(config.credZeus) || 0;
+                config.nomePainel1 = config.nomePainel1 || "CENTRAL"; config.nomePainel2 = config.nomePainel2 || "WAREZ"; config.nomePainel3 = config.nomePainel3 || "ZEUS";
                 config.togglePainel1 = config.togglePainel1 !== undefined ? config.togglePainel1 : true;
                 config.togglePainel2 = config.togglePainel2 !== undefined ? config.togglePainel2 : true;
                 config.togglePainel3 = config.togglePainel3 !== undefined ? config.togglePainel3 : true;
             } else {
-                config = { 
-                    msg: "", p1: "", p2: "", p3: "", 
-                    credCentral: 0, credWarez: 0, credZeus: 0,
-                    nomePainel1: "CENTRAL", nomePainel2: "WAREZ", nomePainel3: "ZEUS",
-                    togglePainel1: true, togglePainel2: true, togglePainel3: true
-                };
+                config = { msg: "", p1: "", p2: "", p3: "", credCentral: 0, credWarez: 0, credZeus: 0, nomePainel1: "CENTRAL", nomePainel2: "WAREZ", nomePainel3: "ZEUS", togglePainel1: true, togglePainel2: true, togglePainel3: true };
             }
+            
+            // Mobile
             document.getElementById('cfgMsg').value = config.msg || "";
-            document.getElementById('url1').value = config.p1 || "";
-            document.getElementById('url2').value = config.p2 || "";
-            document.getElementById('url3').value = config.p3 || "";
-            document.getElementById('credCentral').value = config.credCentral;
-            document.getElementById('credWarez').value = config.credWarez;
-            document.getElementById('credZeus').value = config.credZeus;
-            document.getElementById('nomePainel1').value = config.nomePainel1;
-            document.getElementById('nomePainel2').value = config.nomePainel2;
-            document.getElementById('nomePainel3').value = config.nomePainel3;
-            document.getElementById('togglePainel1').checked = config.togglePainel1;
-            document.getElementById('togglePainel2').checked = config.togglePainel2;
-            document.getElementById('togglePainel3').checked = config.togglePainel3;
+            document.getElementById('url1').value = config.p1 || ""; document.getElementById('url2').value = config.p2 || ""; document.getElementById('url3').value = config.p3 || "";
+            document.getElementById('credCentral').value = config.credCentral; document.getElementById('credWarez').value = config.credWarez; document.getElementById('credZeus').value = config.credZeus;
+            document.getElementById('nomePainel1').value = config.nomePainel1; document.getElementById('nomePainel2').value = config.nomePainel2; document.getElementById('nomePainel3').value = config.nomePainel3;
+            document.getElementById('togglePainel1').checked = config.togglePainel1; document.getElementById('togglePainel2').checked = config.togglePainel2; document.getElementById('togglePainel3').checked = config.togglePainel3;
             document.getElementById('painel1Label').innerText = `Painel 1 (${config.nomePainel1})`;
             document.getElementById('painel2Label').innerText = `Painel 2 (${config.nomePainel2})`;
             document.getElementById('painel3Label').innerText = `Painel 3 (${config.nomePainel3})`;
+            
+            // Desktop
+            if(document.getElementById('cfgMsgDesktop')) document.getElementById('cfgMsgDesktop').value = config.msg || "";
+            if(document.getElementById('url1Desk')) document.getElementById('url1Desk').value = config.p1 || "";
+            if(document.getElementById('url2Desk')) document.getElementById('url2Desk').value = config.p2 || "";
+            if(document.getElementById('url3Desk')) document.getElementById('url3Desk').value = config.p3 || "";
+            if(document.getElementById('credCentralDesk')) document.getElementById('credCentralDesk').value = config.credCentral;
+            if(document.getElementById('credWarezDesk')) document.getElementById('credWarezDesk').value = config.credWarez;
+            if(document.getElementById('credZeusDesk')) document.getElementById('credZeusDesk').value = config.credZeus;
+            if(document.getElementById('nomePainel1Desk')) document.getElementById('nomePainel1Desk').value = config.nomePainel1;
+            if(document.getElementById('nomePainel2Desk')) document.getElementById('nomePainel2Desk').value = config.nomePainel2;
+            if(document.getElementById('nomePainel3Desk')) document.getElementById('nomePainel3Desk').value = config.nomePainel3;
+            if(document.getElementById('togglePainel1Desk')) document.getElementById('togglePainel1Desk').checked = config.togglePainel1;
+            if(document.getElementById('togglePainel2Desk')) document.getElementById('togglePainel2Desk').checked = config.togglePainel2;
+            if(document.getElementById('togglePainel3Desk')) document.getElementById('togglePainel3Desk').checked = config.togglePainel3;
+            if(document.getElementById('painel1LabelDesk')) document.getElementById('painel1LabelDesk').innerText = `Painel 1 (${config.nomePainel1})`;
+            if(document.getElementById('painel2LabelDesk')) document.getElementById('painel2LabelDesk').innerText = `Painel 2 (${config.nomePainel2})`;
+            if(document.getElementById('painel3LabelDesk')) document.getElementById('painel3LabelDesk').innerText = `Painel 3 (${config.nomePainel3})`;
+
             atualizarBadgesCreditos();
             renderPaineisAtivos();
         });        
@@ -1127,19 +1290,10 @@ _Após o pagamento, encaminhar o comprovante.
     function saveSettings() {
         if(!usuarioLogadoUid) return;
         config = {
-            msg: document.getElementById('cfgMsg').value,
-            p1: document.getElementById('url1').value,
-            p2: document.getElementById('url2').value,
-            p3: document.getElementById('url3').value,
-            credCentral: parseInt(document.getElementById('credCentral').value) || 0,
-            credWarez: parseInt(document.getElementById('credWarez').value) || 0,
-            credZeus: parseInt(document.getElementById('credZeus').value) || 0,
-            nomePainel1: document.getElementById('nomePainel1').value || "CENTRAL",
-            nomePainel2: document.getElementById('nomePainel2').value || "WAREZ",
-            nomePainel3: document.getElementById('nomePainel3').value || "ZEUS",
-            togglePainel1: document.getElementById('togglePainel1').checked,
-            togglePainel2: document.getElementById('togglePainel2').checked,
-            togglePainel3: document.getElementById('togglePainel3').checked
+            msg: document.getElementById('cfgMsg').value, p1: document.getElementById('url1').value, p2: document.getElementById('url2').value, p3: document.getElementById('url3').value,
+            credCentral: parseInt(document.getElementById('credCentral').value) || 0, credWarez: parseInt(document.getElementById('credWarez').value) || 0, credZeus: parseInt(document.getElementById('credZeus').value) || 0,
+            nomePainel1: document.getElementById('nomePainel1').value || "CENTRAL", nomePainel2: document.getElementById('nomePainel2').value || "WAREZ", nomePainel3: document.getElementById('nomePainel3').value || "ZEUS",
+            togglePainel1: document.getElementById('togglePainel1').checked, togglePainel2: document.getElementById('togglePainel2').checked, togglePainel3: document.getElementById('togglePainel3').checked
         };
         db.collection("usuarios").doc(usuarioLogadoUid).collection("config").doc("geral").set(config).then(() => {
             atualizarBadgesCreditos();
@@ -1153,23 +1307,20 @@ _Após o pagamento, encaminhar o comprovante.
 
     function renderPaineisAtivos() {
         const container = document.getElementById('paineisAtivos');
-        container.innerHTML = '';
-        if(config.togglePainel1) {
-            container.innerHTML += `<button class="btn btn-outline-light btn-sm w-100" onclick="accessPanel(1)">📡 ${config.nomePainel1} <span id="badgeCentral" class="badge-creditos">${config.credCentral || 0}</span></button>`;
-        }
-        if(config.togglePainel2) {
-            container.innerHTML += `<button class="btn btn-outline-light btn-sm w-100" onclick="accessPanel(2)">⚡ ${config.nomePainel2} <span id="badgeWarez" class="badge-creditos">${config.credWarez || 0}</span></button>`;
-        }
-        if(config.togglePainel3) {
-            container.innerHTML += `<button class="btn btn-outline-light btn-sm w-100" onclick="accessPanel(3)">🔥 ${config.nomePainel3} <span id="badgeZeus" class="badge-creditos">${config.credZeus || 0}</span></button>`;
-        }
+        const containerDesk = document.getElementById('paineisAtivosDesktop');
+        let html = '';
+        if(config.togglePainel1) html += `<button class="btn btn-outline-light btn-sm w-100" onclick="accessPanel(1)">📡 ${config.nomePainel1} <span class="badge-creditos">${config.credCentral || 0}</span></button>`;
+        if(config.togglePainel2) html += `<button class="btn btn-outline-light btn-sm w-100" onclick="accessPanel(2)">⚡ ${config.nomePainel2} <span class="badge-creditos">${config.credWarez || 0}</span></button>`;
+        if(config.togglePainel3) html += `<button class="btn btn-outline-light btn-sm w-100" onclick="accessPanel(3)">🔥 ${config.nomePainel3} <span class="badge-creditos">${config.credZeus || 0}</span></button>`;
+        if(container) container.innerHTML = html;
+        if(containerDesk) containerDesk.innerHTML = html;
     }
 
     function showModalCadastro(id = "") {
         if(id === "") {
             document.getElementById('editId').value = "";
             document.getElementById('cNome').value = ""; document.getElementById('cUser').value = ""; document.getElementById('cPass').value = "";
-            document.getElementById('cValor').value = ""; document.getElementById('cData').value = ""; document.getElementById('cServ').value = "";
+            document.getElementById('cValor').value = ""; document.getElementById('cData').value = addOneMonthFromToday(); document.getElementById('cServ').value = "";
             document.getElementById('cUrl').value = ""; document.getElementById('cTel').value = ""; document.getElementById('cObs').value = "";
             document.getElementById('cPainel').value = "central";
         }
@@ -1180,40 +1331,25 @@ _Após o pagamento, encaminhar o comprovante.
         if(!usuarioLogadoUid) return;
         const id = document.getElementById('editId').value;
         const clienteData = {
-            nome: document.getElementById('cNome').value,
-            user: document.getElementById('cUser').value,
-            pass: document.getElementById('cPass').value,
-            valor: parseFloat(document.getElementById('cValor').value) || 0,
-            data: document.getElementById('cData').value,
-            serv: document.getElementById('cServ').value,
-            url: document.getElementById('cUrl').value,
-            tel: document.getElementById('cTel').value,
-            obs: document.getElementById('cObs').value,
-            painel: document.getElementById('cPainel').value || 'central',
-            status: 'ativo'
+            nome: document.getElementById('cNome').value, user: document.getElementById('cUser').value, pass: document.getElementById('cPass').value,
+            valor: parseFloat(document.getElementById('cValor').value) || 0, data: document.getElementById('cData').value, serv: document.getElementById('cServ').value,
+            url: document.getElementById('cUrl').value, tel: document.getElementById('cTel').value, obs: document.getElementById('cObs').value,
+            painel: document.getElementById('cPainel').value || 'central', status: 'ativo'
         };
         const modalEl = document.getElementById('modalCadastro');
         const modal = bootstrap.Modal.getInstance(modalEl);
-        
         if(id === "") {
             db.collection("usuarios").doc(usuarioLogadoUid).collection("clientes").add(clienteData).then(() => modal.hide());
         } else {
             const original = clientes.find(c => c.id === id);
-            if(original) {
-                clienteData.status = original.status;
-                if(original.ultimoPagamento) clienteData.ultimoPagamento = original.ultimoPagamento;
-            }
+            if(original) { clienteData.status = original.status; if(original.ultimoPagamento) clienteData.ultimoPagamento = original.ultimoPagamento; }
             db.collection("usuarios").doc(usuarioLogadoUid).collection("clientes").doc(id).set(clienteData).then(() => modal.hide());
         }
     }
     
     function addOneMonthFromToday() {
-        let hoje = new Date();
-        hoje.setMonth(hoje.getMonth() + 1);
-        const ano = hoje.getFullYear();
-        const mes = String(hoje.getMonth() + 1).padStart(2, '0');
-        const dia = String(hoje.getDate()).padStart(2, '0');
-        return `${ano}-${mes}-${dia}`;
+        let hoje = new Date(); hoje.setMonth(hoje.getMonth() + 1);
+        return `${hoje.getFullYear()}-${String(hoje.getMonth() + 1).padStart(2, '0')}-${String(hoje.getDate()).padStart(2, '0')}`;
     }
     
     function formatarDataBR(dataISO) {
@@ -1228,24 +1364,18 @@ _Após o pagamento, encaminhar o comprovante.
         if(!cliente) return;
         const painel = cliente.painel || 'central';
         if(!consumirCredito(painel)) return;
-
         let novaDataISO = "";
         if (cliente.data) {
             let partes = cliente.data.split('-');
             if (partes.length === 3) {
                 let dataBase = new Date(partes[0], partes[1] - 1, partes[2]);
                 dataBase.setMonth(dataBase.getMonth() + 1);
-                const ano = dataBase.getFullYear();
-                const mes = String(dataBase.getMonth() + 1).padStart(2, '0');
-                const dia = String(dataBase.getDate()).padStart(2, '0');
-                novaDataISO = `${ano}-${mes}-${dia}`;
+                novaDataISO = `${dataBase.getFullYear()}-${String(dataBase.getMonth() + 1).padStart(2, '0')}-${String(dataBase.getDate()).padStart(2, '0')}`;
             }
         }
         if (!novaDataISO) novaDataISO = addOneMonthFromToday();
-
         const novaDataBR = formatarDataBR(novaDataISO);
         const valorFormat = `R$ ${cliente.valor.toFixed(2)}`;
-
         let nomePainelProvedor = 'ITV';
         if (painel === 'central') nomePainelProvedor = config.nomePainel1 || 'CENTRAL';
         else if (painel === 'warez') nomePainelProvedor = config.nomePainel2 || 'WAREZ';
@@ -1253,16 +1383,9 @@ _Após o pagamento, encaminhar o comprovante.
         else if (painel === 'itvplayer') nomePainelProvedor = 'ITVPlayer';
 
         const msg = `✅𝕊𝔼𝕌 ℙ𝔸𝔾𝔸𝕄𝔼ℕ𝕋𝕆 𝔽𝕆𝕀 ℂ𝕆ℕ𝔽𝕀ℝ𝕄𝔸𝔻𝕆!!\n\nNome: ${cliente.nome}\nPlano Familia: ${valorFormat}\nProvedor: ${nomePainelProvedor}\nUsuário: ${cliente.user}\nSenha: ${cliente.pass}\nUrl: ${cliente.url}\nVence: ${novaDataBR}\n\nDivirta-se!!`;
-
-        if(cliente.tel) {
-            window.open(`https://wa.me/${cliente.tel.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`);
-        } else alert("Número não cadastrado!");
-
-        db.collection("usuarios").doc(usuarioLogadoUid).collection("clientes").doc(id).update({
-            data: novaDataISO,
-            status: 'ativo',
-            ultimoPagamento: new Date().toISOString()
-        }).catch(e => alert("Erro ao renovar: "+e.message));
+        if(cliente.tel) window.open(`https://wa.me/${cliente.tel.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`);
+        else alert("Número não cadastrado!");
+        db.collection("usuarios").doc(usuarioLogadoUid).collection("clientes").doc(id).update({ data: novaDataISO, status: 'ativo', ultimoPagamento: new Date().toISOString() }).catch(e => alert("Erro ao renovar: "+e.message));
     }
     
     function marcarAReceber(id) {
@@ -1271,35 +1394,24 @@ _Após o pagamento, encaminhar o comprovante.
         const painel = cliente.painel || 'central';
         if(!consumirCredito(painel)) return;
         const novaDataISO = addOneMonthFromToday();
-        const novaDataBR = formatarDataBR(novaDataISO);
-        const valorFormat = `R$ ${cliente.valor.toFixed(2)}`;
-        const msg = `⛔️𝕊𝔼𝕌 ℙ𝔸𝔾𝔸𝕄𝔼ℕ𝕋𝕆 ℕ𝔸𝕆 𝔽𝕆𝕀 ℂ𝕆ℕ𝔽𝕀ℝ𝕄𝔸𝔻𝕆!!\n\nNome: ${cliente.nome}\nPlano Familia: ${valorFormat}\nProvedor: ${cliente.serv || 'ITV'}\nUsuário: ${cliente.user}\nSenha: ${cliente.pass}\nUrl: ${cliente.url}\nVence: ${novaDataBR}\n\nDivirta-se!!`;
+        const msg = `⛔️𝕊𝔼𝕌 ℙ𝔸𝔾𝔸𝕄𝔼ℕ𝕋𝕆 ℕ𝔸𝕆 𝔽𝕆𝕀 ℂ𝕆ℕ𝔽𝕀ℝ𝕄𝔸𝔻𝕆!!\n\nNome: ${cliente.nome}\nPlano Familia: R$ ${cliente.valor.toFixed(2)}\nProvedor: ${cliente.serv || 'ITV'}\nUsuário: ${cliente.user}\nSenha: ${cliente.pass}\nUrl: ${cliente.url}\nVence: ${formatarDataBR(novaDataISO)}\n\nDivirta-se!!`;
         if(cliente.tel) window.open(`https://wa.me/${cliente.tel.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`);
         else alert("Número não cadastrado!");
-        db.collection("usuarios").doc(usuarioLogadoUid).collection("clientes").doc(id).update({
-            data: novaDataISO,
-            status: 'apagar'
-        });
+        db.collection("usuarios").doc(usuarioLogadoUid).collection("clientes").doc(id).update({ data: novaDataISO, status: 'apagar' });
     }
     
     function pagarCliente(id) {
         const cliente = clientes.find(c => c.id === id);
         if(!cliente) return;
-        const dataAtualBR = formatarDataBR(cliente.data);
-        const valorFormat = `R$ ${cliente.valor.toFixed(2)}`;
-        const msg = `✅𝕊𝔼𝕌 ℙ𝔸𝔾𝔸𝕄𝔼ℕ𝕋𝕆 𝔽𝕆𝕀 ℂ𝕆ℕ𝔽𝕀ℝ𝕄𝔸𝔻𝕆!!\n\nNome: ${cliente.nome}\nPlano Familia: ${valorFormat}\nProvedor: ${cliente.serv || 'ITV'}\nUsuário: ${cliente.user}\nSenha: ${cliente.pass}\nUrl: ${cliente.url}\nVence: ${dataAtualBR}\n\nDivirta-se!!`;
+        const msg = `✅𝕊𝔼𝕌 ℙ𝔸𝔾𝔸𝕄𝔼ℕ𝕋𝕆 𝔽𝕆𝕀 ℂ𝕆ℕ𝔽𝕀ℝ𝕄𝔸𝔻𝕆!!\n\nNome: ${cliente.nome}\nPlano Familia: R$ ${cliente.valor.toFixed(2)}\nProvedor: ${cliente.serv || 'ITV'}\nUsuário: ${cliente.user}\nSenha: ${cliente.pass}\nUrl: ${cliente.url}\nVence: ${formatarDataBR(cliente.data)}\n\nDivirta-se!!`;
         if(cliente.tel) window.open(`https://wa.me/${cliente.tel.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`);
         else alert("Número não cadastrado!");
-        db.collection("usuarios").doc(usuarioLogadoUid).collection("clientes").doc(id).update({
-            status: 'ativo',
-            ultimoPagamento: new Date().toISOString()
-        });
+        db.collection("usuarios").doc(usuarioLogadoUid).collection("clientes").doc(id).update({ status: 'ativo', ultimoPagamento: new Date().toISOString() });
     }
 
     function compartilharCliente(id) {
         const c = clientes.find(i => i.id === id);
-        if(!c) return;
-        if(!c.tel) return alert("Telefone não cadastrado!");
+        if(!c || !c.tel) return alert("Telefone não cadastrado!");
         const msg = `📺 *Dados de Acesso ITV*\n\n👤 Usuário: ${c.user || '-'}\n🔑 Senha: ${c.pass || '-'}\n🔗 Url: ${c.url || '-'}`;
         window.open(`https://wa.me/${c.tel.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`);
     }
@@ -1307,11 +1419,9 @@ _Após o pagamento, encaminhar o comprovante.
     function abrirAcoesCliente(id) {
         const c = clientes.find(i => i.id === id);
         if(!c) return;
-        
         document.getElementById('acoesTitulo').innerText = `👤 ${c.nome}`;
         document.getElementById('acoesSubtitulo').innerText = c.status === 'apagar' ? '⏳ Status: A RECEBER' : '';
-        
-        let infoHtml = `
+        document.getElementById('acoesInfoResumo').innerHTML = `
             <div class="info-item info-full"><span class="info-label">Nome:</span><span class="info-value">${c.nome}</span></div>
             <div class="info-item"><span class="info-label">Usuário:</span><span class="info-value">${c.user || '-'}</span></div>
             <div class="info-item"><span class="info-label">Senha:</span><span class="info-value">${c.pass || '-'}</span></div>
@@ -1319,24 +1429,11 @@ _Após o pagamento, encaminhar o comprovante.
             <div class="info-item"><span class="info-label">Painel:</span><span class="info-value">${(c.painel || 'central').toUpperCase()}</span></div>
             <div class="info-item info-full"><span class="info-label">Vencimento:</span><span class="info-value">${formatarDataBR(c.data)}</span></div>
         `;
-        document.getElementById('acoesInfoResumo').innerHTML = infoHtml;
-        
         const grid = document.getElementById('acoesGrid');
-        
         if(c.status === 'deletado') {
-            grid.innerHTML = `
-                <div class="modal-acoes-row">
-                    <button class="btn btn-info" onclick="restore('${c.id}'); bootstrap.Modal.getInstance(document.getElementById('modalAcoes')).hide();">♻️ RESTAURAR</button>
-                    <button class="btn btn-danger" onclick="hardDelete('${c.id}'); bootstrap.Modal.getInstance(document.getElementById('modalAcoes')).hide();">🗑️ EXCLUIR PERM</button>
-                </div>
-            `;
+            grid.innerHTML = `<div class="modal-acoes-row"><button class="btn btn-info" onclick="restore('${c.id}'); bootstrap.Modal.getInstance(document.getElementById('modalAcoes')).hide();">♻️ RESTAURAR</button><button class="btn btn-danger" onclick="hardDelete('${c.id}'); bootstrap.Modal.getInstance(document.getElementById('modalAcoes')).hide();">🗑️ EXCLUIR PERM</button></div>`;
         } else if(c.status === 'apagar') {
-            grid.innerHTML = `
-                <div class="modal-acoes-row">
-                    <button class="btn btn-success" onclick="pagarCliente('${c.id}'); bootstrap.Modal.getInstance(document.getElementById('modalAcoes')).hide();">✅ PAGAR</button>
-                    <button class="btn bg-lilas" onclick="editCliente('${c.id}'); bootstrap.Modal.getInstance(document.getElementById('modalAcoes')).hide();">✏️ EDITAR</button>
-                </div>
-            `;
+            grid.innerHTML = `<div class="modal-acoes-row"><button class="btn btn-success" onclick="pagarCliente('${c.id}'); bootstrap.Modal.getInstance(document.getElementById('modalAcoes')).hide();">✅ PAGAR</button><button class="btn bg-lilas" onclick="editCliente('${c.id}'); bootstrap.Modal.getInstance(document.getElementById('modalAcoes')).hide();">✏️ EDITAR</button></div>`;
         } else {
             grid.innerHTML = `
                 <div class="modal-acoes-row">
@@ -1357,8 +1454,12 @@ _Após o pagamento, encaminhar o comprovante.
     
     function renderClientes() {
         const listaDiv = document.getElementById('listaClientes');
-        const searchTerm = document.getElementById('search').value.toLowerCase();
-        listaDiv.innerHTML = "";
+        const listaDivDesk = document.getElementById('listaClientesDesktop');
+        const searchMobile = document.getElementById('search') ? document.getElementById('search').value : "";
+        const searchDesk = document.getElementById('searchDesktop') ? document.getElementById('searchDesktop').value : "";
+        const searchTerm = (searchMobile || searchDesk).toLowerCase();
+        
+        let htmlContent = "";
         let counts = { ativos:0, vencer:0, exp:0, apagar:0, del:0 };
         const hoje = new Date();
         
@@ -1390,7 +1491,7 @@ _Após o pagamento, encaminhar o comprovante.
             else if(statusReal === 'vencer') badgeClass = 'bg-warning text-dark';
             let dataExib = c.data.split('-').reverse().join('/');
             
-            listaDiv.innerHTML += `
+            htmlContent += `
                 <div class="card-cliente" onclick="abrirAcoesCliente('${c.id}')">
                     <div class="d-flex justify-content-between align-items-start flex-wrap">
                         <h5 class="mb-1">${c.nome}</h5>
@@ -1405,11 +1506,16 @@ _Após o pagamento, encaminhar o comprovante.
             `;
         });
         
-        document.getElementById('countAtivos').innerText = counts.ativos;
-        document.getElementById('countVencer').innerText = counts.vencer;
-        document.getElementById('countExp').innerText = counts.exp;
-        document.getElementById('countPagar').innerText = counts.apagar;
-        document.getElementById('countDel').innerText = counts.del;
+        if(listaDiv) listaDiv.innerHTML = htmlContent;
+        if(listaDivDesk) listaDivDesk.innerHTML = htmlContent;
+        
+        const updateCount = (id, val) => { const el = document.getElementById(id); if(el) el.innerText = val; };
+        updateCount('countAtivos', counts.ativos); updateCount('countAtivosDesk', counts.ativos);
+        updateCount('countVencer', counts.vencer); updateCount('countVencerDesk', counts.vencer);
+        updateCount('countExp', counts.exp); updateCount('countExpDesk', counts.exp);
+        updateCount('countPagar', counts.apagar); updateCount('countPagarDesk', counts.apagar);
+        updateCount('countDel', counts.del);
+        
         renderFinanceiro();
     }
     
@@ -1427,38 +1533,32 @@ _Após o pagamento, encaminhar o comprovante.
     }
     
     function renderFinanceiro() {
-        const dataFiltro = document.getElementById('filterMes').value;
-        const mesFiltro = dataFiltro.slice(0, 7); 
-        let recebidoMes = 0;
-        let totalGeral = 0;
-        let totalActive = 0;
+        const filterMesEl = document.getElementById('filterMes') || document.getElementById('filterMesDesktop');
+        const dataFiltro = filterMesEl ? filterMesEl.value : "";
+        const mesFiltro = dataFiltro ? dataFiltro.slice(0, 7) : "";
+        let recebidoMes = 0, totalGeral = 0, totalActive = 0;
         
         clientes.forEach(c => {
             if(c.status !== 'deletado') {
                 let val = parseFloat(c.valor) || 0;
-                totalGeral += val;
-                totalActive++;
-                
+                totalGeral += val; totalActive++;
                 let mesPagamentoLocal = "";
                 if (c.ultimoPagamento) {
                     const dataPagamento = new Date(c.ultimoPagamento);
-                    const ano = dataPagamento.getFullYear();
-                    const mes = String(dataPagamento.getMonth() + 1).padStart(2, '0');
-                    mesPagamentoLocal = `${ano}-${mes}`;
+                    mesPagamentoLocal = `${dataPagamento.getFullYear()}-${String(dataPagamento.getMonth() + 1).padStart(2, '0')}`;
                 }
-                
-                if(mesPagamentoLocal === mesFiltro) {
-                    recebidoMes += val;
-                }
+                if(mesPagamentoLocal === mesFiltro) recebidoMes += val;
             }
         });
         
         let aReceber = totalGeral - recebidoMes;
-        
-        document.getElementById('finRecebido').innerText = `R$ ${recebidoMes.toFixed(2)}`;
-        document.getElementById('finPendente').innerText = `R$ ${aReceber.toFixed(2)}`;
-        document.getElementById('finTotalClientes').innerText = totalActive;
-        document.getElementById('finGeral').innerText = `R$ ${totalGeral.toFixed(2)}`;
+        const updateVal = (id, val) => { const el = document.getElementById(id); if(el) el.innerText = `R$ ${val.toFixed(2)}`; };
+        const updateTxt = (id, val) => { const el = document.getElementById(id); if(el) el.innerText = val; };
+
+        updateVal('finRecebido', recebidoMes); updateVal('finRecebidoDesk', recebidoMes);
+        updateVal('finPendente', aReceber); updateVal('finPendenteDesk', aReceber);
+        updateTxt('finTotalClientes', totalActive); updateTxt('finTotalClientesDesk', totalActive);
+        updateVal('finGeral', totalGeral); updateVal('finGeralDesk', totalGeral);
     }
     
     function filterData(f) { currentFilter = f; renderClientes(); }
@@ -1477,51 +1577,19 @@ _Após o pagamento, encaminhar o comprovante.
             new bootstrap.Modal(document.getElementById('modalCadastro')).show();
         }
     }
-
-    // =========================================================================
-    // NOVAS FUNÇÕES PARA DASHBOARD DESKTOP
-    // =========================================================================
-    function toggleFullScreen() {
-        if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen().catch(err => {
-                console.log(`Erro ao ativar tela cheia: ${err.message}`);
-            });
-        } else {
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-            }
-        }
-    }
     
-    window.renovarCliente = renovarCliente;
-    window.marcarAReceber = marcarAReceber;
-    window.pagarCliente = pagarCliente;
-    window.compartilharCliente = compartilharCliente;
-    window.abrirAcoesCliente = abrirAcoesCliente;
-    window.sendCobrancaZap = sendCobrancaZap;
-    window.openWhatsApp = openWhatsApp;
-    window.editCliente = editCliente;
-    window.softDelete = softDelete;
-    window.restore = restore;
-    window.hardDelete = hardDelete;
-    window.filterData = filterData;
-    window.accessPanel = accessPanel;
-    window.saveSettings = saveSettings;
-    window.showModalCadastro = showModalCadastro;
-    window.toggleMenuSecao = toggleMenuSecao;
-    window.ajustarCredito = ajustarCredito;
+    // Expose functions globally
+    window.renovarCliente = renovarCliente; window.marcarAReceber = marcarAReceber; window.pagarCliente = pagarCliente;
+    window.compartilharCliente = compartilharCliente; window.abrirAcoesCliente = abrirAcoesCliente; window.sendCobrancaZap = sendCobrancaZap;
+    window.openWhatsApp = openWhatsApp; window.editCliente = editCliente; window.softDelete = softDelete; window.restore = restore;
+    window.hardDelete = hardDelete; window.filterData = filterData; window.accessPanel = accessPanel; window.saveSettings = saveSettings;
+    window.showModalCadastro = showModalCadastro; window.toggleMenuSecao = toggleMenuSecao; window.ajustarCredito = ajustarCredito;
     window.atualizarDisplayCredito = atualizarDisplayCredito;
-    
-    // Expor funções do Banco ITV globalmente
-    window.abrirBancoItv = abrirBancoItv;
-    window.mudarViewBanco = mudarViewBanco;
-    window.calcularTotalBanco = calcularTotalBanco;
-    window.salvarEmprestimo = salvarEmprestimo;
-    window.pagarParcelaBanco = pagarParcelaBanco;
-    window.cobrarWhatsAppBanco = cobrarWhatsAppBanco;
-    window.excluirEmprestimo = excluirEmprestimo;
-    window.editarEmprestimo = editarEmprestimo;
-    window.toggleFullScreen = toggleFullScreen;
+    window.abrirBancoItv = abrirBancoItv; window.mudarViewBanco = mudarViewBanco; window.calcularTotalBanco = calcularTotalBanco;
+    window.salvarEmprestimo = salvarEmprestimo; window.pagarParcelaBanco = pagarParcelaBanco; window.cobrarWhatsAppBanco = cobrarWhatsAppBanco;
+    window.excluirEmprestimo = excluirEmprestimo; window.editarEmprestimo = editarEmprestimo;
+    window.toggleFullScreen = toggleFullScreen; window.toggleDesktopSubmenu = toggleDesktopSubmenu; window.showDesktopView = showDesktopView;
+    window.saveSettingsDesktop = saveSettingsDesktop;
 </script>
 </body>
 </html>
