@@ -670,18 +670,46 @@
   .stat-value { font-size: 20px; font-weight: 800; color: var(--accent-orange); }
   .stat-label { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
 
-  .sale-item { background: var(--bg-card); border: 1px solid var(--border); padding: 14px; border-radius: var(--radius-sm); margin-bottom: 8px; }
-  .sale-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-  .sale-id { font-weight: 700; font-size: 13px; color: var(--accent-orange); }
-  .sale-date { font-size: 12px; color: var(--text-muted); }
-  .sale-total { font-size: 18px; font-weight: 800; color: var(--success); }
+  .sale-item { background: var(--bg-card); border: 1px solid var(--border); padding: 14px; border-radius: var(--radius-sm); margin-bottom: 12px; }
   
+  .sale-header-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sale-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+  }
+  .sale-header-label {
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+  .sale-header-val {
+    color: var(--text-white);
+    font-weight: 500;
+  }
+
+  .sale-products-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent-orange);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
   .sale-details-block {
     background: var(--bg-dark);
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
     padding: 10px 12px;
-    margin-top: 8px;
+    margin-bottom: 6px;
     font-size: 13px;
     color: var(--text-light);
     display: flex;
@@ -703,6 +731,20 @@
     text-align: right;
   }
 
+  .sale-total-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+  }
+  .sale-total-text {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--success);
+  }
+
   .delete-inline-btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 4px; height: 34px; padding: 0 10px;
     border: none; border-radius: 8px; background: rgba(239,68,68,0.2); color: var(--danger); font-size: 12px;
@@ -710,8 +752,6 @@
   }
   .delete-inline-btn:active { transform: scale(0.94); background: rgba(239,68,68,0.35); }
   .delete-inline-btn:hover { background: rgba(239,68,68,0.35); }
-
-  .sale-total-wrap { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 
   .delete-hint {
     display: flex; align-items: center; gap: 8px; background: rgba(239,68,68,0.12); border: 1px dashed rgba(239,68,68,0.5);
@@ -2114,11 +2154,13 @@
     } else {
       list.innerHTML = hintHtml + filtered.map(s => {
         const d = new Date(s.date);
-        const dateStr = d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+        const dateStr = d.toLocaleDateString('pt-BR');
+        const timeStr = d.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
         const deleteBtn = deleteMode ? `<button class="delete-inline-btn" onclick="deleteSale(${s.id})">🗑️ Deletar</button>` : '';
 
-        const clientNameStr = s.client && s.client.name ? escapeHtml(s.client.name) : 'Cliente não identificado';
+        const clientNameStr = s.client && s.client.name ? escapeHtml(s.client.name) : 'Não informado';
         const clientWhatsappStr = s.client && s.client.whatsapp ? escapeHtml(formatWhatsapp(s.client.whatsapp)) : 'Não informado';
+        const saleNumberStr = String(s.id).slice(-6);
 
         const itemsDetailsHtml = s.items.map(i => {
           const itemTotal = i.price * i.qty;
@@ -2126,14 +2168,6 @@
             <div class="sale-details-block">
               <div class="sale-details-row">
                 <span class="sale-details-label">Nome:</span>
-                <span class="sale-details-val">${clientNameStr}</span>
-              </div>
-              <div class="sale-details-row">
-                <span class="sale-details-label">WhatsApp:</span>
-                <span class="sale-details-val">${clientWhatsappStr}</span>
-              </div>
-              <div class="sale-details-row">
-                <span class="sale-details-label">Produto:</span>
                 <span class="sale-details-val">${escapeHtml(i.name)}</span>
               </div>
               <div class="sale-details-row">
@@ -2154,17 +2188,32 @@
 
         return `
           <div class="sale-item">
-            <div class="sale-header">
-              <div>
-                <div class="sale-id">Venda #${String(s.id).slice(-6)}</div>
-                <div class="sale-date">${dateStr}</div>
+            <div class="sale-header-info">
+              <div class="sale-header-row">
+                <span class="sale-header-label">None:</span>
+                <span class="sale-header-val">${clientNameStr}</span>
               </div>
-              <div class="sale-total-wrap">
-                <div class="sale-total">VALOR TOTAL: R$ ${s.total.toFixed(2)}</div>
-                ${deleteBtn}
+              <div class="sale-header-row">
+                <span class="sale-header-label">WhatsApp:</span>
+                <span class="sale-header-val">${clientWhatsappStr}</span>
+              </div>
+              <div class="sale-header-row">
+                <span class="sale-header-label">Número da Venda:</span>
+                <span class="sale-header-val">#${saleNumberStr}</span>
+              </div>
+              <div class="sale-header-row">
+                <span class="sale-header-label">Data e Hora:</span>
+                <span class="sale-header-val">${dateStr} Hora: ${timeStr}</span>
               </div>
             </div>
+
+            <div class="sale-products-title">PRODUTOS</div>
             <div>${itemsDetailsHtml}</div>
+
+            <div class="sale-total-footer">
+              <span class="sale-total-text">VALOR TOTAL DAS COMPRAS: R$ ${s.total.toFixed(2)}</span>
+              ${deleteBtn}
+            </div>
           </div>
         `;
       }).join('');
