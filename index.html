@@ -9,52 +9,14 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        html, body { background-color: #000; color: #fff; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif; margin: 0; padding: 0; width: 100%; height: 100%; overflow-x: hidden; }
-        
-        /* Layout Full Screen / Dashboard Desktop */
-        body { padding-bottom: 80px; }
-        @media (min-width: 992px) {
-            body { padding-bottom: 0; }
-            .desktop-wrapper {
-                display: flex;
-                flex-direction: column;
-                height: 100vh;
-                width: 100vw;
-                padding: 20px;
-                overflow: hidden;
-            }
-            .desktop-content-scroll {
-                flex: 1;
-                overflow-y: auto;
-                padding-bottom: 40px;
-            }
-            .desktop-container {
-                max-width: 1400px;
-                margin: 0 auto;
-                width: 100%;
-            }
-        }
-
+        body { background-color: #000; color: #fff; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif; padding-bottom: 80px; }
         .navbar { background-color: #111; border-top: 1px solid #333; position: fixed; bottom: 0; left: 0; right: 0; top: auto; z-index: 1020; padding: 6px 10px; }
-        @media (min-width: 992px) {
-            .navbar {
-                position: relative;
-                top: 0;
-                bottom: auto;
-                border-top: none;
-                border-bottom: 1px solid #333;
-                border-radius: 12px;
-                margin-bottom: 20px;
-            }
-            .btn-add-fixo { margin-top: 0 !important; }
-        }
-
         .card-cliente { background-color: #1a1a1a; border: 1px solid #333; border-radius: 12px; margin-bottom: 12px; padding: 14px; transition: all 0.1s ease; cursor: pointer; }
         .card-cliente:active { transform: scale(0.98); }
         .btn-small { font-size: 0.7rem; padding: 5px; flex: 1; margin: 2px; border: none; color: white; border-radius: 30px; font-weight: 500; }
         .bg-lilas { background-color: #9933ff !important; color: white; }
         #adminLock { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-        .menu-lateral { height: 100%; width: 0; position: fixed; z-index: 1050; top: 0; left: 0; background-color: #111; overflow-x: hidden; transition: 0.3s; padding-top: 60px; box-shadow: 2px 0 12px rgba(0,0,0,0.5); overflow-y: auto; }
+        .menu-lateral { height: 100%; width: 0; position: fixed; z-index: 1000; top: 0; left: 0; background-color: #111; overflow-x: hidden; transition: 0.3s; padding-top: 60px; box-shadow: 2px 0 12px rgba(0,0,0,0.5); overflow-y: auto; }
         .menu-lateral a, .menu-lateral label { padding: 8px 32px; text-decoration: none; font-size: 16px; color: #ddd; display: block; }
         .card-financeiro { background: #222; border-left: 4px solid #9933ff; border-radius: 12px; padding: 12px; margin-bottom: 12px; }
         .stat-val { font-size: 1.4rem; font-weight: bold; color: #00ff00; }
@@ -70,7 +32,7 @@
         .badge { font-size: 0.7rem; padding: 5px 10px; border-radius: 50px; }
         hr { opacity: 0.3; }
         .btn-outline-light { border-radius: 40px; }
-        .nav-buttons-painel { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+        .nav-buttons-painel { display: flex; gap: 8px; margin-bottom: 20px; }
         
         .cliente-info { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 10px; font-size: 0.78rem; color: #ccc; margin-top: 6px; }
         .cliente-info .info-item { display: flex; gap: 4px; }
@@ -86,40 +48,14 @@
         .navbar-inferior .nav-left, .navbar-inferior .nav-right { flex: 1; display: flex; align-items: center; }
         .navbar-inferior .nav-right { justify-content: flex-end; }
         .navbar-inferior .nav-center { flex: 0 0 auto; display: flex; justify-content: center; align-items: center; }
-        .btn-add-fixo {
-            background-color: #198754;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 52px;
-            height: 52px;
-            font-size: 1.8rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 -2px 12px rgba(25,135,84,0.5);
-            margin-top: -20px;
-        }
+        .btn-add-fixo { background-color: #198754; color: white; border: none; border-radius: 50%; width: 52px; height: 52px; font-size: 1.8rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 -2px 12px rgba(25,135,84,0.5); margin-top: -20px; }
         .btn-add-fixo:active { transform: scale(0.95); }
         .navbar-brand-bottom { color: #fff !important; font-weight: 600; font-size: 0.95rem; margin: 0; white-space: nowrap; }
         .navbar-brand-bottom small { display: block; font-size: 0.6rem; color: #aaa; font-weight: 400; }
         .btn-menu-bottom { background: transparent; border: none; color: #fff; font-size: 1.6rem; padding: 4px 8px; }
 
         .menu-btn-group { display: flex; flex-direction: column; gap: 10px; padding: 16px 20px; }
-        .menu-btn-principal {
-            background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
-            border: 1px solid #444;
-            color: #fff;
-            padding: 14px 16px;
-            border-radius: 14px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
+        .menu-btn-principal { background: linear-gradient(135deg, #2a2a2a, #1a1a1a); border: 1px solid #444; color: #fff; padding: 14px 16px; border-radius: 14px; font-size: 0.95rem; font-weight: 600; display: flex; align-items: center; gap: 10px; cursor: pointer; transition: all 0.2s; }
         .menu-btn-principal:active { transform: scale(0.98); border-color: #9933ff; }
         .menu-btn-principal.active { border-color: #9933ff; background: linear-gradient(135deg, #3a1a5a, #1a1a1a); }
         .menu-btn-principal .bi { font-size: 1.2rem; color: #9933ff; }
@@ -175,9 +111,149 @@
             .modal-acoes-row .btn { font-size: 0.72rem; padding: 9px 2px; }
             .navbar-brand-bottom { font-size: 0.85rem; }
         }
+
+        /* =========================================================================
+           NOVO: DESIGN DE DASHBOARD PARA DESKTOP (TELAS LARGAS)
+           ========================================================================= */
+        .desktop-topbar {
+            display: none; /* Oculto no mobile */
+            position: fixed;
+            top: 0;
+            left: 280px;
+            right: 0;
+            height: 70px;
+            background: rgba(17, 17, 17, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #222;
+            z-index: 1010;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+        }
+        .desktop-search {
+            width: 100%;
+            max-width: 400px;
+        }
+        .desktop-user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .desktop-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #9933ff, #0d6efd);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        @media (min-width: 992px) {
+            /* Ajuste do Body para acomodar Sidebar e Topbar */
+            body { 
+                padding-bottom: 0; 
+                padding-left: 280px; 
+                padding-top: 70px;
+                background-color: #0a0c10;
+            }
+            
+            /* Ocultar navegação mobile */
+            .navbar { display: none !important; }
+            
+            /* Sidebar fixa e elegante */
+            #mySidenav { 
+                width: 280px !important; 
+                box-shadow: 4px 0 24px rgba(0,0,0,0.5); 
+                border-right: 1px solid #222;
+                padding-top: 20px !important;
+            }
+            .closebtn { display: none !important; }
+            .menu-btn-group { padding: 20px; }
+            .menu-btn-principal { justify-content: flex-start; padding: 16px; font-size: 1rem; }
+            .menu-secao { padding: 0 20px 20px 20px; }
+            
+            /* Exibir Topbar */
+            .desktop-topbar { display: flex !important; }
+            
+            /* Container principal mais largo */
+            .container { max-width: 1400px; padding-top: 20px; }
+            
+            /* Grid de Clientes estilo Dashboard */
+            #listaClientes { 
+                display: grid; 
+                grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); 
+                gap: 16px; 
+            }
+            .card-cliente { 
+                margin-bottom: 0; 
+                height: 100%; 
+                display: flex; 
+                flex-direction: column; 
+                justify-content: space-between;
+                border: 1px solid #2a2e38;
+            }
+            .card-cliente:hover {
+                border-color: #9933ff;
+                transform: translateY(-2px);
+                box-shadow: 0 8px 24px rgba(153, 51, 255, 0.15);
+            }
+            
+            /* Cards Financeiros Aprimorados */
+            .card-financeiro { 
+                padding: 20px; 
+                border-radius: 16px;
+                background: linear-gradient(145deg, #1a1d24, #14161b);
+                border: 1px solid #2a2e38;
+                border-left: 4px solid #9933ff;
+                height: 100%;
+            }
+            .stat-val { font-size: 1.8rem; }
+            .stat-label { font-size: 0.8rem; }
+            
+            /* Filtros em linha no desktop */
+            .filter-buttons { 
+                flex-wrap: nowrap; 
+                overflow-x: auto; 
+                padding-bottom: 4px;
+            }
+            .filter-buttons button { min-width: 120px; }
+            
+            /* Modais mais largos no desktop */
+            .modal-dialog { max-width: 600px; }
+            .modal-banco-itv .modal-dialog { max-width: 1100px; }
+            
+            /* Ajuste de inputs no painel de configuração */
+            .painel-config-card { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+            .painel-config-card > div { grid-column: 1 / -1; }
+            .painel-config-card > label, .painel-config-card > .creditos-display { grid-column: span 1; }
+            .painel-config-card > .btn { grid-column: 1 / -1; margin-top: 10px; }
+        }
     </style>
 </head>
 <body>
+
+<!-- NOVO: Topbar para Desktop -->
+<div class="desktop-topbar">
+    <div class="d-flex align-items-center gap-3">
+        <h5 class="m-0 fw-bold text-white"><i class="bi bi-shield-lock text-success me-2"></i>ITVPlayer Dashboard</h5>
+    </div>
+    <div class="desktop-search">
+        <input type="text" id="searchDesktop" class="form-control" placeholder="🔍 Buscar cliente por nome..." onkeyup="document.getElementById('search').value = this.value; renderClientes()">
+    </div>
+    <div class="desktop-user-info">
+        <button class="btn btn-outline-light btn-sm rounded-pill" onclick="toggleFullScreen()" title="Tela Cheia">
+            <i class="bi bi-arrows-fullscreen"></i>
+        </button>
+        <div class="text-end d-none d-md-block">
+            <div class="fw-bold small" id="userEmailDisplayTop">Usuário</div>
+            <div class="text-secondary" style="font-size: 0.7rem;">Administrador</div>
+        </div>
+        <div class="desktop-avatar" id="userAvatar">U</div>
+    </div>
+</div>
 
 <div id="authOverlay">
     <div class="auth-card">
@@ -207,11 +283,18 @@
     <button class="btn btn-primary" onclick="unlockApp()">Desbloquear</button>
 </div>
 
-<!-- MENU LATERAL -->
+<!-- MENU LATERAL REESTRUTURADO COM 3 BOTÕES -->
 <div id="mySidenav" class="menu-lateral">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()" style="position:absolute; top:10px; right:20px; font-size:32px;">&times;</a>
     
+    <div class="text-center mb-4 px-3 d-none d-lg-block">
+        <h5 class="fw-bold text-white mb-0">ITVPlayer</h5>
+        <small class="text-secondary">Painel de Controle</small>
+    </div>
+    <hr class="border-secondary d-none d-lg-block">
+
     <div class="menu-btn-group">
+        <!-- 1° Botão - Conf Cobrança -->
         <button class="menu-btn-principal" onclick="toggleMenuSecao('secCobranca', this)">
             <i class="bi bi-chat-dots-fill"></i>
             <span>Conf Cobrança</span>
@@ -222,6 +305,7 @@
             <button class="btn btn-success w-100" onclick="saveSettings()">💾 Salvar Mensagem</button>
         </div>
 
+        <!-- 2° Botão - Conf Painel -->
         <button class="menu-btn-principal" onclick="toggleMenuSecao('secPaineis', this)">
             <i class="bi bi-hdd-stack-fill"></i>
             <span>Conf Painel</span>
@@ -229,6 +313,7 @@
         <div class="menu-secao" id="secPaineis">
             <h6>⚙️ Configuração dos Painéis</h6>
 
+            <!-- Painel CENTRAL -->
             <div class="painel-config-card">
                 <div class="toggle-container">
                     <h6 class="m-0"><i class="bi bi-broadcast text-info"></i> <span id="painel1Label">Painel 1 (CENTRAL)</span></h6>
@@ -255,6 +340,7 @@
                 </div>
             </div>
 
+            <!-- Painel WAREZ -->
             <div class="painel-config-card">
                 <div class="toggle-container">
                     <h6 class="m-0"><i class="bi bi-lightning-fill text-warning"></i> <span id="painel2Label">Painel 2 (WAREZ)</span></h6>
@@ -281,6 +367,7 @@
                 </div>
             </div>
 
+            <!-- Painel ZEUS -->
             <div class="painel-config-card">
                 <div class="toggle-container">
                     <h6 class="m-0"><i class="bi bi-fire text-danger"></i> <span id="painel3Label">Painel 3 (ZEUS)</span></h6>
@@ -310,70 +397,66 @@
             <button class="btn btn-success w-100 mt-2" onclick="saveSettings()">💾 Salvar Configurações</button>
         </div>
 
-        <button class="menu-btn-principal" onclick="handleLogout()" style="background: linear-gradient(135deg, #5a1a1a, #1a1a1a); border-color: #dc3545;">
+        <!-- 3° Botão - Sair -->
+        <button class="menu-btn-principal" onclick="handleLogout()" style="background: linear-gradient(135deg, #5a1a1a, #1a1a1a); border-color: #dc3545; margin-top: auto;">
             <i class="bi bi-box-arrow-right" style="color: #dc3545;"></i>
             <span>Sair</span>
         </button>
     </div>
 </div>
 
-<!-- CONTAINER PRINCIPAL FULL SCREEN / DESKTOP -->
-<div class="desktop-wrapper">
-    <div class="desktop-container desktop-content-scroll">
-
-        <!-- NAVBAR -->
-        <nav class="navbar">
-            <div class="navbar-inferior">
-                <div class="nav-left">
-                    <button class="btn-menu-bottom" onclick="openNav()"><i class="bi bi-list"></i></button>
-                </div>
-                <div class="nav-center">
-                    <button class="btn btn-add-fixo" onclick="showModalCadastro()"><i class="bi bi-plus-lg"></i></button>
-                </div>
-                <div class="nav-right">
-                    <div class="navbar-brand-bottom text-end">
-                        ITVPlayer
-                        <small id="userEmailDisplay"></small>
-                    </div>
-                </div>
-            </div>
-        </nav>
-
-        <div class="container-fluid mt-3 px-0">
-            <div id="adminPanel" class="mb-4 p-2">
-                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-                    <h5 class="m-0"><i class="bi bi-cash-stack text-success"></i> Financeiro</h5>
-                    <input type="date" id="filterMes" class="form-control w-auto bg-dark text-white border-secondary" style="max-width: 170px;">
-                </div>
-                <div class="row g-2">
-                    <div class="col-6 col-md-3"><div class="card-financeiro"><div class="stat-label">Recebido (Mês)</div><div class="stat-val" id="finRecebido">R$ 0,00</div></div></div>
-                    <div class="col-6 col-md-3"><div class="card-financeiro" style="border-left-color: #ffc107;"><div class="stat-label">A Receber</div><div class="stat-val text-warning" id="finPendente">R$ 0,00</div></div></div>
-                    <div class="col-6 col-md-3"><div class="card-financeiro" style="border-left-color: #0dcaf0;"><div class="stat-label">Total Clientes</div><div class="stat-val text-info" id="finTotalClientes">0</div></div></div>
-                    <div class="col-6 col-md-3"><div class="card-financeiro" style="border-left-color: #00ff00;"><div class="stat-label">Lucro Geral</div><div class="stat-val" id="finGeral" style="color: #00ff00;">R$ 0,00</div></div></div>
-                </div>
-                <hr class="border-secondary">
-            </div>
-
-            <button class="btn btn-success w-100 mb-3 rounded-pill fw-bold py-2" onclick="abrirBancoItv()" style="background: linear-gradient(135deg, #0d6efd, #0a58ca); border: none; box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);">
-                <i class="bi bi-bank2 me-2"></i> BANCO ITV - Gestão de Empréstimos
-            </button>
-
-            <input type="text" id="search" class="form-control mb-3" placeholder="🔍 Buscar cliente por nome..." onkeyup="renderClientes()">
-
-            <div class="nav-buttons-painel" id="paineisAtivos"></div>
-
-            <div class="filter-buttons">
-                <button class="btn-small bg-primary" onclick="filterData('ativos')">ATIVOS <span id="countAtivos">0</span></button>
-                <button class="btn-small" style="background-color: orange;" onclick="filterData('vencer')">A VENCER <span id="countVencer">0</span></button>
-                <button class="btn-small bg-danger" onclick="filterData('expirados')">EXPIRADOS <span id="countExp">0</span></button>
-                <button class="btn-small bg-info" onclick="filterData('apagar')">A RECEBER <span id="countPagar">0</span></button>
-                <button class="btn-small bg-secondary" onclick="filterData('deletados')" style="display: none;">LIXO <span id="countDel">0</span></button>
-            </div>
-
-            <div id="listaClientes"></div>
+<!-- NOVA NAVBAR FIXA NA PARTE INFERIOR (MOBILE) -->
+<nav class="navbar">
+    <div class="navbar-inferior">
+        <div class="nav-left">
+            <button class="btn-menu-bottom" onclick="openNav()"><i class="bi bi-list"></i></button>
         </div>
-
+        <div class="nav-center">
+            <button class="btn btn-add-fixo" onclick="showModalCadastro()"><i class="bi bi-plus-lg"></i></button>
+        </div>
+        <div class="nav-right">
+            <div class="navbar-brand-bottom text-end">
+                ITVPlayer
+                <small id="userEmailDisplay"></small>
+            </div>
+        </div>
     </div>
+</nav>
+
+<div class="container mt-2">
+    <div id="adminPanel" class="mb-4 p-2">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+            <h5 class="m-0"><i class="bi bi-cash-stack text-success"></i> Financeiro</h5>
+            <input type="date" id="filterMes" class="form-control w-auto bg-dark text-white border-secondary" style="max-width: 170px;">
+        </div>
+        <div class="row g-3">
+            <div class="col-6 col-md-3"><div class="card-financeiro"><div class="stat-label">Recebido (Mês)</div><div class="stat-val" id="finRecebido">R$ 0,00</div></div></div>
+            <div class="col-6 col-md-3"><div class="card-financeiro" style="border-left-color: #ffc107;"><div class="stat-label">A Receber</div><div class="stat-val text-warning" id="finPendente">R$ 0,00</div></div></div>
+            <div class="col-6 col-md-3"><div class="card-financeiro" style="border-left-color: #0dcaf0;"><div class="stat-label">Total Clientes</div><div class="stat-val text-info" id="finTotalClientes">0</div></div></div>
+            <div class="col-6 col-md-3"><div class="card-financeiro" style="border-left-color: #00ff00;"><div class="stat-label">Lucro Geral</div><div class="stat-val" id="finGeral" style="color: #00ff00;">R$ 0,00</div></div></div>
+        </div>
+        <hr class="border-secondary">
+    </div>
+
+    <!-- BOTÃO BANCO ITV ACIMA DA BUSCA -->
+    <button class="btn btn-success w-100 mb-3 rounded-pill fw-bold py-2" onclick="abrirBancoItv()" style="background: linear-gradient(135deg, #0d6efd, #0a58ca); border: none; box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);">
+        <i class="bi bi-bank2 me-2"></i> BANCO ITV - Gestão de Empréstimos
+    </button>
+
+    <!-- Busca Mobile (oculta no desktop via CSS se desejar, mas mantida para compatibilidade) -->
+    <input type="text" id="search" class="form-control mb-3 d-lg-none" placeholder="🔍 Buscar cliente por nome..." onkeyup="document.getElementById('searchDesktop').value = this.value; renderClientes()">
+
+    <div class="nav-buttons-painel" id="paineisAtivos"></div>
+
+    <div class="filter-buttons">
+        <button class="btn-small bg-primary" onclick="filterData('ativos')">ATIVOS <span id="countAtivos">0</span></button>
+        <button class="btn-small" style="background-color: orange;" onclick="filterData('vencer')">A VENCER <span id="countVencer">0</span></button>
+        <button class="btn-small bg-danger" onclick="filterData('expirados')">EXPIRADOS <span id="countExp">0</span></button>
+        <button class="btn-small bg-info" onclick="filterData('apagar')">A RECEBER <span id="countPagar">0</span></button>
+        <button class="btn-small bg-secondary" onclick="filterData('deletados')" style="display: none;">LIXO <span id="countDel">0</span></button>
+    </div>
+
+    <div id="listaClientes"></div>
 </div>
 
 <!-- Modal Cadastro/Edição -->
@@ -407,7 +490,7 @@
     </div>
 </div>
 
-<!-- Modal de Ações do Cliente -->
+<!-- Modal de Ações do Cliente (abre ao clicar no card) -->
 <div class="modal fade" id="modalAcoes" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content bg-dark text-white">
@@ -427,7 +510,9 @@
     </div>
 </div>
 
-<!-- MODAL: BANCO ITV -->
+<!-- ========================================================================
+     NOVO MODAL: BANCO ITV (Aplicativo de Empréstimos)
+     ======================================================================== -->
 <div class="modal fade modal-banco-itv" id="modalBancoItv" tabindex="-1" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
@@ -440,12 +525,14 @@
             </div>
             
             <div class="px-3 px-md-4">
+                <!-- Navegação Interna do App -->
                 <div class="banco-nav">
                     <button class="banco-nav-btn active" onclick="mudarViewBanco('dashboard', this)"><i class="bi bi-pie-chart me-1"></i> Painel</button>
                     <button class="banco-nav-btn" onclick="mudarViewBanco('lista', this)"><i class="bi bi-people me-1"></i> Clientes</button>
                     <button class="banco-nav-btn" onclick="mudarViewBanco('novo', this)"><i class="bi bi-plus-circle me-1"></i> Novo</button>
                 </div>
 
+                <!-- VIEW 1: DASHBOARD FINANCEIRO -->
                 <div id="view-dashboard" class="view-section active">
                     <div class="row g-3 mb-4">
                         <div class="col-6 col-md-3">
@@ -477,11 +564,13 @@
                     <div id="listaAtrasadosBanco"></div>
                 </div>
 
+                <!-- VIEW 2: LISTA DE CLIENTES -->
                 <div id="view-lista" class="view-section">
                     <input type="text" id="searchBanco" class="form-control mb-3" placeholder="🔍 Buscar no Banco ITV..." onkeyup="renderizarListaBanco()">
                     <div id="listaEmprestimosBanco"></div>
                 </div>
 
+                <!-- VIEW 3: NOVO EMPRÉSTIMO -->
                 <div id="view-novo" class="view-section">
                     <div class="fintech-card">
                         <h5 class="mb-3"><i class="bi bi-file-earmark-plus me-2"></i>Cadastrar Novo Empréstimo</h5>
@@ -567,6 +656,10 @@
     };
     let currentFilter = 'ativos';
     let usuarioLogadoUid = null;
+
+    // =========================================================================
+    // VARIÁVEIS E FUNÇÕES DO BANCO ITV
+    // =========================================================================
     let emprestimos = [];
 
     function abrirBancoItv() {
@@ -621,6 +714,8 @@
             status: 'ativo',
             dataCriacao: new Date().toISOString()
         };
+
+        const modalEl = document.getElementById('modalBancoItv');
         
         if(id === "") {
             db.collection("usuarios").doc(usuarioLogadoUid).collection("emprestimos").add(dados).then(() => {
@@ -652,6 +747,7 @@
     function renderizarDashboardBanco() {
         let totalEmprestado = 0, totalRecebido = 0, totalPendente = 0, totalLucro = 0;
         let atrasadosHtml = '';
+
         const hoje = new Date();
 
         emprestimos.forEach(e => {
@@ -698,6 +794,7 @@
         document.getElementById('bancoTotalRecebido').innerText = totalRecebido.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         document.getElementById('bancoTotalPendente').innerText = totalPendente.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         document.getElementById('bancoTotalLucro').innerText = totalLucro.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        
         document.getElementById('listaAtrasadosBanco').innerHTML = atrasadosHtml || '<div class="text-center text-secondary py-3">Nenhum empréstimo atrasado. 🎉</div>';
     }
 
@@ -811,9 +908,11 @@
                     const pendente = Math.max(0, parseFloat(e.valorTotal) - (valorParcela * novasParcelasPagas));
                     const pendenteFmt = pendente.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
                     const proximaDataFmt = formatarDataBR(novaDataVencISO);
+                    
                     const proximaDataTexto = novoStatus === 'pago' ? 'EMPRÉSTIMO QUITADO! 🎉' : proximaDataFmt;
 
-                    const msg = `📩 𝕞𝕤𝕘-𝕒𝕦𝕥**omáti**𝕔𝕒📩\n✅*BANCO ITV* - 𝕊𝔼𝕌 ℙ𝔸𝔾𝔸𝕄𝔼ℕ𝕋𝕆 𝔽𝕆𝕀 ℂ𝕆ℕ𝔽𝕀ℝ𝕄𝔸𝔻𝕆!!\n\nOlá ${e.nome},\nValor do Empréstimo R$: ${valorTotalFmt}.\n\nRecebemos sua parcela nº: ${novasParcelasPagas}/${parcelas}.\nValor da Parcela R$: ${valorParcelaFmt}.\nValor Pendente R$: ${pendenteFmt}.\nData do Próximo Parcela: ${proximaDataTexto}`;
+                    const msg = `📩 𝕞𝕤𝕘-𝕒𝕦𝕥𝕠𝕞á𝕥𝕚𝕔𝕒📩\n✅*BANCO ITV* - 𝕊𝔼𝕌 ℙ𝔸𝔾𝔸𝕄𝔼ℕ𝕋𝕆 𝔽𝕆𝕀 ℂ𝕆ℕ𝔽𝕀ℝ𝕄𝔸𝔻𝕆!!\n\nOlá ${e.nome},\nValor do Empréstimo R$: ${valorTotalFmt}.\n\nRecebemos sua parcela nº: ${novasParcelasPagas}/${parcelas}.\nValor da Parcela R$: ${valorParcelaFmt}.\nValor Pendente R$: ${pendenteFmt}.\nData do Próximo Parcela: ${proximaDataTexto}`;
+                    
                     window.open(`https://wa.me/${e.telefone.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`);
                 }
                 alert("✅ Parcela registrada com sucesso!");
@@ -840,7 +939,7 @@
         const dataVencFmt = formatarDataBR(e.dataVencimento);
 
         const msg = `📩 𝕞𝕤𝕘-𝕒𝕦𝕥𝕠𝕞á𝕥𝕚𝕔𝕒📩
-⛔️*BANCO ITV* - 𝕊𝔼𝕌 ℙ𝔸𝔾𝔸𝕄𝔼ℕ𝕋𝕆 ℕ𝔸𝕆 𝔽𝕆𝕀 ℂ𝕆ℕ𝔽𝕀ℝ𝕄𝔸𝔻𝕆!!
+⛔️*BANCO ITV* -  𝕊𝔼𝕌 ℙ𝔸𝔾𝔸𝕄𝔼ℕ𝕋𝕆 ℕ𝔸𝕆 𝔽𝕆𝕀 ℂ𝕆ℕ𝔽𝕀ℝ𝕄𝔸𝔻𝕆!!
 
 Olá ${e.nome},
 Valor do Empréstimo R$: ${valorTotalFmt}.
@@ -872,6 +971,10 @@ _Após o pagamento, encaminhar o comprovante.
         }
     }
 
+    // =========================================================================
+    // FIM DAS FUNÇÕES DO BANCO ITV
+    // =========================================================================
+
     const hojeLocal = new Date();
     const anoLocal = hojeLocal.getFullYear();
     const mesLocal = String(hojeLocal.getMonth() + 1).padStart(2, '0');
@@ -881,12 +984,22 @@ _Após o pagamento, encaminhar o comprovante.
     auth.onAuthStateChanged(user => {
         if (user) {
             usuarioLogadoUid = user.uid;
-            document.getElementById('userEmailDisplay').innerText = user.email || "";
+            const email = user.email || "";
+            document.getElementById('userEmailDisplay').innerText = email;
+            document.getElementById('userEmailDisplayTop').innerText = email;
+            document.getElementById('userAvatar').innerText = email.charAt(0).toUpperCase();
             document.getElementById('authOverlay').style.display = 'none';
             syncConfigAndClients();
+            
+            // Solicitar tela cheia automaticamente no desktop (opcional, pode ser bloqueado pelo navegador)
+            if(window.innerWidth >= 992) {
+                // toggleFullScreen(); // Descomente se quiser forçar fullscreen ao logar (pode ser bloqueado por políticas do navegador sem interação do usuário)
+            }
         } else {
             usuarioLogadoUid = null;
             document.getElementById('userEmailDisplay').innerText = "";
+            document.getElementById('userEmailDisplayTop').innerText = "Usuário";
+            document.getElementById('userAvatar').innerText = "U";
             document.getElementById('authOverlay').style.display = 'flex';
             document.getElementById('adminLock').style.display = 'none';
         }
@@ -901,7 +1014,9 @@ _Após o pagamento, encaminhar o comprovante.
     function handleLogout() { auth.signOut().then(() => closeNav()); }
     function openNav() { document.getElementById("mySidenav").style.width = "300px"; }
     function closeNav() {
-        document.getElementById("mySidenav").style.width = "0";
+        if(window.innerWidth < 992) {
+            document.getElementById("mySidenav").style.width = "0";
+        }
         document.querySelectorAll('.menu-secao').forEach(s => s.classList.remove('active'));
         document.querySelectorAll('.menu-btn-principal').forEach(b => b.classList.remove('active'));
     }
@@ -1040,13 +1155,13 @@ _Após o pagamento, encaminhar o comprovante.
         const container = document.getElementById('paineisAtivos');
         container.innerHTML = '';
         if(config.togglePainel1) {
-            container.innerHTML += `<button class="btn btn-outline-light btn-sm flex-fill" onclick="accessPanel(1)">📡 ${config.nomePainel1} <span id="badgeCentral" class="badge-creditos">${config.credCentral || 0}</span></button>`;
+            container.innerHTML += `<button class="btn btn-outline-light btn-sm w-100" onclick="accessPanel(1)">📡 ${config.nomePainel1} <span id="badgeCentral" class="badge-creditos">${config.credCentral || 0}</span></button>`;
         }
         if(config.togglePainel2) {
-            container.innerHTML += `<button class="btn btn-outline-light btn-sm flex-fill" onclick="accessPanel(2)">⚡ ${config.nomePainel2} <span id="badgeWarez" class="badge-creditos">${config.credWarez || 0}</span></button>`;
+            container.innerHTML += `<button class="btn btn-outline-light btn-sm w-100" onclick="accessPanel(2)">⚡ ${config.nomePainel2} <span id="badgeWarez" class="badge-creditos">${config.credWarez || 0}</span></button>`;
         }
         if(config.togglePainel3) {
-            container.innerHTML += `<button class="btn btn-outline-light btn-sm flex-fill" onclick="accessPanel(3)">🔥 ${config.nomePainel3} <span id="badgeZeus" class="badge-creditos">${config.credZeus || 0}</span></button>`;
+            container.innerHTML += `<button class="btn btn-outline-light btn-sm w-100" onclick="accessPanel(3)">🔥 ${config.nomePainel3} <span id="badgeZeus" class="badge-creditos">${config.credZeus || 0}</span></button>`;
         }
     }
 
@@ -1361,7 +1476,23 @@ _Após o pagamento, encaminhar o comprovante.
             document.getElementById('cPainel').value = c.painel || 'central';
             new bootstrap.Modal(document.getElementById('modalCadastro')).show();
         }
-    }    
+    }
+
+    // =========================================================================
+    // NOVAS FUNÇÕES PARA DASHBOARD DESKTOP
+    // =========================================================================
+    function toggleFullScreen() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(err => {
+                console.log(`Erro ao ativar tela cheia: ${err.message}`);
+            });
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+    }
+    
     window.renovarCliente = renovarCliente;
     window.marcarAReceber = marcarAReceber;
     window.pagarCliente = pagarCliente;
@@ -1380,6 +1511,8 @@ _Após o pagamento, encaminhar o comprovante.
     window.toggleMenuSecao = toggleMenuSecao;
     window.ajustarCredito = ajustarCredito;
     window.atualizarDisplayCredito = atualizarDisplayCredito;
+    
+    // Expor funções do Banco ITV globalmente
     window.abrirBancoItv = abrirBancoItv;
     window.mudarViewBanco = mudarViewBanco;
     window.calcularTotalBanco = calcularTotalBanco;
@@ -1388,6 +1521,7 @@ _Após o pagamento, encaminhar o comprovante.
     window.cobrarWhatsAppBanco = cobrarWhatsAppBanco;
     window.excluirEmprestimo = excluirEmprestimo;
     window.editarEmprestimo = editarEmprestimo;
+    window.toggleFullScreen = toggleFullScreen;
 </script>
 </body>
 </html>
