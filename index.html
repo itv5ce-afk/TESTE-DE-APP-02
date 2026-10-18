@@ -9,8 +9,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { background-color: #000; color: #fff; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif; padding-bottom: 80px; margin: 0; }
-        .navbar { background-color: #111; border-top: 1px solid #333; position: fixed; bottom: 0; left: 0; right: 0; top: auto; z-index: 1020; padding: 6px 10px; }
+        body { background-color: #000; color: #fff; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif; padding-bottom: 80px; }
         .card-cliente { background-color: #1a1a1a; border: 1px solid #333; border-radius: 12px; margin-bottom: 12px; padding: 14px; transition: all 0.1s ease; cursor: pointer; }
         .card-cliente:active { transform: scale(0.98); }
         .btn-small { font-size: 0.7rem; padding: 5px; flex: 1; margin: 2px; border: none; color: white; border-radius: 30px; font-weight: 500; }
@@ -385,337 +384,552 @@
         }
 
         /* ========================================================================
-           NOVO: LAYOUT DESKTOP (FULL SCREEN)
+           NOVO: ESTILOS PARA O DASHBOARD DESKTOP (COMPUTADOR)
            ======================================================================== */
-        @media (min-width: 1024px) {
-            body {
+        .desktop-wrapper {
+            display: none;
+        }
+        @media (min-width: 992px) {
+            body.desktop-mode {
                 padding-bottom: 0;
                 overflow: hidden;
             }
-            
-            /* Ocultar elementos mobile no desktop */
-            .navbar,
-            .menu-lateral,
-            #viewRevenda > .d-flex.justify-content-between > button {
+            body.desktop-mode .mobile-wrapper {
                 display: none !important;
             }
-            
-            /* Container principal desktop */
-            .desktop-layout {
-                display: flex !important;
-                height: 100vh;
+            body.desktop-mode .desktop-wrapper {
+                display: flex;
                 width: 100vw;
+                height: 100vh;
                 overflow: hidden;
             }
-            
-            /* Sidebar Desktop */
-            .desktop-sidebar {
-                width: 280px;
-                background: linear-gradient(180deg, #111 0%, #0a0a0a 100%);
-                border-right: 1px solid #333;
-                display: flex;
-                flex-direction: column;
-                overflow-y: auto;
+            body.desktop-mode .navbar {
+                display: none !important;
             }
-            
-            .desktop-sidebar-header {
-                padding: 24px 20px;
-                border-bottom: 1px solid #333;
-                text-align: center;
-            }
-            
-            .desktop-sidebar-header h4 {
-                margin: 0;
-                color: #fff;
-                font-weight: 700;
-                font-size: 1.3rem;
-            }
-            
-            .desktop-sidebar-header small {
-                color: #aaa;
-                font-size: 0.75rem;
-            }
-            
-            .desktop-sidebar-menu {
-                padding: 20px 16px;
-                flex: 1;
-            }
-            
-            .desktop-menu-item {
-                background: linear-gradient(135deg, #1a1a1a, #0f0f0f);
-                border: 1px solid #333;
-                border-radius: 12px;
-                padding: 14px 16px;
-                margin-bottom: 12px;
-                cursor: pointer;
-                transition: all 0.2s;
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                color: #fff;
-                font-weight: 600;
-                font-size: 0.95rem;
-            }
-            
-            .desktop-menu-item:hover {
-                border-color: #9933ff;
-                background: linear-gradient(135deg, #2a1a3a, #1a1a1a);
-                transform: translateX(4px);
-            }
-            
-            .desktop-menu-item i {
-                font-size: 1.3rem;
-                color: #9933ff;
-            }
-            
-            .desktop-menu-item.active {
-                border-color: #9933ff;
-                background: linear-gradient(135deg, #3a1a5a, #1a1a1a);
-            }
-            
-            .desktop-menu-section {
-                margin-top: 24px;
-            }
-            
-            .desktop-menu-section-title {
-                color: #9933ff;
-                font-size: 0.75rem;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-                margin-bottom: 12px;
-                padding: 0 4px;
-                font-weight: 700;
-            }
-            
-            .desktop-submenu {
-                display: none;
-                padding-left: 16px;
-                margin-top: 8px;
-            }
-            
-            .desktop-submenu.active {
-                display: block;
-            }
-            
-            .desktop-submenu-item {
-                background: #1a1a1a;
-                border: 1px solid #2a2a2a;
-                border-radius: 8px;
-                padding: 10px 12px;
-                margin-bottom: 8px;
-                cursor: pointer;
-                transition: all 0.2s;
-                font-size: 0.85rem;
-                color: #ddd;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-            }
-            
-            .desktop-submenu-item:hover {
-                background: #2a2a2a;
-                border-color: #9933ff;
-                color: #fff;
-            }
-            
-            .desktop-submenu-item i {
-                font-size: 1rem;
-                color: #9933ff;
-            }
-            
-            /* Área de conteúdo principal */
-            .desktop-main {
-                flex: 1;
-                overflow-y: auto;
-                padding: 32px;
-                background: #000;
-            }
-            
-            .desktop-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin-bottom: 32px;
-                padding-bottom: 20px;
-                border-bottom: 1px solid #333;
-            }
-            
-            .desktop-header h2 {
-                margin: 0;
-                font-size: 2rem;
-                font-weight: 700;
-                color: #fff;
-            }
-            
-            .desktop-header-actions {
-                display: flex;
-                gap: 12px;
-            }
-            
-            .desktop-btn {
-                padding: 10px 20px;
-                border-radius: 8px;
-                border: none;
-                font-weight: 600;
-                font-size: 0.9rem;
-                cursor: pointer;
-                transition: all 0.2s;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-            }
-            
-            .desktop-btn:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            }
-            
-            .desktop-btn-primary {
-                background: linear-gradient(135deg, #9933ff, #7a28cc);
-                color: white;
-            }
-            
-            .desktop-btn-success {
-                background: linear-gradient(135deg, #198754, #146c43);
-                color: white;
-            }
-            
-            .desktop-btn-info {
-                background: linear-gradient(135deg, #0dcaf0, #0aa2c0);
-                color: white;
-            }
-            
-            .desktop-btn-warning {
-                background: linear-gradient(135deg, #ff9900, #cc7a00);
-                color: white;
-            }
-            
-            .desktop-btn-danger {
-                background: linear-gradient(135deg, #dc3545, #b02a37);
-                color: white;
-            }
-            
-            /* Cards de estatísticas desktop */
-            .desktop-stats-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                gap: 20px;
-                margin-bottom: 32px;
-            }
-            
-            .desktop-stat-card {
-                background: linear-gradient(135deg, #1a1a1a, #0f0f0f);
-                border: 1px solid #333;
-                border-radius: 16px;
-                padding: 24px;
-                transition: all 0.3s;
-            }
-            
-            .desktop-stat-card:hover {
-                border-color: #9933ff;
-                transform: translateY(-4px);
-                box-shadow: 0 8px 24px rgba(153, 51, 255, 0.2);
-            }
-            
-            .desktop-stat-card .stat-icon {
-                font-size: 2.5rem;
-                margin-bottom: 12px;
-            }
-            
-            .desktop-stat-card .stat-value {
-                font-size: 2rem;
-                font-weight: 700;
-                margin-bottom: 4px;
-            }
-            
-            .desktop-stat-card .stat-label {
-                font-size: 0.85rem;
-                color: #aaa;
-                text-transform: uppercase;
-                letter-spacing: 0.5px;
-            }
-            
-            /* Lista de clientes desktop */
-            .desktop-clients-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-                gap: 16px;
-            }
-            
-            .desktop-client-card {
-                background: #1a1a1a;
-                border: 1px solid #333;
-                border-radius: 12px;
-                padding: 20px;
-                cursor: pointer;
-                transition: all 0.2s;
-            }
-            
-            .desktop-client-card:hover {
-                border-color: #9933ff;
-                transform: translateY(-2px);
-                box-shadow: 0 4px 16px rgba(0,0,0,0.3);
-            }
-            
-            /* View sections desktop */
-            .desktop-view {
-                display: none;
-            }
-            
-            .desktop-view.active {
-                display: block;
-                animation: fadeIn 0.3s ease;
-            }
-            
-            /* Ajustes para modais no desktop */
-            .modal-dialog {
-                max-width: 600px;
-            }
-            
-            /* Tabela de clientes desktop */
-            .desktop-table {
-                width: 100%;
-                background: #1a1a1a;
-                border-radius: 12px;
-                overflow: hidden;
-                border: 1px solid #333;
-            }
-            
-            .desktop-table-header {
-                display: grid;
-                grid-template-columns: 2fr 1fr 1fr 1fr 120px;
-                padding: 16px 20px;
-                background: #0f0f0f;
-                border-bottom: 1px solid #333;
-                font-weight: 600;
-                font-size: 0.85rem;
-                color: #aaa;
-                text-transform: uppercase;
-                letter-spacing: 0.5px;
-            }
-            
-            .desktop-table-row {
-                display: grid;
-                grid-template-columns: 2fr 1fr 1fr 1fr 120px;
-                padding: 16px 20px;
-                border-bottom: 1px solid #222;
-                align-items: center;
-                transition: background 0.2s;
-                cursor: pointer;
-            }
-            
-            .desktop-table-row:hover {
-                background: #222;
-            }
-            
-            .desktop-table-row:last-child {
-                border-bottom: none;
+            body.desktop-mode #authOverlay,
+            body.desktop-mode #adminLock {
+                z-index: 99999;
             }
         }
-        
-        /* Ocultar layout desktop no mobile */
-        @media (max-width: 1023px) {
-            .desktop-layout {
+
+        .desktop-sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #0a0a0a 0%, #111 100%);
+            border-right: 1px solid #222;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+        .desktop-sidebar::-webkit-scrollbar { width: 6px; }
+        .desktop-sidebar::-webkit-scrollbar-track { background: #0a0a0a; }
+        .desktop-sidebar::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+
+        .desktop-sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid #222;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .desktop-sidebar-header .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #9933ff, #6600cc);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: white;
+            box-shadow: 0 4px 12px rgba(153, 51, 255, 0.3);
+        }
+        .desktop-sidebar-header .brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+        .desktop-sidebar-header .brand-text strong {
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+        .desktop-sidebar-header .brand-text small {
+            color: #888;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .desktop-sidebar-user {
+            padding: 16px 20px;
+            background: #0a0a0a;
+            border-bottom: 1px solid #222;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .desktop-sidebar-user .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #198754, #0d6efd);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        .desktop-sidebar-user .user-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .desktop-sidebar-user .user-info .user-email {
+            color: #fff;
+            font-size: 0.82rem;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .desktop-sidebar-user .user-info .user-status {
+            color: #00ff00;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .desktop-sidebar-user .user-info .user-status::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            background: #00ff00;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #00ff00;
+        }
+
+        .desktop-sidebar-nav {
+            padding: 16px 12px;
+            flex: 1;
+        }
+        .desktop-nav-section-title {
+            color: #666;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 8px 12px;
+            margin-top: 8px;
+            font-weight: 600;
+        }
+        .desktop-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            color: #bbb;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-bottom: 4px;
+            transition: all 0.2s;
+            font-size: 0.92rem;
+            font-weight: 500;
+            border: 1px solid transparent;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+        }
+        .desktop-nav-item:hover {
+            background: #1a1a1a;
+            color: #fff;
+        }
+        .desktop-nav-item.active {
+            background: linear-gradient(135deg, rgba(153, 51, 255, 0.15), rgba(153, 51, 255, 0.05));
+            color: #fff;
+            border-color: rgba(153, 51, 255, 0.3);
+        }
+        .desktop-nav-item.active .bi {
+            color: #9933ff;
+        }
+        .desktop-nav-item .bi {
+            font-size: 1.2rem;
+            width: 22px;
+            text-align: center;
+        }
+        .desktop-nav-item .nav-badge {
+            margin-left: auto;
+            background: #9933ff;
+            color: white;
+            font-size: 0.65rem;
+            padding: 2px 8px;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+        .desktop-nav-item.banco-itv {
+            background: linear-gradient(135deg, rgba(13, 110, 253, 0.15), rgba(13, 110, 253, 0.05));
+            border-color: rgba(13, 110, 253, 0.3);
+            color: #fff;
+        }
+        .desktop-nav-item.banco-itv:hover {
+            background: linear-gradient(135deg, rgba(13, 110, 253, 0.25), rgba(13, 110, 253, 0.1));
+        }
+        .desktop-nav-item.banco-itv .bi {
+            color: #0d6efd;
+        }
+
+        .desktop-nav-submenu {
+            display: none;
+            margin-left: 34px;
+            margin-bottom: 8px;
+            border-left: 1px solid #333;
+            padding-left: 12px;
+        }
+        .desktop-nav-submenu.open {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        .desktop-nav-subitem {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            color: #999;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+            margin-bottom: 2px;
+            background: transparent;
+            border: none;
+            width: 100%;
+            text-align: left;
+        }
+        .desktop-nav-subitem:hover {
+            background: #1a1a1a;
+            color: #fff;
+        }
+        .desktop-nav-subitem.active {
+            color: #9933ff;
+            background: rgba(153, 51, 255, 0.08);
+        }
+        .desktop-nav-subitem .bi {
+            font-size: 0.95rem;
+        }
+
+        .desktop-sidebar-footer {
+            padding: 16px 12px;
+            border-top: 1px solid #222;
+        }
+        .desktop-logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            color: #dc3545;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.92rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            background: rgba(220, 53, 69, 0.05);
+            border: 1px solid rgba(220, 53, 69, 0.2);
+            width: 100%;
+        }
+        .desktop-logout-btn:hover {
+            background: rgba(220, 53, 69, 0.15);
+            color: #fff;
+        }
+
+        /* Main Content Desktop */
+        .desktop-main {
+            flex: 1;
+            background: #0a0a0a;
+            overflow-y: auto;
+            height: 100vh;
+        }
+        .desktop-main::-webkit-scrollbar { width: 8px; }
+        .desktop-main::-webkit-scrollbar-track { background: #0a0a0a; }
+        .desktop-main::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+
+        .desktop-topbar {
+            background: #111;
+            border-bottom: 1px solid #222;
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        .desktop-topbar h2 {
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .desktop-topbar h2 .bi {
+            color: #9933ff;
+        }
+        .desktop-topbar .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .desktop-topbar .topbar-date {
+            color: #888;
+            font-size: 0.85rem;
+            padding: 6px 14px;
+            background: #1a1a1a;
+            border-radius: 20px;
+            border: 1px solid #333;
+        }
+
+        .desktop-content {
+            padding: 32px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* Dashboard Cards */
+        .desktop-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+        .desktop-stat-card {
+            background: linear-gradient(135deg, #1a1a1a 0%, #111 100%);
+            border: 1px solid #2a2a2a;
+            border-radius: 16px;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        .desktop-stat-card:hover {
+            transform: translateY(-4px);
+            border-color: #9933ff;
+            box-shadow: 0 12px 30px rgba(153, 51, 255, 0.15);
+        }
+        .desktop-stat-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, #9933ff, #6600cc);
+        }
+        .desktop-stat-card .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin-bottom: 16px;
+        }
+        .desktop-stat-card .stat-icon.green { background: rgba(25, 135, 84, 0.15); color: #00ff00; }
+        .desktop-stat-card .stat-icon.yellow { background: rgba(255, 193, 7, 0.15); color: #ffc107; }
+        .desktop-stat-card .stat-icon.cyan { background: rgba(13, 202, 240, 0.15); color: #0dcaf0; }
+        .desktop-stat-card .stat-icon.purple { background: rgba(153, 51, 255, 0.15); color: #9933ff; }
+        .desktop-stat-card .stat-title {
+            color: #888;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        .desktop-stat-card .stat-value {
+            color: #fff;
+            font-size: 1.8rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+        .desktop-stat-card .stat-sub {
+            color: #666;
+            font-size: 0.75rem;
+            margin-top: 8px;
+        }
+
+        .desktop-section-card {
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .desktop-section-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+        }
+        .desktop-section-card h3 .bi {
+            color: #9933ff;
+        }
+
+        .desktop-quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+        .desktop-quick-action {
+            background: linear-gradient(135deg, #1a1a1a, #0f0f0f);
+            border: 1px solid #333;
+            border-radius: 14px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            color: #fff;
+            text-align: left;
+        }
+        .desktop-quick-action:hover {
+            transform: translateY(-2px);
+            border-color: #9933ff;
+            background: linear-gradient(135deg, #222, #1a1a1a);
+        }
+        .desktop-quick-action .qa-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        .desktop-quick-action .qa-text strong {
+            display: block;
+            font-size: 0.95rem;
+            margin-bottom: 2px;
+        }
+        .desktop-quick-action .qa-text small {
+            color: #888;
+            font-size: 0.75rem;
+        }
+
+        /* Desktop Clientes Table-like */
+        .desktop-clientes-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 16px;
+        }
+        .desktop-cliente-card {
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 14px;
+            padding: 18px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .desktop-cliente-card:hover {
+            border-color: #9933ff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(153, 51, 255, 0.1);
+        }
+
+        .desktop-view { display: none; }
+        .desktop-view.active { display: block; animation: fadeIn 0.3s ease; }
+
+        .desktop-search-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .desktop-search-bar input {
+            flex: 1;
+            padding: 12px 18px !important;
+            font-size: 0.95rem !important;
+        }
+        .desktop-search-bar .btn {
+            padding: 12px 24px;
+            font-weight: 600;
+            border-radius: 14px !important;
+        }
+
+        .desktop-filter-pills {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .desktop-filter-pill {
+            padding: 8px 18px;
+            border-radius: 50px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: #bbb;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .desktop-filter-pill:hover {
+            border-color: #9933ff;
+            color: #fff;
+        }
+        .desktop-filter-pill.active {
+            background: #9933ff;
+            border-color: #9933ff;
+            color: #fff;
+        }
+        .desktop-filter-pill .pill-count {
+            background: rgba(255,255,255,0.2);
+            padding: 1px 8px;
+            border-radius: 50px;
+            font-size: 0.72rem;
+        }
+        .desktop-filter-pill.active .pill-count {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* Painéis Ativos Desktop */
+        .desktop-paineis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .desktop-painel-btn {
+            background: linear-gradient(135deg, #1a1a1a, #0f0f0f);
+            border: 1px solid #333;
+            color: #fff;
+            padding: 16px 20px;
+            border-radius: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .desktop-painel-btn:hover {
+            border-color: #9933ff;
+            transform: translateY(-2px);
+        }
+
+        /* Mobile wrapper */
+        .mobile-wrapper {
+            display: block;
+        }
+        @media (min-width: 992px) {
+            body.desktop-mode .mobile-wrapper {
                 display: none !important;
             }
         }
@@ -724,7 +938,7 @@
 <body>
 
 <!-- ========================================================================
-     LAYOUT MOBILE (EXISTENTE - NÃO ALTERADO)
+     OVERLAY DE LOGIN (comum a ambas versões)
      ======================================================================== -->
 <div id="authOverlay">
     <div class="auth-card">
@@ -754,453 +968,637 @@
     <button class="btn btn-primary" onclick="unlockApp()">Desbloquear</button>
 </div>
 
-<div id="mySidenav" class="menu-lateral">
-    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()" style="position:absolute; top:10px; right:20px; font-size:32px;">&times;</a>
-    
-    <div class="menu-btn-group">
-        <button class="menu-btn-principal" onclick="toggleMenuSecao('secCobranca', this)">
-            <i class="bi bi-chat-dots-fill"></i>
-            <span>Conf Cobrança</span>
-        </button>
-        <div class="menu-secao" id="secCobranca">
-            <h6>📢 Mensagem de Cobrança</h6>
-            <textarea id="cfgMsg" class="form-control mb-2" rows="3" placeholder="Digite a mensagem que será enviada..."></textarea>
-            <button class="btn btn-success w-100" onclick="saveSettings()">💾 Salvar Mensagem</button>
-        </div>
+<!-- ========================================================================
+     VERSÃO MOBILE (mantida integralmente - Android/iPhone)
+     ======================================================================== -->
+<div class="mobile-wrapper">
 
-        <button class="menu-btn-principal" onclick="toggleMenuSecao('secPaineis', this)">
-            <i class="bi bi-hdd-stack-fill"></i>
-            <span>Conf Painel</span>
-        </button>
-        <div class="menu-secao" id="secPaineis">
-            <h6>⚙️ Configuração dos Painéis</h6>
-
-            <div class="painel-config-card">
-                <div class="toggle-container">
-                    <h6 class="m-0"><i class="bi bi-broadcast text-info"></i> <span id="painel1Label">Painel 1 (CENTRAL)</span></h6>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="togglePainel1" onchange="saveSettings()">
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                <label class="small text-secondary">📝 Nome do Painel:</label>
-                <input type="text" id="nomePainel1" class="form-control mb-2" placeholder="Nome personalizado" onchange="saveSettings()">
-                <label class="small text-secondary">🔗 Link do Painel:</label>
-                <input type="text" id="url1" class="form-control mb-2" placeholder="https://...">
-                <label class="small text-secondary">💳 Quantidade de Créditos:</label>
-                <div class="creditos-display">
-                    <div>
-                        <div class="cred-label">Disponíveis</div>
-                        <div class="cred-value" id="credCentralDisplay">0</div>
-                    </div>
-                    <div class="creditos-controls">
-                        <button class="btn-menos" onclick="ajustarCredito('central', -1)">−</button>
-                        <input type="number" id="credCentral" class="form-control" value="0" min="0" onchange="atualizarDisplayCredito('central')">
-                        <button class="btn-mais" onclick="ajustarCredito('central', 1)">+</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="painel-config-card">
-                <div class="toggle-container">
-                    <h6 class="m-0"><i class="bi bi-lightning-fill text-warning"></i> <span id="painel2Label">Painel 2 (WAREZ)</span></h6>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="togglePainel2" onchange="saveSettings()">
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                <label class="small text-secondary">📝 Nome do Painel:</label>
-                <input type="text" id="nomePainel2" class="form-control mb-2" placeholder="Nome personalizado" onchange="saveSettings()">
-                <label class="small text-secondary">🔗 Link do Painel:</label>
-                <input type="text" id="url2" class="form-control mb-2" placeholder="https://...">
-                <label class="small text-secondary">💳 Quantidade de Créditos:</label>
-                <div class="creditos-display">
-                    <div>
-                        <div class="cred-label">Disponíveis</div>
-                        <div class="cred-value" id="credWarezDisplay">0</div>
-                    </div>
-                    <div class="creditos-controls">
-                        <button class="btn-menos" onclick="ajustarCredito('warez', -1)">−</button>
-                        <input type="number" id="credWarez" class="form-control" value="0" min="0" onchange="atualizarDisplayCredito('warez')">
-                        <button class="btn-mais" onclick="ajustarCredito('warez', 1)">+</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="painel-config-card">
-                <div class="toggle-container">
-                    <h6 class="m-0"><i class="bi bi-fire text-danger"></i> <span id="painel3Label">Painel 3 (ZEUS)</span></h6>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="togglePainel3" onchange="saveSettings()">
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                <label class="small text-secondary">📝 Nome do Painel:</label>
-                <input type="text" id="nomePainel3" class="form-control mb-2" placeholder="Nome personalizado" onchange="saveSettings()">
-                <label class="small text-secondary">🔗 Link do Painel:</label>
-                <input type="text" id="url3" class="form-control mb-2" placeholder="https://...">
-                <label class="small text-secondary">💳 Quantidade de Créditos:</label>
-                <div class="creditos-display">
-                    <div>
-                        <div class="cred-label">Disponíveis</div>
-                        <div class="cred-value" id="credZeusDisplay">0</div>
-                    </div>
-                    <div class="creditos-controls">
-                        <button class="btn-menos" onclick="ajustarCredito('zeus', -1)">−</button>
-                        <input type="number" id="credZeus" class="form-control" value="0" min="0" onchange="atualizarDisplayCredito('zeus')">
-                        <button class="btn-mais" onclick="ajustarCredito('zeus', 1)">+</button>
-                    </div>
-                </div>
-            </div>
-
-            <button class="btn btn-success w-100 mt-2" onclick="saveSettings()">💾 Salvar Configurações</button>
-        </div>
-
-        <button class="menu-btn-principal" onclick="handleLogout()" style="background: linear-gradient(135deg, #5a1a1a, #1a1a1a); border-color: #dc3545;">
-            <i class="bi bi-box-arrow-right" style="color: #dc3545;"></i>
-            <span>Sair</span>
-        </button>
-    </div>
-</div>
-
-<nav class="navbar">
-    <div class="navbar-inferior">
-        <div class="nav-left">
-            <button class="btn-menu-bottom" onclick="openNav()"><i class="bi bi-list"></i></button>
-        </div>
-        <div class="nav-center">
-            <button class="btn btn-revenda-nav" id="btnNavRevenda" onclick="mudarViewPrincipal('revenda')" title="Revenda">
-                <i class="bi bi-people-fill"></i>
-                <span>REVENDA</span>
+    <!-- MENU LATERAL MOBILE -->
+    <div id="mySidenav" class="menu-lateral">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()" style="position:absolute; top:10px; right:20px; font-size:32px;">&times;</a>
+        
+        <div class="menu-btn-group">
+            <button class="menu-btn-principal" onclick="toggleMenuSecao('secCobranca', this)">
+                <i class="bi bi-chat-dots-fill"></i>
+                <span>Conf Cobrança</span>
             </button>
-            <button class="btn btn-add-fixo" onclick="abrirModalAdicionar()" title="Adicionar Novo">
-                <i class="bi bi-plus-lg"></i>
+            <div class="menu-secao" id="secCobranca">
+                <h6>📢 Mensagem de Cobrança</h6>
+                <textarea id="cfgMsg" class="form-control mb-2" rows="3" placeholder="Digite a mensagem que será enviada..."></textarea>
+                <button class="btn btn-success w-100" onclick="saveSettings()">💾 Salvar Mensagem</button>
+            </div>
+
+            <button class="menu-btn-principal" onclick="toggleMenuSecao('secPaineis', this)">
+                <i class="bi bi-hdd-stack-fill"></i>
+                <span>Conf Painel</span>
             </button>
-            <button class="btn btn-banco-itv-nav" onclick="abrirBancoItv()" title="Banco ITV">
-                <i class="bi bi-bank2"></i>
-                <span>BANCO ITV</span>
+            <div class="menu-secao" id="secPaineis">
+                <h6>⚙️ Configuração dos Painéis</h6>
+
+                <div class="painel-config-card">
+                    <div class="toggle-container">
+                        <h6 class="m-0"><i class="bi bi-broadcast text-info"></i> <span id="painel1Label">Painel 1 (CENTRAL)</span></h6>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="togglePainel1" onchange="saveSettings()">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <label class="small text-secondary">📝 Nome do Painel:</label>
+                    <input type="text" id="nomePainel1" class="form-control mb-2" placeholder="Nome personalizado" onchange="saveSettings()">
+                    <label class="small text-secondary">🔗 Link do Painel:</label>
+                    <input type="text" id="url1" class="form-control mb-2" placeholder="https://...">
+                    <label class="small text-secondary">💳 Quantidade de Créditos:</label>
+                    <div class="creditos-display">
+                        <div>
+                            <div class="cred-label">Disponíveis</div>
+                            <div class="cred-value" id="credCentralDisplay">0</div>
+                        </div>
+                        <div class="creditos-controls">
+                            <button class="btn-menos" onclick="ajustarCredito('central', -1)">−</button>
+                            <input type="number" id="credCentral" class="form-control" value="0" min="0" onchange="atualizarDisplayCredito('central')">
+                            <button class="btn-mais" onclick="ajustarCredito('central', 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="painel-config-card">
+                    <div class="toggle-container">
+                        <h6 class="m-0"><i class="bi bi-lightning-fill text-warning"></i> <span id="painel2Label">Painel 2 (WAREZ)</span></h6>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="togglePainel2" onchange="saveSettings()">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <label class="small text-secondary">📝 Nome do Painel:</label>
+                    <input type="text" id="nomePainel2" class="form-control mb-2" placeholder="Nome personalizado" onchange="saveSettings()">
+                    <label class="small text-secondary">🔗 Link do Painel:</label>
+                    <input type="text" id="url2" class="form-control mb-2" placeholder="https://...">
+                    <label class="small text-secondary">💳 Quantidade de Créditos:</label>
+                    <div class="creditos-display">
+                        <div>
+                            <div class="cred-label">Disponíveis</div>
+                            <div class="cred-value" id="credWarezDisplay">0</div>
+                        </div>
+                        <div class="creditos-controls">
+                            <button class="btn-menos" onclick="ajustarCredito('warez', -1)">−</button>
+                            <input type="number" id="credWarez" class="form-control" value="0" min="0" onchange="atualizarDisplayCredito('warez')">
+                            <button class="btn-mais" onclick="ajustarCredito('warez', 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="painel-config-card">
+                    <div class="toggle-container">
+                        <h6 class="m-0"><i class="bi bi-fire text-danger"></i> <span id="painel3Label">Painel 3 (ZEUS)</span></h6>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="togglePainel3" onchange="saveSettings()">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <label class="small text-secondary">📝 Nome do Painel:</label>
+                    <input type="text" id="nomePainel3" class="form-control mb-2" placeholder="Nome personalizado" onchange="saveSettings()">
+                    <label class="small text-secondary">🔗 Link do Painel:</label>
+                    <input type="text" id="url3" class="form-control mb-2" placeholder="https://...">
+                    <label class="small text-secondary">💳 Quantidade de Créditos:</label>
+                    <div class="creditos-display">
+                        <div>
+                            <div class="cred-label">Disponíveis</div>
+                            <div class="cred-value" id="credZeusDisplay">0</div>
+                        </div>
+                        <div class="creditos-controls">
+                            <button class="btn-menos" onclick="ajustarCredito('zeus', -1)">−</button>
+                            <input type="number" id="credZeus" class="form-control" value="0" min="0" onchange="atualizarDisplayCredito('zeus')">
+                            <button class="btn-mais" onclick="ajustarCredito('zeus', 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-success w-100 mt-2" onclick="saveSettings()">💾 Salvar Configurações</button>
+            </div>
+
+            <button class="menu-btn-principal" onclick="handleLogout()" style="background: linear-gradient(135deg, #5a1a1a, #1a1a1a); border-color: #dc3545;">
+                <i class="bi bi-box-arrow-right" style="color: #dc3545;"></i>
+                <span>Sair</span>
             </button>
         </div>
-        <div class="nav-right">
-            <div class="navbar-brand-bottom text-end">
-                ITVPlayer
-                <small id="userEmailDisplay"></small>
-            </div>
-        </div>
-    </div>
-</nav>
-
-<div class="container mt-2">
-    <div id="viewClientes">
-        <div id="adminPanel" class="mb-4 p-2">
-            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-                <h5 class="m-0"><i class="bi bi-cash-stack text-success"></i> Financeiro</h5>
-                <input type="date" id="filterMes" class="form-control w-auto bg-dark text-white border-secondary" style="max-width: 170px;">
-            </div>
-            <div class="row g-2">
-                <div class="col-6 col-md-3"><div class="card-financeiro"><div class="stat-label">Recebido (Mês)</div><div class="stat-val" id="finRecebido">R$ 0,00</div></div></div>
-                <div class="col-6 col-md-3"><div class="card-financeiro" style="border-left-color: #ffc107;"><div class="stat-label">A Receber</div><div class="stat-val text-warning" id="finPendente">R$ 0,00</div></div></div>
-                <div class="col-6 col-md-3"><div class="card-financeiro" style="border-left-color: #0dcaf0;"><div class="stat-label">Total Clientes</div><div class="stat-val text-info" id="finTotalClientes">0</div></div></div>
-                <div class="col-6 col-md-3"><div class="card-financeiro" style="border-left-color: #00ff00;"><div class="stat-label">Lucro Geral</div><div class="stat-val" id="finGeral" style="color: #00ff00;">R$ 0,00</div></div></div>
-            </div>
-            <hr class="border-secondary">
-        </div>
-
-        <button class="btn btn-success w-100 mb-3 rounded-pill fw-bold py-2" onclick="abrirBancoItv()" style="display: none; background: linear-gradient(135deg, #0d6efd, #0a58ca); border: none; box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);">
-            <i class="bi bi-bank2 me-2"></i> BANCO ITV - Gestão de Empréstimos
-        </button>
-
-        <input type="text" id="search" class="form-control mb-3" placeholder="🔍 Buscar cliente por nome..." onkeyup="renderClientes()">
-
-        <div class="nav-buttons-painel" id="paineisAtivos"></div>
-
-        <div class="filter-buttons">
-            <button class="btn-small bg-primary" onclick="filterData('ativos')">ATIVOS <span id="countAtivos">0</span></button>
-            <button class="btn-small" style="background-color: orange;" onclick="filterData('vencer')">A VENCER <span id="countVencer">0</span></button>
-            <button class="btn-small bg-danger" onclick="filterData('expirados')">EXPIRADOS <span id="countExp">0</span></button>
-            <button class="btn-small bg-info" onclick="filterData('apagar')">A RECEBER <span id="countPagar">0</span></button>
-            <button class="btn-small bg-secondary" onclick="filterData('deletados')" style="display: none;">LIXO <span id="countDel">0</span></button>
-        </div>
-
-        <div id="listaClientes"></div>
     </div>
 
-    <div id="viewRevenda" style="display: none;">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5 class="m-0 text-warning"><i class="bi bi-people-fill"></i> Gestão de Revenda</h5>
-            <button class="btn btn-sm btn-outline-light" onclick="mudarViewPrincipal('clientes')"><i class="bi bi-arrow-left"></i> Voltar</button>
+    <!-- NAVBAR MOBILE -->
+    <nav class="navbar">
+        <div class="navbar-inferior">
+            <div class="nav-left">
+                <button class="btn-menu-bottom" onclick="openNav()"><i class="bi bi-list"></i></button>
+            </div>
+            <div class="nav-center">
+                <button class="btn btn-revenda-nav" id="btnNavRevenda" onclick="mudarViewPrincipal('revenda')" title="Revenda">
+                    <i class="bi bi-people-fill"></i>
+                    <span>REVENDA</span>
+                </button>
+                <button class="btn btn-add-fixo" onclick="abrirModalAdicionar()" title="Adicionar Novo">
+                    <i class="bi bi-plus-lg"></i>
+                </button>
+                <button class="btn btn-banco-itv-nav" onclick="abrirBancoItv()" title="Banco ITV">
+                    <i class="bi bi-bank2"></i>
+                    <span>BANCO ITV</span>
+                </button>
+            </div>
+            <div class="nav-right">
+                <div class="navbar-brand-bottom text-end">
+                    ITVPlayer
+                    <small id="userEmailDisplay"></small>
+                </div>
+            </div>
         </div>
-        <input type="text" id="searchRevenda" class="form-control mb-3" placeholder="🔍 Buscar revendedor..." onkeyup="renderRevendas()">
-        <div id="listaRevendas"></div>
+    </nav>
+
+    <div class="container mt-2">
+        
+        <div id="viewClientes">
+            <div id="adminPanel" class="mb-4 p-2">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                    <h5 class="m-0"><i class="bi bi-cash-stack text-success"></i> Financeiro</h5>
+                    <input type="date" id="filterMes" class="form-control w-auto bg-dark text-white border-secondary" style="max-width: 170px;">
+                </div>
+                <div class="row g-2">
+                    <div class="col-6 col-md-3"><div class="card-financeiro"><div class="stat-label">Recebido (Mês)</div><div class="stat-val" id="finRecebido">R$ 0,00</div></div></div>
+                    <div class="col-6 col-md-3"><div class="card-financeiro" style="border-left-color: #ffc107;"><div class="stat-label">A Receber</div><div class="stat-val text-warning" id="finPendente">R$ 0,00</div></div></div>
+                    <div class="col-6 col-md-3"><div class="card-financeiro" style="border-left-color: #0dcaf0;"><div class="stat-label">Total Clientes</div><div class="stat-val text-info" id="finTotalClientes">0</div></div></div>
+                    <div class="col-6 col-md-3"><div class="card-financeiro" style="border-left-color: #00ff00;"><div class="stat-label">Lucro Geral</div><div class="stat-val" id="finGeral" style="color: #00ff00;">R$ 0,00</div></div></div>
+                </div>
+                <hr class="border-secondary">
+            </div>
+
+            <button class="btn btn-success w-100 mb-3 rounded-pill fw-bold py-2" onclick="abrirBancoItv()" style="display: none; background: linear-gradient(135deg, #0d6efd, #0a58ca); border: none; box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);">
+                <i class="bi bi-bank2 me-2"></i> BANCO ITV - Gestão de Empréstimos
+            </button>
+
+            <input type="text" id="search" class="form-control mb-3" placeholder="🔍 Buscar cliente por nome..." onkeyup="renderClientes()">
+
+            <div class="nav-buttons-painel" id="paineisAtivos"></div>
+
+            <div class="filter-buttons">
+                <button class="btn-small bg-primary" onclick="filterData('ativos')">ATIVOS <span id="countAtivos">0</span></button>
+                <button class="btn-small" style="background-color: orange;" onclick="filterData('vencer')">A VENCER <span id="countVencer">0</span></button>
+                <button class="btn-small bg-danger" onclick="filterData('expirados')">EXPIRADOS <span id="countExp">0</span></button>
+                <button class="btn-small bg-info" onclick="filterData('apagar')">A RECEBER <span id="countPagar">0</span></button>
+                <button class="btn-small bg-secondary" onclick="filterData('deletados')" style="display: none;">LIXO <span id="countDel">0</span></button>
+            </div>
+
+            <div id="listaClientes"></div>
+        </div>
+
+        <div id="viewRevenda" style="display: none;">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="m-0 text-warning"><i class="bi bi-people-fill"></i> Gestão de Revenda</h5>
+                <button class="btn btn-sm btn-outline-light" onclick="mudarViewPrincipal('clientes')"><i class="bi bi-arrow-left"></i> Voltar</button>
+            </div>
+            <input type="text" id="searchRevenda" class="form-control mb-3" placeholder="🔍 Buscar revendedor..." onkeyup="renderRevendas()">
+            <div id="listaRevendas"></div>
+        </div>
+
     </div>
 </div>
 
 <!-- ========================================================================
-     NOVO: LAYOUT DESKTOP (FULL SCREEN)
+     VERSÃO DESKTOP (NOVA) - DASHBOARD COMPLETO
      ======================================================================== -->
-<div class="desktop-layout" id="desktopLayout">
-    <!-- Sidebar Desktop -->
-    <div class="desktop-sidebar">
-        <div class="desktop-sidebar-header">
-            <h4><i class="bi bi-tv"></i> ITVPlayer</h4>
-            <small id="desktopUserEmail"></small>
-        </div>
-        
-        <div class="desktop-sidebar-menu">
-            <!-- DASHBOARD -->
-            <div class="desktop-menu-item" onclick="mudarDesktopView('dashboard')">
-                <i class="bi bi-speedometer2"></i>
-                <span>DASHBOARD</span>
-            </div>
-            
-            <!-- BANCO ITV -->
-            <div class="desktop-menu-item" onclick="abrirBancoItv()">
-                <i class="bi bi-bank2"></i>
-                <span>BANCO ITV</span>
-            </div>
-            
-            <!-- CLIENTES -->
-            <div class="desktop-menu-section">
-                <div class="desktop-menu-section-title">CLIENTES</div>
-                <div class="desktop-menu-item" onclick="toggleDesktopSubmenu('clientesMenu', this)">
-                    <i class="bi bi-people"></i>
-                    <span>CLIENTES</span>
-                </div>
-                <div class="desktop-submenu" id="clientesMenu">
-                    <div class="desktop-submenu-item" onclick="showModalCadastro()">
-                        <i class="bi bi-plus-circle"></i>
-                        <span>CADASTRAR</span>
-                    </div>
-                    <div class="desktop-submenu-item" onclick="mudarDesktopView('clientes')">
-                        <i class="bi bi-list-ul"></i>
-                        <span>GERENCIAR CLIENTES</span>
-                    </div>
-                    <div class="desktop-submenu-item" onclick="abrirDesktopConfig('cobranca')">
-                        <i class="bi bi-chat-dots"></i>
-                        <span>CONF COBRANÇA</span>
-                    </div>
-                    <div class="desktop-submenu-item" onclick="abrirDesktopConfig('painel')">
-                        <i class="bi bi-hdd-stack"></i>
-                        <span>CONF PAINEL</span>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- REVENDA -->
-            <div class="desktop-menu-section">
-                <div class="desktop-menu-section-title">REVENDA</div>
-                <div class="desktop-menu-item" onclick="toggleDesktopSubmenu('revendaMenu', this)">
-                    <i class="bi bi-shop"></i>
-                    <span>REVENDA</span>
-                </div>
-                <div class="desktop-submenu" id="revendaMenu">
-                    <div class="desktop-submenu-item" onclick="showModalRevenda()">
-                        <i class="bi bi-plus-circle"></i>
-                        <span>CADASTRAR REVENDA</span>
-                    </div>
-                    <div class="desktop-submenu-item" onclick="mudarDesktopView('revenda')">
-                        <i class="bi bi-list-ul"></i>
-                        <span>GERENCIAR REVENDA</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="desktop-wrapper">
     
-    <!-- Área Principal Desktop -->
-    <div class="desktop-main">
-        <!-- VIEW: DASHBOARD -->
-        <div class="desktop-view active" id="desktopView-dashboard">
-            <div class="desktop-header">
-                <h2><i class="bi bi-speedometer2"></i> Dashboard</h2>
-                <div class="desktop-header-actions">
-                    <button class="desktop-btn desktop-btn-primary" onclick="showModalCadastro()">
-                        <i class="bi bi-plus-circle"></i> Novo Cliente
-                    </button>
-                </div>
+    <!-- SIDEBAR FIXA À ESQUERDA -->
+    <aside class="desktop-sidebar">
+        <div class="desktop-sidebar-header">
+            <div class="logo-icon"><i class="bi bi-tv"></i></div>
+            <div class="brand-text">
+                <strong>ITVPlayer</strong>
+                <small>Painel Admin</small>
             </div>
-            
-            <div class="desktop-stats-grid">
-                <div class="desktop-stat-card">
-                    <div class="stat-icon text-success"><i class="bi bi-cash-stack"></i></div>
-                    <div class="stat-value text-success" id="desktopFinRecebido">R$ 0,00</div>
-                    <div class="stat-label">Recebido (Mês)</div>
-                </div>
-                <div class="desktop-stat-card">
-                    <div class="stat-icon text-warning"><i class="bi bi-hourglass-split"></i></div>
-                    <div class="stat-value text-warning" id="desktopFinPendente">R$ 0,00</div>
-                    <div class="stat-label">A Receber</div>
-                </div>
-                <div class="desktop-stat-card">
-                    <div class="stat-icon text-info"><i class="bi bi-people"></i></div>
-                    <div class="stat-value text-info" id="desktopFinTotalClientes">0</div>
-                    <div class="stat-label">Total Clientes</div>
-                </div>
-                <div class="desktop-stat-card">
-                    <div class="stat-icon" style="color: #00ff00;"><i class="bi bi-graph-up"></i></div>
-                    <div class="stat-value" style="color: #00ff00;" id="desktopFinGeral">R$ 0,00</div>
-                    <div class="stat-label">Lucro Geral</div>
-                </div>
-            </div>
-            
-            <h3 class="mb-4"><i class="bi bi-people"></i> Clientes Recentes</h3>
-            <div class="desktop-clients-grid" id="desktopClientesRecentes"></div>
         </div>
-        
-        <!-- VIEW: CLIENTES -->
-        <div class="desktop-view" id="desktopView-clientes">
-            <div class="desktop-header">
-                <h2><i class="bi bi-people"></i> Gerenciar Clientes</h2>
-                <div class="desktop-header-actions">
-                    <button class="desktop-btn desktop-btn-primary" onclick="showModalCadastro()">
-                        <i class="bi bi-plus-circle"></i> Cadastrar
-                    </button>
-                </div>
+
+        <div class="desktop-sidebar-user">
+            <div class="user-avatar" id="desktopUserAvatar">U</div>
+            <div class="user-info">
+                <div class="user-email" id="desktopUserEmail">carregando...</div>
+                <div class="user-status">Online</div>
             </div>
-            
-            <input type="text" id="desktopSearch" class="form-control mb-4" placeholder="🔍 Buscar cliente..." onkeyup="renderDesktopClientes()">
-            
-            <div class="filter-buttons mb-4">
-                <button class="btn-small bg-primary" onclick="filterDesktopData('ativos')">ATIVOS <span id="desktopCountAtivos">0</span></button>
-                <button class="btn-small" style="background-color: orange;" onclick="filterDesktopData('vencer')">A VENCER <span id="desktopCountVencer">0</span></button>
-                <button class="btn-small bg-danger" onclick="filterDesktopData('expirados')">EXPIRADOS <span id="desktopCountExp">0</span></button>
-                <button class="btn-small bg-info" onclick="filterDesktopData('apagar')">A RECEBER <span id="desktopCountPagar">0</span></button>
-            </div>
-            
-            <div id="desktopListaClientes"></div>
         </div>
-        
-        <!-- VIEW: REVENDA -->
-        <div class="desktop-view" id="desktopView-revenda">
-            <div class="desktop-header">
-                <h2><i class="bi bi-shop"></i> Gerenciar Revenda</h2>
-                <div class="desktop-header-actions">
-                    <button class="desktop-btn desktop-btn-warning" onclick="showModalRevenda()">
-                        <i class="bi bi-plus-circle"></i> Cadastrar Revenda
-                    </button>
-                </div>
-            </div>
+
+        <nav class="desktop-sidebar-nav">
+            <div class="desktop-nav-section-title">Principal</div>
             
-            <input type="text" id="desktopSearchRevenda" class="form-control mb-4" placeholder="🔍 Buscar revendedor..." onkeyup="renderDesktopRevendas()">
-            
-            <div id="desktopListaRevendas"></div>
-        </div>
-        
-        <!-- VIEW: CONF COBRANÇA -->
-        <div class="desktop-view" id="desktopView-cobranca">
-            <div class="desktop-header">
-                <h2><i class="bi bi-chat-dots"></i> Configuração de Cobrança</h2>
-            </div>
-            
-            <div class="painel-config-card">
-                <h6>📢 Mensagem de Cobrança</h6>
-                <textarea id="desktopCfgMsg" class="form-control mb-3" rows="5" placeholder="Digite a mensagem que será enviada..."></textarea>
-                <button class="desktop-btn desktop-btn-success" onclick="saveDesktopSettings()">
-                    <i class="bi bi-check-circle"></i> Salvar Mensagem
+            <button class="desktop-nav-item active" onclick="navegarDesktop('dashboard', this)">
+                <i class="bi bi-grid-1x2-fill"></i>
+                <span>Dashboard</span>
+            </button>
+
+            <button class="desktop-nav-item banco-itv" onclick="abrirBancoItv()">
+                <i class="bi bi-bank2"></i>
+                <span>Banco ITV</span>
+                <span class="nav-badge">FIN</span>
+            </button>
+
+            <div class="desktop-nav-section-title">Clientes</div>
+
+            <button class="desktop-nav-item" onclick="toggleSubmenu('subClientes', this)">
+                <i class="bi bi-people-fill"></i>
+                <span>Clientes</span>
+                <i class="bi bi-chevron-down ms-auto" style="font-size:0.8rem;"></i>
+            </button>
+            <div class="desktop-nav-submenu" id="subClientes">
+                <button class="desktop-nav-subitem" onclick="navegarDesktop('clienteCadastrar', this)">
+                    <i class="bi bi-person-plus-fill"></i> Cadastrar
+                </button>
+                <button class="desktop-nav-subitem" onclick="navegarDesktop('clienteGerenciar', this)">
+                    <i class="bi bi-list-ul"></i> Gerenciar Clientes
+                </button>
+                <button class="desktop-nav-subitem" onclick="navegarDesktop('clienteConfCobranca', this)">
+                    <i class="bi bi-chat-dots-fill"></i> Conf Cobrança
+                </button>
+                <button class="desktop-nav-subitem" onclick="navegarDesktop('clienteConfPainel', this)">
+                    <i class="bi bi-hdd-stack-fill"></i> Conf Painel
                 </button>
             </div>
-        </div>
-        
-        <!-- VIEW: CONF PAINEL -->
-        <div class="desktop-view" id="desktopView-painel">
-            <div class="desktop-header">
-                <h2><i class="bi bi-hdd-stack"></i> Configuração dos Painéis</h2>
+
+            <div class="desktop-nav-section-title">Revenda</div>
+
+            <button class="desktop-nav-item" onclick="toggleSubmenu('subRevenda', this)">
+                <i class="bi bi-shop"></i>
+                <span>Revenda</span>
+                <i class="bi bi-chevron-down ms-auto" style="font-size:0.8rem;"></i>
+            </button>
+            <div class="desktop-nav-submenu" id="subRevenda">
+                <button class="desktop-nav-subitem" onclick="navegarDesktop('revendaCadastrar', this)">
+                    <i class="bi bi-person-plus-fill"></i> Cadastrar Revenda
+                </button>
+                <button class="desktop-nav-subitem" onclick="navegarDesktop('revendaGerenciar', this)">
+                    <i class="bi bi-list-ul"></i> Gerenciar Revenda
+                </button>
             </div>
-            
-            <div class="row g-3">
-                <div class="col-md-4">
-                    <div class="painel-config-card">
-                        <div class="toggle-container">
-                            <h6 class="m-0"><i class="bi bi-broadcast text-info"></i> <span id="desktopPainel1Label">Painel 1 (CENTRAL)</span></h6>
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="desktopTogglePainel1" onchange="saveDesktopSettings()">
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-                        <label class="small text-secondary">📝 Nome do Painel:</label>
-                        <input type="text" id="desktopNomePainel1" class="form-control mb-2" onchange="saveDesktopSettings()">
-                        <label class="small text-secondary">🔗 Link do Painel:</label>
-                        <input type="text" id="desktopUrl1" class="form-control mb-2">
-                        <label class="small text-secondary">💳 Créditos:</label>
-                        <div class="creditos-display">
-                            <div>
-                                <div class="cred-label">Disponíveis</div>
-                                <div class="cred-value" id="desktopCredCentralDisplay">0</div>
-                            </div>
-                            <div class="creditos-controls">
-                                <button class="btn-menos" onclick="ajustarDesktopCredito('central', -1)">−</button>
-                                <input type="number" id="desktopCredCentral" class="form-control" value="0" min="0" onchange="atualizarDesktopDisplayCredito('central')">
-                                <button class="btn-mais" onclick="ajustarDesktopCredito('central', 1)">+</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-4">
-                    <div class="painel-config-card">
-                        <div class="toggle-container">
-                            <h6 class="m-0"><i class="bi bi-lightning-fill text-warning"></i> <span id="desktopPainel2Label">Painel 2 (WAREZ)</span></h6>
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="desktopTogglePainel2" onchange="saveDesktopSettings()">
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-                        <label class="small text-secondary">📝 Nome do Painel:</label>
-                        <input type="text" id="desktopNomePainel2" class="form-control mb-2" onchange="saveDesktopSettings()">
-                        <label class="small text-secondary">🔗 Link do Painel:</label>
-                        <input type="text" id="desktopUrl2" class="form-control mb-2">
-                        <label class="small text-secondary">💳 Créditos:</label>
-                        <div class="creditos-display">
-                            <div>
-                                <div class="cred-label">Disponíveis</div>
-                                <div class="cred-value" id="desktopCredWarezDisplay">0</div>
-                            </div>
-                            <div class="creditos-controls">
-                                <button class="btn-menos" onclick="ajustarDesktopCredito('warez', -1)">−</button>
-                                <input type="number" id="desktopCredWarez" class="form-control" value="0" min="0" onchange="atualizarDesktopDisplayCredito('warez')">
-                                <button class="btn-mais" onclick="ajustarDesktopCredito('warez', 1)">+</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-4">
-                    <div class="painel-config-card">
-                        <div class="toggle-container">
-                            <h6 class="m-0"><i class="bi bi-fire text-danger"></i> <span id="desktopPainel3Label">Painel 3 (ZEUS)</span></h6>
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="desktopTogglePainel3" onchange="saveDesktopSettings()">
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-                        <label class="small text-secondary">📝 Nome do Painel:</label>
-                        <input type="text" id="desktopNomePainel3" class="form-control mb-2" onchange="saveDesktopSettings()">
-                        <label class="small text-secondary">🔗 Link do Painel:</label>
-                        <input type="text" id="desktopUrl3" class="form-control mb-2">
-                        <label class="small text-secondary">💳 Créditos:</label>
-                        <div class="creditos-display">
-                            <div>
-                                <div class="cred-label">Disponíveis</div>
-                                <div class="cred-value" id="desktopCredZeusDisplay">0</div>
-                            </div>
-                            <div class="creditos-controls">
-                                <button class="btn-menos" onclick="ajustarDesktopCredito('zeus', -1)">−</button>
-                                <input type="number" id="desktopCredZeus" class="form-control" value="0" min="0" onchange="atualizarDesktopDisplayCredito('zeus')">
-                                <button class="btn-mais" onclick="ajustarDesktopCredito('zeus', 1)">+</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <button class="desktop-btn desktop-btn-success mt-4" onclick="saveDesktopSettings()">
-                <i class="bi bi-check-circle"></i> Salvar Configurações
+        </nav>
+
+        <div class="desktop-sidebar-footer">
+            <button class="desktop-logout-btn" onclick="handleLogout()">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sair do Sistema</span>
             </button>
         </div>
-    </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="desktop-main">
+        <div class="desktop-topbar">
+            <h2 id="desktopPageTitle"><i class="bi bi-grid-1x2-fill"></i> Dashboard</h2>
+            <div class="topbar-actions">
+                <div class="topbar-date" id="desktopDataAtual"></div>
+            </div>
+        </div>
+
+        <div class="desktop-content">
+
+            <!-- VIEW: DASHBOARD -->
+            <div class="desktop-view active" id="desktopView-dashboard">
+                <div class="desktop-stats-grid">
+                    <div class="desktop-stat-card">
+                        <div class="stat-icon green"><i class="bi bi-cash-stack"></i></div>
+                        <div class="stat-title">Recebido (Mês)</div>
+                        <div class="stat-value" id="deskFinRecebido">R$ 0,00</div>
+                        <div class="stat-sub">Atualizado em tempo real</div>
+                    </div>
+                    <div class="desktop-stat-card">
+                        <div class="stat-icon yellow"><i class="bi bi-hourglass-split"></i></div>
+                        <div class="stat-title">A Receber</div>
+                        <div class="stat-value" id="deskFinPendente">R$ 0,00</div>
+                        <div class="stat-sub">Pendente de pagamento</div>
+                    </div>
+                    <div class="desktop-stat-card">
+                        <div class="stat-icon cyan"><i class="bi bi-people-fill"></i></div>
+                        <div class="stat-title">Total Clientes</div>
+                        <div class="stat-value" id="deskFinTotalClientes">0</div>
+                        <div class="stat-sub">Clientes ativos</div>
+                    </div>
+                    <div class="desktop-stat-card">
+                        <div class="stat-icon purple"><i class="bi bi-graph-up-arrow"></i></div>
+                        <div class="stat-title">Lucro Geral</div>
+                        <div class="stat-value" id="deskFinGeral">R$ 0,00</div>
+                        <div class="stat-sub">Faturamento total</div>
+                    </div>
+                </div>
+
+                <div class="desktop-section-card">
+                    <h3><i class="bi bi-lightning-charge-fill"></i> Ações Rápidas</h3>
+                    <div class="desktop-quick-actions">
+                        <button class="desktop-quick-action" onclick="navegarDesktop('clienteCadastrar')">
+                            <div class="qa-icon" style="background:rgba(25,135,84,0.15); color:#00ff00;"><i class="bi bi-person-plus-fill"></i></div>
+                            <div class="qa-text">
+                                <strong>Novo Cliente</strong>
+                                <small>Cadastrar cliente</small>
+                            </div>
+                        </button>
+                        <button class="desktop-quick-action" onclick="navegarDesktop('clienteGerenciar')">
+                            <div class="qa-icon" style="background:rgba(13,110,253,0.15); color:#0d6efd;"><i class="bi bi-list-ul"></i></div>
+                            <div class="qa-text">
+                                <strong>Gerenciar Clientes</strong>
+                                <small>Ver todos os clientes</small>
+                            </div>
+                        </button>
+                        <button class="desktop-quick-action" onclick="abrirBancoItv()">
+                            <div class="qa-icon" style="background:rgba(13,110,253,0.15); color:#0d6efd;"><i class="bi bi-bank2"></i></div>
+                            <div class="qa-text">
+                                <strong>Banco ITV</strong>
+                                <small>Gestão de empréstimos</small>
+                            </div>
+                        </button>
+                        <button class="desktop-quick-action" onclick="navegarDesktop('revendaCadastrar')">
+                            <div class="qa-icon" style="background:rgba(255,153,0,0.15); color:#ff9900;"><i class="bi bi-shop"></i></div>
+                            <div class="qa-text">
+                                <strong>Nova Revenda</strong>
+                                <small>Cadastrar revendedor</small>
+                            </div>
+                        </button>
+                        <button class="desktop-quick-action" onclick="navegarDesktop('revendaGerenciar')">
+                            <div class="qa-icon" style="background:rgba(255,153,0,0.15); color:#ff9900;"><i class="bi bi-people-fill"></i></div>
+                            <div class="qa-text">
+                                <strong>Gerenciar Revendas</strong>
+                                <small>Ver revendedores</small>
+                            </div>
+                        </button>
+                        <button class="desktop-quick-action" onclick="navegarDesktop('clienteConfPainel')">
+                            <div class="qa-icon" style="background:rgba(153,51,255,0.15); color:#9933ff;"><i class="bi bi-hdd-stack-fill"></i></div>
+                            <div class="qa-text">
+                                <strong>Configurar Painéis</strong>
+                                <small>URLs e créditos</small>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="desktop-section-card">
+                    <h3><i class="bi bi-broadcast"></i> Painéis Ativos</h3>
+                    <div class="desktop-paineis-grid" id="desktopPaineisAtivos"></div>
+                </div>
+            </div>
+
+            <!-- VIEW: CLIENTE CADASTRAR -->
+            <div class="desktop-view" id="desktopView-clienteCadastrar">
+                <div class="desktop-section-card">
+                    <h3><i class="bi bi-person-plus-fill"></i> Cadastrar Novo Cliente</h3>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="small text-secondary">Nome:</label>
+                            <input type="text" id="deskCNome" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="small text-secondary">Usuário:</label>
+                            <input type="text" id="deskCUser" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="small text-secondary">Senha:</label>
+                            <input type="text" id="deskCPass" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="small text-secondary">Valor (R$):</label>
+                            <input type="number" id="deskCValor" class="form-control" step="0.01">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="small text-secondary">Data Vencimento:</label>
+                            <input type="date" id="deskCData" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="small text-secondary">WhatsApp (com DDD):</label>
+                            <input type="tel" id="deskCTel" class="form-control" placeholder="55999999999">
+                        </div>
+                        <div class="col-md-12">
+                            <label class="small text-secondary">URL Playlist:</label>
+                            <input type="text" id="deskCUrl" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="small text-secondary">Painel (onde será renovado):</label>
+                            <select id="deskCPainel" class="form-control form-select">
+                                <option value="central">📡 CENTRAL</option>
+                                <option value="warez">⚡ WAREZ</option>
+                                <option value="zeus">🔥 ZEUS</option>
+                                <option value="itvplayer">🎬 ITVPlayer</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="small text-secondary">Observações:</label>
+                            <input type="text" id="deskCObs" class="form-control">
+                        </div>
+                        <div class="col-12 mt-3">
+                            <button class="btn btn-success px-4 py-2 rounded-pill fw-bold" onclick="saveClienteDesktop()">
+                                <i class="bi bi-check-circle me-2"></i>Salvar Cliente
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: GERENCIAR CLIENTES -->
+            <div class="desktop-view" id="desktopView-clienteGerenciar">
+                <div class="desktop-section-card">
+                    <h3><i class="bi bi-list-ul"></i> Gerenciar Clientes</h3>
+                    <div class="desktop-search-bar">
+                        <input type="text" id="deskSearch" class="form-control" placeholder="🔍 Buscar cliente por nome..." onkeyup="renderClientesDesktop()">
+                        <button class="btn btn-success" onclick="navegarDesktop('clienteCadastrar')">
+                            <i class="bi bi-plus-lg me-1"></i> Novo
+                        </button>
+                    </div>
+                    <div class="desktop-filter-pills" id="deskFilterPills">
+                        <button class="desktop-filter-pill active" onclick="filterDataDesktop('ativos', this)">
+                            <i class="bi bi-check-circle"></i> Ativos <span class="pill-count" id="deskCountAtivos">0</span>
+                        </button>
+                        <button class="desktop-filter-pill" onclick="filterDataDesktop('vencer', this)" style="color:#ff9900;">
+                            <i class="bi bi-exclamation-triangle"></i> A Vencer <span class="pill-count" id="deskCountVencer">0</span>
+                        </button>
+                        <button class="desktop-filter-pill" onclick="filterDataDesktop('expirados', this)" style="color:#dc3545;">
+                            <i class="bi bi-x-circle"></i> Expirados <span class="pill-count" id="deskCountExp">0</span>
+                        </button>
+                        <button class="desktop-filter-pill" onclick="filterDataDesktop('apagar', this)" style="color:#0dcaf0;">
+                            <i class="bi bi-hourglass"></i> A Receber <span class="pill-count" id="deskCountPagar">0</span>
+                        </button>
+                    </div>
+                    <div class="desktop-clientes-list" id="deskListaClientes"></div>
+                </div>
+            </div>
+
+            <!-- VIEW: CONF COBRANÇA -->
+            <div class="desktop-view" id="desktopView-clienteConfCobranca">
+                <div class="desktop-section-card">
+                    <h3><i class="bi bi-chat-dots-fill"></i> Configuração de Mensagem de Cobrança</h3>
+                    <p class="text-secondary small">Esta mensagem será enviada automaticamente via WhatsApp quando você clicar em "COBRAR" em um cliente.</p>
+                    <label class="small text-secondary">Mensagem de Cobrança:</label>
+                    <textarea id="deskCfgMsg" class="form-control mb-3" rows="8" placeholder="Digite a mensagem que será enviada..."></textarea>
+                    <button class="btn btn-success px-4 py-2 rounded-pill fw-bold" onclick="saveSettingsDesktop()">
+                        <i class="bi bi-save me-2"></i>Salvar Mensagem
+                    </button>
+                </div>
+            </div>
+
+            <!-- VIEW: CONF PAINEL -->
+            <div class="desktop-view" id="desktopView-clienteConfPainel">
+                <div class="desktop-section-card">
+                    <h3><i class="bi bi-hdd-stack-fill"></i> Configuração dos Painéis</h3>
+                    
+                    <div class="row g-3">
+                        <!-- Painel 1 -->
+                        <div class="col-md-4">
+                            <div class="painel-config-card">
+                                <div class="toggle-container">
+                                    <h6 class="m-0"><i class="bi bi-broadcast text-info"></i> <span id="deskPainel1Label">Painel 1 (CENTRAL)</span></h6>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="deskTogglePainel1" onchange="saveSettingsDesktop()">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                                <label class="small text-secondary">📝 Nome:</label>
+                                <input type="text" id="deskNomePainel1" class="form-control mb-2" onchange="saveSettingsDesktop()">
+                                <label class="small text-secondary">🔗 Link:</label>
+                                <input type="text" id="deskUrl1" class="form-control mb-2">
+                                <label class="small text-secondary">💳 Créditos:</label>
+                                <div class="creditos-display">
+                                    <div>
+                                        <div class="cred-label">Disponíveis</div>
+                                        <div class="cred-value" id="deskCredCentralDisplay">0</div>
+                                    </div>
+                                    <div class="creditos-controls">
+                                        <button class="btn-menos" onclick="ajustarCreditoDesktop('central', -1)">−</button>
+                                        <input type="number" id="deskCredCentral" class="form-control" value="0" min="0" onchange="atualizarDisplayCreditoDesktop('central')">
+                                        <button class="btn-mais" onclick="ajustarCreditoDesktop('central', 1)">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Painel 2 -->
+                        <div class="col-md-4">
+                            <div class="painel-config-card">
+                                <div class="toggle-container">
+                                    <h6 class="m-0"><i class="bi bi-lightning-fill text-warning"></i> <span id="deskPainel2Label">Painel 2 (WAREZ)</span></h6>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="deskTogglePainel2" onchange="saveSettingsDesktop()">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                                <label class="small text-secondary">📝 Nome:</label>
+                                <input type="text" id="deskNomePainel2" class="form-control mb-2" onchange="saveSettingsDesktop()">
+                                <label class="small text-secondary">🔗 Link:</label>
+                                <input type="text" id="deskUrl2" class="form-control mb-2">
+                                <label class="small text-secondary">💳 Créditos:</label>
+                                <div class="creditos-display">
+                                    <div>
+                                        <div class="cred-label">Disponíveis</div>
+                                        <div class="cred-value" id="deskCredWarezDisplay">0</div>
+                                    </div>
+                                    <div class="creditos-controls">
+                                        <button class="btn-menos" onclick="ajustarCreditoDesktop('warez', -1)">−</button>
+                                        <input type="number" id="deskCredWarez" class="form-control" value="0" min="0" onchange="atualizarDisplayCreditoDesktop('warez')">
+                                        <button class="btn-mais" onclick="ajustarCreditoDesktop('warez', 1)">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Painel 3 -->
+                        <div class="col-md-4">
+                            <div class="painel-config-card">
+                                <div class="toggle-container">
+                                    <h6 class="m-0"><i class="bi bi-fire text-danger"></i> <span id="deskPainel3Label">Painel 3 (ZEUS)</span></h6>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="deskTogglePainel3" onchange="saveSettingsDesktop()">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                                <label class="small text-secondary">📝 Nome:</label>
+                                <input type="text" id="deskNomePainel3" class="form-control mb-2" onchange="saveSettingsDesktop()">
+                                <label class="small text-secondary">🔗 Link:</label>
+                                <input type="text" id="deskUrl3" class="form-control mb-2">
+                                <label class="small text-secondary">💳 Créditos:</label>
+                                <div class="creditos-display">
+                                    <div>
+                                        <div class="cred-label">Disponíveis</div>
+                                        <div class="cred-value" id="deskCredZeusDisplay">0</div>
+                                    </div>
+                                    <div class="creditos-controls">
+                                        <button class="btn-menos" onclick="ajustarCreditoDesktop('zeus', -1)">−</button>
+                                        <input type="number" id="deskCredZeus" class="form-control" value="0" min="0" onchange="atualizarDisplayCreditoDesktop('zeus')">
+                                        <button class="btn-mais" onclick="ajustarCreditoDesktop('zeus', 1)">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-success px-4 py-2 rounded-pill fw-bold mt-3" onclick="saveSettingsDesktop()">
+                        <i class="bi bi-save me-2"></i>Salvar Todas as Configurações
+                    </button>
+                </div>
+            </div>
+
+            <!-- VIEW: REVENDEDOR CADASTRAR -->
+            <div class="desktop-view" id="desktopView-revendaCadastrar">
+                <div class="desktop-section-card">
+                    <h3><i class="bi bi-person-plus-fill"></i> Cadastrar Nova Revenda</h3>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="small text-secondary">Nome:</label>
+                            <input type="text" id="deskRNome" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="small text-secondary">WhatsApp (com DDD):</label>
+                            <input type="tel" id="deskRTel" class="form-control" placeholder="55999999999">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="small text-secondary">Painel:</label>
+                            <select id="deskRPainel" class="form-control form-select">
+                                <option value="central">📡 CENTRAL</option>
+                                <option value="warez">⚡ WAREZ</option>
+                                <option value="zeus">🔥 ZEUS</option>
+                                <option value="itvplayer">🎬 ITVPlayer</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="small text-secondary">Usuário:</label>
+                            <input type="text" id="deskRUser" class="form-control">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="small text-secondary">Senha:</label>
+                            <input type="text" id="deskRPass" class="form-control">
+                        </div>
+                        <div class="col-md-12">
+                            <label class="small text-secondary">Link do Painel:</label>
+                            <input type="text" id="deskRLink" class="form-control" placeholder="https://...">
+                        </div>
+                        <div class="col-12 mt-3">
+                            <button class="btn btn-warning text-dark px-4 py-2 rounded-pill fw-bold" onclick="saveRevendaDesktop()">
+                                <i class="bi bi-check-circle me-2"></i>Salvar Revendedor
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: GERENCIAR REVENDEDORES -->
+            <div class="desktop-view" id="desktopView-revendaGerenciar">
+                <div class="desktop-section-card">
+                    <h3><i class="bi bi-list-ul"></i> Gerenciar Revendas</h3>
+                    <div class="desktop-search-bar">
+                        <input type="text" id="deskSearchRevenda" class="form-control" placeholder="🔍 Buscar revendedor..." onkeyup="renderRevendasDesktop()">
+                        <button class="btn btn-warning text-dark" onclick="navegarDesktop('revendaCadastrar')">
+                            <i class="bi bi-plus-lg me-1"></i> Nova Revenda
+                        </button>
+                    </div>
+                    <div class="desktop-clientes-list" id="deskListaRevendas"></div>
+                </div>
+            </div>
+
+        </div>
+    </main>
 </div>
 
-<!-- Modais (mantidos do código original) -->
+<!-- ========================================================================
+     MODAIS (comuns a ambas versões)
+     ======================================================================== -->
+
+<!-- Modal Cadastro/Edição de Cliente (Mobile) -->
 <div class="modal fade" id="modalCadastro" tabindex="-1" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content bg-dark text-white">
@@ -1231,6 +1629,7 @@
     </div>
 </div>
 
+<!-- Modal Cadastro/Edição de Revenda (Mobile) -->
 <div class="modal fade" id="modalRevenda" tabindex="-1" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content bg-dark text-white">
@@ -1255,6 +1654,7 @@
     </div>
 </div>
 
+<!-- Modal de Ações do Cliente -->
 <div class="modal fade" id="modalAcoes" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content bg-dark text-white">
@@ -1274,6 +1674,7 @@
     </div>
 </div>
 
+<!-- Modal BANCO ITV -->
 <div class="modal fade modal-banco-itv" id="modalBancoItv" tabindex="-1" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
@@ -1406,242 +1807,25 @@
         togglePainel3: true
     };
     let currentFilter = 'ativos';
-    let desktopCurrentFilter = 'ativos';
+    let currentFilterDesktop = 'ativos';
     let usuarioLogadoUid = null;
     let viewPrincipal = 'clientes';
-    let desktopView = 'dashboard';
 
     // =========================================================================
-    // FUNÇÕES DESKTOP
+    // DETECÇÃO DE DISPOSITIVO - Ativa modo desktop se tela >= 992px
     // =========================================================================
-    function mudarDesktopView(view) {
-        desktopView = view;
-        document.querySelectorAll('.desktop-view').forEach(v => v.classList.remove('active'));
-        document.getElementById('desktopView-' + view).classList.add('active');
-        
-        if (view === 'dashboard') renderDesktopDashboard();
-        if (view === 'clientes') renderDesktopClientes();
-        if (view === 'revenda') renderDesktopRevendas();
-    }
-
-    function toggleDesktopSubmenu(id, btn) {
-        const submenu = document.getElementById(id);
-        const isActive = submenu.classList.contains('active');
-        
-        document.querySelectorAll('.desktop-submenu').forEach(s => s.classList.remove('active'));
-        
-        if (!isActive) {
-            submenu.classList.add('active');
-            btn.classList.add('active');
+    function detectarDispositivo() {
+        if (window.innerWidth >= 992) {
+            document.body.classList.add('desktop-mode');
         } else {
-            btn.classList.remove('active');
+            document.body.classList.remove('desktop-mode');
         }
     }
-
-    function abrirDesktopConfig(tipo) {
-        if (tipo === 'cobranca') {
-            document.getElementById('desktopCfgMsg').value = config.msg || '';
-            mudarDesktopView('cobranca');
-        } else if (tipo === 'painel') {
-            document.getElementById('desktopNomePainel1').value = config.nomePainel1 || '';
-            document.getElementById('desktopNomePainel2').value = config.nomePainel2 || '';
-            document.getElementById('desktopNomePainel3').value = config.nomePainel3 || '';
-            document.getElementById('desktopUrl1').value = config.p1 || '';
-            document.getElementById('desktopUrl2').value = config.p2 || '';
-            document.getElementById('desktopUrl3').value = config.p3 || '';
-            document.getElementById('desktopCredCentral').value = config.credCentral || 0;
-            document.getElementById('desktopCredWarez').value = config.credWarez || 0;
-            document.getElementById('desktopCredZeus').value = config.credZeus || 0;
-            document.getElementById('desktopTogglePainel1').checked = config.togglePainel1;
-            document.getElementById('desktopTogglePainel2').checked = config.togglePainel2;
-            document.getElementById('desktopTogglePainel3').checked = config.togglePainel3;
-            atualizarDesktopDisplayCredito('central');
-            atualizarDesktopDisplayCredito('warez');
-            atualizarDesktopDisplayCredito('zeus');
-            document.getElementById('desktopPainel1Label').innerText = `Painel 1 (${config.nomePainel1})`;
-            document.getElementById('desktopPainel2Label').innerText = `Painel 2 (${config.nomePainel2})`;
-            document.getElementById('desktopPainel3Label').innerText = `Painel 3 (${config.nomePainel3})`;
-            mudarDesktopView('painel');
-        }
-    }
-
-    function saveDesktopSettings() {
-        if(!usuarioLogadoUid) return;
-        
-        if (desktopView === 'cobranca') {
-            config.msg = document.getElementById('desktopCfgMsg').value;
-        } else if (desktopView === 'painel') {
-            config.nomePainel1 = document.getElementById('desktopNomePainel1').value || "CENTRAL";
-            config.nomePainel2 = document.getElementById('desktopNomePainel2').value || "WAREZ";
-            config.nomePainel3 = document.getElementById('desktopNomePainel3').value || "ZEUS";
-            config.p1 = document.getElementById('desktopUrl1').value;
-            config.p2 = document.getElementById('desktopUrl2').value;
-            config.p3 = document.getElementById('desktopUrl3').value;
-            config.credCentral = parseInt(document.getElementById('desktopCredCentral').value) || 0;
-            config.credWarez = parseInt(document.getElementById('desktopCredWarez').value) || 0;
-            config.credZeus = parseInt(document.getElementById('desktopCredZeus').value) || 0;
-            config.togglePainel1 = document.getElementById('desktopTogglePainel1').checked;
-            config.togglePainel2 = document.getElementById('desktopTogglePainel2').checked;
-            config.togglePainel3 = document.getElementById('desktopTogglePainel3').checked;
-        }
-        
-        db.collection("usuarios").doc(usuarioLogadoUid).collection("config").doc("geral").set(config).then(() => {
-            alert("✅ Configurações salvas!");
-            atualizarBadgesCreditos();
-            renderPaineisAtivos();
-        }).catch(err => alert("Erro: "+err.message));
-    }
-
-    function ajustarDesktopCredito(painel, delta) {
-        const inputId = 'desktopCred' + painel.charAt(0).toUpperCase() + painel.slice(1);
-        const input = document.getElementById(inputId);
-        let val = parseInt(input.value) || 0;
-        val = Math.max(0, val + delta);
-        input.value = val;
-        atualizarDesktopDisplayCredito(painel);
-    }
-
-    function atualizarDesktopDisplayCredito(painel) {
-        const inputId = 'desktopCred' + painel.charAt(0).toUpperCase() + painel.slice(1);
-        const displayId = 'desktopCred' + painel.charAt(0).toUpperCase() + painel.slice(1) + 'Display';
-        const val = parseInt(document.getElementById(inputId).value) || 0;
-        document.getElementById(displayId).innerText = val;
-    }
-
-    function renderDesktopDashboard() {
-        renderFinanceiro();
-        
-        document.getElementById('desktopFinRecebido').innerText = document.getElementById('finRecebido').innerText;
-        document.getElementById('desktopFinPendente').innerText = document.getElementById('finPendente').innerText;
-        document.getElementById('desktopFinTotalClientes').innerText = document.getElementById('finTotalClientes').innerText;
-        document.getElementById('desktopFinGeral').innerText = document.getElementById('finGeral').innerText;
-        
-        const container = document.getElementById('desktopClientesRecentes');
-        container.innerHTML = '';
-        
-        const recentes = clientes.filter(c => c.status !== 'deletado').slice(0, 6);
-        
-        if (recentes.length === 0) {
-            container.innerHTML = '<div class="text-center text-secondary py-5">Nenhum cliente cadastrado ainda.</div>';
-            return;
-        }
-        
-        recentes.forEach(c => {
-            let badgeClass = 'bg-success';
-            let dataExib = c.data.split('-').reverse().join('/');
-            
-            container.innerHTML += `
-                <div class="desktop-client-card" onclick="abrirAcoesCliente('${c.id}')">
-                    <div class="d-flex justify-content-between align-items-start mb-2">
-                        <h5 class="mb-0">${c.nome}</h5>
-                        <span class="badge ${badgeClass}">${dataExib}</span>
-                    </div>
-                    <div class="cliente-info">
-                        <div class="info-item"><span class="info-label">Usuário:</span><span class="info-value">${c.user || '-'}</span></div>
-                        <div class="info-item"><span class="info-label">Valor:</span><span class="info-value">R$ ${c.valor.toFixed(2)}</span></div>
-                    </div>
-                </div>
-            `;
-        });
-    }
-
-    function renderDesktopClientes() {
-        const listaDiv = document.getElementById('desktopListaClientes');
-        const searchTerm = (document.getElementById('desktopSearch').value || "").toLowerCase();
-        listaDiv.innerHTML = "";
-        let counts = { ativos:0, vencer:0, exp:0, apagar:0 };
-        const hoje = new Date();
-        
-        clientes.forEach(c => {
-            let partes = c.data.split('-');
-            let dataVenc = new Date(partes[0], partes[1] - 1, partes[2]);
-            let diffDays = Math.ceil((dataVenc - hoje) / (1000*3600*24));
-            let statusReal = c.status;
-            if(c.status !== 'deletado' && c.status !== 'apagar') {
-                if(diffDays < 0) statusReal = 'expirado';
-                else if(diffDays <= 3) statusReal = 'vencer';
-                else statusReal = 'ativo';
-            }
-            if(statusReal === 'ativo') counts.ativos++;
-            if(statusReal === 'vencer') counts.vencer++;
-            if(statusReal === 'expirado') counts.exp++;
-            if(c.status === 'apagar') counts.apagar++;
-            
-            if(desktopCurrentFilter === 'ativos' && !(statusReal === 'ativo')) return;
-            if(desktopCurrentFilter === 'vencer' && statusReal !== 'vencer') return;
-            if(desktopCurrentFilter === 'expirados' && statusReal !== 'expirado') return;
-            if(desktopCurrentFilter === 'apagar' && c.status !== 'apagar') return;
-            if(!c.nome.toLowerCase().includes(searchTerm)) return;
-            
-            let badgeClass = 'bg-success';
-            if(statusReal === 'expirado') badgeClass = 'bg-danger';
-            else if(statusReal === 'vencer') badgeClass = 'bg-warning text-dark';
-            let dataExib = c.data.split('-').reverse().join('/');
-            
-            listaDiv.innerHTML += `
-                <div class="desktop-client-card" onclick="abrirAcoesCliente('${c.id}')">
-                    <div class="d-flex justify-content-between align-items-start mb-2">
-                        <h5 class="mb-0">${c.nome}</h5>
-                        <span class="badge ${badgeClass}">${dataExib}</span>
-                    </div>
-                    <div class="cliente-info">
-                        <div class="info-item"><span class="info-label">Usuário:</span><span class="info-value">${c.user || '-'}</span></div>
-                        <div class="info-item"><span class="info-label">Senha:</span><span class="info-value">${c.pass || '-'}</span></div>
-                        <div class="info-item"><span class="info-label">Valor:</span><span class="info-value">R$ ${c.valor.toFixed(2)}</span></div>
-                        <div class="info-item"><span class="info-label">Painel:</span><span class="info-value">${(c.painel || 'central').toUpperCase()}</span></div>
-                    </div>
-                </div>
-            `;
-        });
-        
-        document.getElementById('desktopCountAtivos').innerText = counts.ativos;
-        document.getElementById('desktopCountVencer').innerText = counts.vencer;
-        document.getElementById('desktopCountExp').innerText = counts.exp;
-        document.getElementById('desktopCountPagar').innerText = counts.apagar;
-    }
-
-    function renderDesktopRevendas() {
-        const listaDiv = document.getElementById('desktopListaRevendas');
-        const searchTerm = (document.getElementById('desktopSearchRevenda').value || "").toLowerCase();
-        listaDiv.innerHTML = "";
-        
-        let encontrados = 0;
-        revendas.forEach(r => {
-            if(!r.nome.toLowerCase().includes(searchTerm)) return;
-            encontrados++;
-            
-            listaDiv.innerHTML += `
-                <div class="desktop-client-card" onclick="editarRevenda('${r.id}')">
-                    <div class="d-flex justify-content-between align-items-start mb-2">
-                        <h5 class="mb-0 text-warning">${r.nome}</h5>
-                        <span class="badge bg-secondary">${(r.painel || 'central').toUpperCase()}</span>
-                    </div>
-                    <div class="cliente-info">
-                        <div class="info-item"><span class="info-label">Usuário:</span><span class="info-value">${r.user || '-'}</span></div>
-                        <div class="info-item"><span class="info-label">Senha:</span><span class="info-value">${r.pass || '-'}</span></div>
-                        <div class="info-item info-full"><span class="info-label">Link:</span><span class="info-value text-info">${r.link || '-'}</span></div>
-                    </div>
-                    <div class="d-flex gap-2 mt-3" onclick="event.stopPropagation()">
-                        <button class="btn btn-sm flex-fill" style="background-color:#25D366;" onclick="enviarWhatsAppRevenda('${r.id}')"><i class="bi bi-whatsapp"></i> WhatsApp</button>
-                        <button class="btn btn-sm btn-info flex-fill" onclick="copiarLinkRevenda('${r.link || ''}')"><i class="bi bi-link-45deg"></i> Copiar</button>
-                        <button class="btn btn-sm btn-danger flex-fill" onclick="excluirRevenda('${r.id}')"><i class="bi bi-trash"></i></button>
-                    </div>
-                </div>
-            `;
-        });
-        
-        if (encontrados === 0) {
-            listaDiv.innerHTML = '<div class="text-center text-secondary py-5">Nenhum revendedor cadastrado.</div>';
-        }
-    }
-
-    function filterDesktopData(f) {
-        desktopCurrentFilter = f;
-        renderDesktopClientes();
-    }
+    detectarDispositivo();
+    window.addEventListener('resize', detectarDispositivo);
 
     // =========================================================================
-    // FUNÇÕES MOBILE (EXISTENTES)
+    // FUNÇÕES DE NAVEGAÇÃO MOBILE
     // =========================================================================
     function mudarViewPrincipal(view) {
         viewPrincipal = view;
@@ -1672,6 +1856,400 @@
         }
     }
 
+    // =========================================================================
+    // FUNÇÕES DE NAVEGAÇÃO DESKTOP
+    // =========================================================================
+    const titulosDesktop = {
+        'dashboard': { icon: 'bi-grid-1x2-fill', title: 'Dashboard' },
+        'clienteCadastrar': { icon: 'bi-person-plus-fill', title: 'Cadastrar Cliente' },
+        'clienteGerenciar': { icon: 'bi-list-ul', title: 'Gerenciar Clientes' },
+        'clienteConfCobranca': { icon: 'bi-chat-dots-fill', title: 'Conf Cobrança' },
+        'clienteConfPainel': { icon: 'bi-hdd-stack-fill', title: 'Conf Painel' },
+        'revendaCadastrar': { icon: 'bi-person-plus-fill', title: 'Cadastrar Revenda' },
+        'revendaGerenciar': { icon: 'bi-list-ul', title: 'Gerenciar Revendas' }
+    };
+
+    function navegarDesktop(view, btnElement) {
+        // Esconde todas as views
+        document.querySelectorAll('.desktop-view').forEach(v => v.classList.remove('active'));
+        const targetView = document.getElementById('desktopView-' + view);
+        if (targetView) targetView.classList.add('active');
+
+        // Atualiza título
+        const info = titulosDesktop[view] || { icon: 'bi-grid-1x2-fill', title: 'Painel' };
+        document.getElementById('desktopPageTitle').innerHTML = `<i class="bi ${info.icon}"></i> ${info.title}`;
+
+        // Atualiza item ativo (somente subitens)
+        document.querySelectorAll('.desktop-nav-subitem').forEach(s => s.classList.remove('active'));
+        if (btnElement && btnElement.classList.contains('desktop-nav-subitem')) {
+            btnElement.classList.add('active');
+        } else {
+            // Se clicou em item principal, marca subitem correspondente
+            const subMap = {
+                'dashboard': null,
+                'clienteCadastrar': 'subClientes',
+                'clienteGerenciar': 'subClientes',
+                'clienteConfCobranca': 'subClientes',
+                'clienteConfPainel': 'subClientes',
+                'revendaCadastrar': 'subRevenda',
+                'revendaGerenciar': 'subRevenda'
+            };
+            const subId = subMap[view];
+            if (subId) {
+                const submenu = document.getElementById(subId);
+                if (submenu) {
+                    submenu.classList.add('open');
+                }
+            }
+        }
+
+        // Ações específicas ao abrir view
+        if (view === 'dashboard') {
+            renderFinanceiroDesktop();
+            renderPaineisAtivosDesktop();
+        } else if (view === 'clienteGerenciar') {
+            renderClientesDesktop();
+        } else if (view === 'revendaGerenciar') {
+            renderRevendasDesktop();
+        } else if (view === 'clienteConfCobranca') {
+            document.getElementById('deskCfgMsg').value = config.msg || "";
+        } else if (view === 'clienteConfPainel') {
+            sincronizarCamposPainelDesktop();
+        } else if (view === 'clienteCadastrar') {
+            limparFormClienteDesktop();
+        } else if (view === 'revendaCadastrar') {
+            limparFormRevendaDesktop();
+        }
+    }
+
+    function toggleSubmenu(id, btn) {
+        const submenu = document.getElementById(id);
+        submenu.classList.toggle('open');
+    }
+
+    // =========================================================================
+    // FUNÇÕES DESKTOP - FINANCEIRO
+    // =========================================================================
+    function renderFinanceiroDesktop() {
+        const dataFiltro = document.getElementById('filterMes') ? document.getElementById('filterMes').value : '';
+        const mesFiltro = dataFiltro.slice(0, 7); 
+        let recebidoMes = 0;
+        let totalGeral = 0;
+        let totalActive = 0;
+        
+        clientes.forEach(c => {
+            if(c.status !== 'deletado') {
+                let val = parseFloat(c.valor) || 0;
+                totalGeral += val;
+                totalActive++;
+                
+                let mesPagamentoLocal = "";
+                if (c.ultimoPagamento) {
+                    const dataPagamento = new Date(c.ultimoPagamento);
+                    const ano = dataPagamento.getFullYear();
+                    const mes = String(dataPagamento.getMonth() + 1).padStart(2, '0');
+                    mesPagamentoLocal = `${ano}-${mes}`;
+                }
+                
+                if(!mesFiltro || mesPagamentoLocal === mesFiltro) {
+                    recebidoMes += val;
+                }
+            }
+        });
+        
+        let aReceber = totalGeral - recebidoMes;
+        
+        document.getElementById('deskFinRecebido').innerText = `R$ ${recebidoMes.toFixed(2)}`;
+        document.getElementById('deskFinPendente').innerText = `R$ ${aReceber.toFixed(2)}`;
+        document.getElementById('deskFinTotalClientes').innerText = totalActive;
+        document.getElementById('deskFinGeral').innerText = `R$ ${totalGeral.toFixed(2)}`;
+    }
+
+    function renderPaineisAtivosDesktop() {
+        const container = document.getElementById('desktopPaineisAtivos');
+        if (!container) return;
+        container.innerHTML = '';
+        if(config.togglePainel1) {
+            container.innerHTML += `<button class="desktop-painel-btn" onclick="accessPanel(1)">
+                <span>📡 ${config.nomePainel1}</span>
+                <span class="badge-creditos">${config.credCentral || 0}</span>
+            </button>`;
+        }
+        if(config.togglePainel2) {
+            container.innerHTML += `<button class="desktop-painel-btn" onclick="accessPanel(2)">
+                <span>⚡ ${config.nomePainel2}</span>
+                <span class="badge-creditos">${config.credWarez || 0}</span>
+            </button>`;
+        }
+        if(config.togglePainel3) {
+            container.innerHTML += `<button class="desktop-painel-btn" onclick="accessPanel(3)">
+                <span>🔥 ${config.nomePainel3}</span>
+                <span class="badge-creditos">${config.credZeus || 0}</span>
+            </button>`;
+        }
+    }
+
+    // =========================================================================
+    // FUNÇÕES DESKTOP - CLIENTES
+    // =========================================================================
+    function limparFormClienteDesktop() {
+        document.getElementById('deskCNome').value = "";
+        document.getElementById('deskCUser').value = "";
+        document.getElementById('deskCPass').value = "";
+        document.getElementById('deskCValor').value = "";
+        document.getElementById('deskCData').value = "";
+        document.getElementById('deskCUrl').value = "";
+        document.getElementById('deskCTel').value = "";
+        document.getElementById('deskCObs').value = "";
+        document.getElementById('deskCPainel').value = "central";
+    }
+
+    function saveClienteDesktop() {
+        if(!usuarioLogadoUid) return;
+        const clienteData = {
+            nome: document.getElementById('deskCNome').value,
+            user: document.getElementById('deskCUser').value,
+            pass: document.getElementById('deskCPass').value,
+            valor: parseFloat(document.getElementById('deskCValor').value) || 0,
+            data: document.getElementById('deskCData').value,
+            serv: "",
+            url: document.getElementById('deskCUrl').value,
+            tel: document.getElementById('deskCTel').value,
+            obs: document.getElementById('deskCObs').value,
+            painel: document.getElementById('deskCPainel').value || 'central',
+            status: 'ativo'
+        };
+        if (!clienteData.nome) return alert("Preencha o nome do cliente!");
+        
+        db.collection("usuarios").doc(usuarioLogadoUid).collection("clientes").add(clienteData).then(() => {
+            alert("✅ Cliente cadastrado com sucesso!");
+            limparFormClienteDesktop();
+            navegarDesktop('clienteGerenciar');
+        }).catch(err => alert("Erro: " + err.message));
+    }
+
+    function filterDataDesktop(f, btn) {
+        currentFilterDesktop = f;
+        document.querySelectorAll('#deskFilterPills .desktop-filter-pill').forEach(p => p.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+        renderClientesDesktop();
+    }
+
+    function renderClientesDesktop() {
+        const listaDiv = document.getElementById('deskListaClientes');
+        if (!listaDiv) return;
+        const searchTerm = (document.getElementById('deskSearch').value || "").toLowerCase();
+        listaDiv.innerHTML = "";
+        let counts = { ativos:0, vencer:0, exp:0, apagar:0, del:0 };
+        const hoje = new Date();
+        
+        clientes.forEach(c => {
+            if (!c.data) return;
+            let partes = c.data.split('-');
+            let dataVenc = new Date(partes[0], partes[1] - 1, partes[2]);
+            let diffDays = Math.ceil((dataVenc - hoje) / (1000*3600*24));
+            let statusReal = c.status;
+            if(c.status !== 'deletado' && c.status !== 'apagar') {
+                if(diffDays < 0) statusReal = 'expirado';
+                else if(diffDays <= 3) statusReal = 'vencer';
+                else statusReal = 'ativo';
+            }
+            if(statusReal === 'ativo') counts.ativos++;
+            if(statusReal === 'vencer') counts.vencer++;
+            if(statusReal === 'expirado') counts.exp++;
+            if(c.status === 'apagar') counts.apagar++;
+            if(c.status === 'deletado') counts.del++;
+            
+            if(currentFilterDesktop === 'ativos' && !(statusReal === 'ativo')) return;
+            if(currentFilterDesktop === 'vencer' && statusReal !== 'vencer') return;
+            if(currentFilterDesktop === 'expirados' && statusReal !== 'expirado') return;
+            if(currentFilterDesktop === 'apagar' && c.status !== 'apagar') return;
+            if(!c.nome.toLowerCase().includes(searchTerm)) return;
+            
+            let badgeClass = 'bg-success';
+            let badgeText = 'ATIVO';
+            if(statusReal === 'expirado') { badgeClass = 'bg-danger'; badgeText = 'EXPIRADO'; }
+            else if(statusReal === 'vencer') { badgeClass = 'bg-warning text-dark'; badgeText = 'A VENCER'; }
+            else if(c.status === 'apagar') { badgeClass = 'bg-info'; badgeText = 'A RECEBER'; }
+            let dataExib = c.data.split('-').reverse().join('/');
+            
+            listaDiv.innerHTML += `
+                <div class="desktop-cliente-card" onclick="abrirAcoesCliente('${c.id}')">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="mb-0" style="font-size:1.05rem;">${c.nome}</h5>
+                        <span class="badge ${badgeClass}">${badgeText}</span>
+                    </div>
+                    <div class="cliente-info">
+                        <div class="info-item"><span class="info-label">Usuário:</span><span class="info-value">${c.user || '-'}</span></div>
+                        <div class="info-item"><span class="info-label">Senha:</span><span class="info-value">${c.pass || '-'}</span></div>
+                        <div class="info-item"><span class="info-label">Valor:</span><span class="info-value">R$ ${c.valor.toFixed(2)}</span></div>
+                        <div class="info-item"><span class="info-label">Vence:</span><span class="info-value">${dataExib}</span></div>
+                    </div>
+                </div>
+            `;
+        });
+        
+        document.getElementById('deskCountAtivos').innerText = counts.ativos;
+        document.getElementById('deskCountVencer').innerText = counts.vencer;
+        document.getElementById('deskCountExp').innerText = counts.exp;
+        document.getElementById('deskCountPagar').innerText = counts.apagar;
+    }
+
+    // =========================================================================
+    // FUNÇÕES DESKTOP - CONFIGURAÇÕES
+    // =========================================================================
+    function sincronizarCamposPainelDesktop() {
+        document.getElementById('deskCfgMsg').value = config.msg || "";
+        document.getElementById('deskUrl1').value = config.p1 || "";
+        document.getElementById('deskUrl2').value = config.p2 || "";
+        document.getElementById('deskUrl3').value = config.p3 || "";
+        document.getElementById('deskCredCentral').value = config.credCentral;
+        document.getElementById('deskCredWarez').value = config.credWarez;
+        document.getElementById('deskCredZeus').value = config.credZeus;
+        document.getElementById('deskNomePainel1').value = config.nomePainel1;
+        document.getElementById('deskNomePainel2').value = config.nomePainel2;
+        document.getElementById('deskNomePainel3').value = config.nomePainel3;
+        document.getElementById('deskTogglePainel1').checked = config.togglePainel1;
+        document.getElementById('deskTogglePainel2').checked = config.togglePainel2;
+        document.getElementById('deskTogglePainel3').checked = config.togglePainel3;
+        document.getElementById('deskPainel1Label').innerText = `Painel 1 (${config.nomePainel1})`;
+        document.getElementById('deskPainel2Label').innerText = `Painel 2 (${config.nomePainel2})`;
+        document.getElementById('deskPainel3Label').innerText = `Painel 3 (${config.nomePainel3})`;
+        atualizarBadgesCreditosDesktop();
+    }
+
+    function atualizarBadgesCreditosDesktop() {
+        const el1 = document.getElementById('deskCredCentralDisplay');
+        const el2 = document.getElementById('deskCredWarezDisplay');
+        const el3 = document.getElementById('deskCredZeusDisplay');
+        if (el1) el1.innerText = config.credCentral || 0;
+        if (el2) el2.innerText = config.credWarez || 0;
+        if (el3) el3.innerText = config.credZeus || 0;
+    }
+
+    function ajustarCreditoDesktop(painel, delta) {
+        const inputId = 'deskCred' + painel.charAt(0).toUpperCase() + painel.slice(1);
+        const input = document.getElementById(inputId);
+        if (!input) return;
+        let val = parseInt(input.value) || 0;
+        val = Math.max(0, val + delta);
+        input.value = val;
+        atualizarDisplayCreditoDesktop(painel);
+    }
+    function atualizarDisplayCreditoDesktop(painel) {
+        const inputId = 'deskCred' + painel.charAt(0).toUpperCase() + painel.slice(1);
+        const displayId = 'deskCred' + painel.charAt(0).toUpperCase() + painel.slice(1) + 'Display';
+        const input = document.getElementById(inputId);
+        const display = document.getElementById(displayId);
+        if (!input || !display) return;
+        const val = parseInt(input.value) || 0;
+        display.innerText = val;
+    }
+
+    function saveSettingsDesktop() {
+        if(!usuarioLogadoUid) return;
+        config = {
+            msg: document.getElementById('deskCfgMsg') ? document.getElementById('deskCfgMsg').value : config.msg,
+            p1: document.getElementById('deskUrl1') ? document.getElementById('deskUrl1').value : config.p1,
+            p2: document.getElementById('deskUrl2') ? document.getElementById('deskUrl2').value : config.p2,
+            p3: document.getElementById('deskUrl3') ? document.getElementById('deskUrl3').value : config.p3,
+            credCentral: parseInt(document.getElementById('deskCredCentral').value) || 0,
+            credWarez: parseInt(document.getElementById('deskCredWarez').value) || 0,
+            credZeus: parseInt(document.getElementById('deskCredZeus').value) || 0,
+            nomePainel1: document.getElementById('deskNomePainel1') ? document.getElementById('deskNomePainel1').value || "CENTRAL" : config.nomePainel1,
+            nomePainel2: document.getElementById('deskNomePainel2') ? document.getElementById('deskNomePainel2').value || "WAREZ" : config.nomePainel2,
+            nomePainel3: document.getElementById('deskNomePainel3') ? document.getElementById('deskNomePainel3').value || "ZEUS" : config.nomePainel3,
+            togglePainel1: document.getElementById('deskTogglePainel1') ? document.getElementById('deskTogglePainel1').checked : config.togglePainel1,
+            togglePainel2: document.getElementById('deskTogglePainel2') ? document.getElementById('deskTogglePainel2').checked : config.togglePainel2,
+            togglePainel3: document.getElementById('deskTogglePainel3') ? document.getElementById('deskTogglePainel3').checked : config.togglePainel3
+        };
+        db.collection("usuarios").doc(usuarioLogadoUid).collection("config").doc("geral").set(config).then(() => {
+            atualizarBadgesCreditosDesktop();
+            atualizarBadgesCreditos();
+            document.getElementById('painel1Label').innerText = `Painel 1 (${config.nomePainel1})`;
+            document.getElementById('painel2Label').innerText = `Painel 2 (${config.nomePainel2})`;
+            document.getElementById('painel3Label').innerText = `Painel 3 (${config.nomePainel3})`;
+            document.getElementById('deskPainel1Label').innerText = `Painel 1 (${config.nomePainel1})`;
+            document.getElementById('deskPainel2Label').innerText = `Painel 2 (${config.nomePainel2})`;
+            document.getElementById('deskPainel3Label').innerText = `Painel 3 (${config.nomePainel3})`;
+            renderPaineisAtivos();
+            renderPaineisAtivosDesktop();
+            alert("✅ Configurações salvas!");
+        }).catch(err => alert("Erro: "+err.message));
+    }
+
+    // =========================================================================
+    // FUNÇÕES DESKTOP - REVENDEDORES
+    // =========================================================================
+    function limparFormRevendaDesktop() {
+        document.getElementById('deskRNome').value = "";
+        document.getElementById('deskRTel').value = "";
+        document.getElementById('deskRPainel').value = "central";
+        document.getElementById('deskRUser').value = "";
+        document.getElementById('deskRPass').value = "";
+        document.getElementById('deskRLink').value = "";
+    }
+
+    function saveRevendaDesktop() {
+        if(!usuarioLogadoUid) return;
+        const revendaData = {
+            nome: document.getElementById('deskRNome').value,
+            tel: document.getElementById('deskRTel').value,
+            painel: document.getElementById('deskRPainel').value,
+            user: document.getElementById('deskRUser').value,
+            pass: document.getElementById('deskRPass').value,
+            link: document.getElementById('deskRLink').value,
+            status: 'ativo',
+            dataCriacao: new Date().toISOString()
+        };
+        if (!revendaData.nome) return alert("Preencha o nome do revendedor!");
+        
+        db.collection("usuarios").doc(usuarioLogadoUid).collection("revendas").add(revendaData).then(() => {
+            alert("✅ Revendedor cadastrado com sucesso!");
+            limparFormRevendaDesktop();
+            navegarDesktop('revendaGerenciar');
+        }).catch(err => alert("Erro: " + err.message));
+    }
+
+    function renderRevendasDesktop() {
+        const listaDiv = document.getElementById('deskListaRevendas');
+        if (!listaDiv) return;
+        const searchTerm = (document.getElementById('deskSearchRevenda').value || "").toLowerCase();
+        listaDiv.innerHTML = "";
+        
+        let encontrados = 0;
+        revendas.forEach(r => {
+            if(!r.nome.toLowerCase().includes(searchTerm)) return;
+            encontrados++;
+            
+            listaDiv.innerHTML += `
+                <div class="desktop-cliente-card" onclick="editarRevenda('${r.id}')">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="mb-0 text-warning" style="font-size:1.05rem;">${r.nome}</h5>
+                        <span class="badge bg-secondary">${(r.painel || 'central').toUpperCase()}</span>
+                    </div>
+                    <div class="cliente-info">
+                        <div class="info-item"><span class="info-label">Usuário:</span><span class="info-value">${r.user || '-'}</span></div>
+                        <div class="info-item"><span class="info-label">Senha:</span><span class="info-value">${r.pass || '-'}</span></div>
+                        <div class="info-item info-full"><span class="info-label">Link:</span><span class="info-value text-info" style="font-size:0.75rem;">${r.link || '-'}</span></div>
+                    </div>
+                    <div class="d-flex gap-2 mt-3" onclick="event.stopPropagation()">
+                        <button class="btn btn-sm flex-fill" style="background-color:#25D366; color:white;" onclick="enviarWhatsAppRevenda('${r.id}')"><i class="bi bi-whatsapp"></i> WhatsApp</button>
+                        <button class="btn btn-sm btn-info flex-fill" onclick="copiarLinkRevenda('${r.link || ''}')"><i class="bi bi-link-45deg"></i> Copiar</button>
+                        <button class="btn btn-sm btn-danger flex-fill" onclick="excluirRevenda('${r.id}')"><i class="bi bi-trash"></i></button>
+                    </div>
+                </div>
+            `;
+        });
+        
+        if (encontrados === 0) {
+            listaDiv.innerHTML = '<div class="text-center text-secondary py-5">Nenhum revendedor cadastrado. Clique em "Nova Revenda" para começar.</div>';
+        }
+    }
+
+    // =========================================================================
+    // FUNÇÕES MOBILE - REVENDA (mantidas)
+    // =========================================================================
     function showModalRevenda(id = "") {
         if(id === "") {
             document.getElementById('revEditId').value = "";
@@ -1702,18 +2280,15 @@
         const modal = bootstrap.Modal.getInstance(modalEl);
         
         if(id === "") {
-            db.collection("usuarios").doc(usuarioLogadoUid).collection("revendas").add(revendaData).then(() => {
-                modal.hide();
-            });
+            db.collection("usuarios").doc(usuarioLogadoUid).collection("revendas").add(revendaData).then(() => modal.hide());
         } else {
-            db.collection("usuarios").doc(usuarioLogadoUid).collection("revendas").doc(id).set(revendaData).then(() => {
-                modal.hide();
-            });
+            db.collection("usuarios").doc(usuarioLogadoUid).collection("revendas").doc(id).set(revendaData).then(() => modal.hide());
         }
     }
 
     function renderRevendas() {
         const listaDiv = document.getElementById('listaRevendas');
+        if (!listaDiv) return;
         const searchTerm = (document.getElementById('searchRevenda').value || "").toLowerCase();
         listaDiv.innerHTML = "";
         
@@ -1734,7 +2309,7 @@
                         <div class="info-item info-full"><span class="info-label">Link:</span><span class="info-value text-info" style="font-size:0.7rem;">${r.link || '-'}</span></div>
                     </div>
                     <div class="d-flex gap-2 mt-2" onclick="event.stopPropagation()">
-                        <button class="btn btn-sm flex-fill" style="background-color:#25D366;" onclick="enviarWhatsAppRevenda('${r.id}')"><i class="bi bi-whatsapp"></i> WhatsApp</button>
+                        <button class="btn btn-sm flex-fill" style="background-color:#25D366; color:white;" onclick="enviarWhatsAppRevenda('${r.id}')"><i class="bi bi-whatsapp"></i> WhatsApp</button>
                         <button class="btn btn-sm btn-info flex-fill" onclick="copiarLinkRevenda('${r.link || ''}')"><i class="bi bi-link-45deg"></i> Copiar</button>
                         <button class="btn btn-sm btn-danger flex-fill" onclick="excluirRevenda('${r.id}')"><i class="bi bi-trash"></i></button>
                     </div>
@@ -1798,6 +2373,9 @@
         }
     }
 
+    // =========================================================================
+    // FUNÇÕES BANCO ITV (mantidas)
+    // =========================================================================
     let emprestimos = [];
 
     function abrirBancoItv() {
@@ -1806,8 +2384,8 @@
     }
 
     function mudarViewBanco(view, btn) {
-        document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.banco-nav-btn').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('#modalBancoItv .view-section').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('#modalBancoItv .banco-nav-btn').forEach(el => el.classList.remove('active'));
         document.getElementById('view-' + view).classList.add('active');
         if(btn) btn.classList.add('active');
         if(view === 'lista') renderizarListaBanco();
@@ -1857,13 +2435,13 @@
             db.collection("usuarios").doc(usuarioLogadoUid).collection("emprestimos").add(dados).then(() => {
                 limparFormBanco();
                 alert("✅ Empréstimo cadastrado com sucesso!");
-                mudarViewBanco('lista', document.querySelectorAll('.banco-nav-btn')[1]);
+                mudarViewBanco('lista', document.querySelectorAll('#modalBancoItv .banco-nav-btn')[1]);
             });
         } else {
             db.collection("usuarios").doc(usuarioLogadoUid).collection("emprestimos").doc(id).update(dados).then(() => {
                 limparFormBanco();
                 alert("✅ Empréstimo atualizado!");
-                mudarViewBanco('lista', document.querySelectorAll('.banco-nav-btn')[1]);
+                mudarViewBanco('lista', document.querySelectorAll('#modalBancoItv .banco-nav-btn')[1]);
             });
         }
     }
@@ -2004,7 +2582,7 @@
         document.getElementById('bancoDataVenc').value = e.dataVencimento || "";
         document.getElementById('bancoObs').value = e.obs || '';
         calcularTotalBanco();
-        mudarViewBanco('novo', document.querySelectorAll('.banco-nav-btn')[2]);
+        mudarViewBanco('novo', document.querySelectorAll('#modalBancoItv .banco-nav-btn')[2]);
     }
 
     function pagarParcelaBanco(id) {
@@ -2071,23 +2649,40 @@
         }
     }
 
+    // =========================================================================
+    // AUTENTICAÇÃO E SINCRONIZAÇÃO
+    // =========================================================================
     const hojeLocal = new Date();
     const anoLocal = hojeLocal.getFullYear();
     const mesLocal = String(hojeLocal.getMonth() + 1).padStart(2, '0');
     const diaLocal = String(hojeLocal.getDate()).padStart(2, '0');
-    document.getElementById('filterMes').value = `${anoLocal}-${mesLocal}-${diaLocal}`;
+    const dataFormatada = `${diaLocal}/${mesLocal}/${anoLocal}`;
+    if (document.getElementById('filterMes')) document.getElementById('filterMes').value = `${anoLocal}-${mesLocal}-${diaLocal}`;
+    if (document.getElementById('desktopDataAtual')) document.getElementById('desktopDataAtual').innerHTML = `<i class="bi bi-calendar3 me-1"></i> ${dataFormatada}`;
     
     auth.onAuthStateChanged(user => {
         if (user) {
             usuarioLogadoUid = user.uid;
-            document.getElementById('userEmailDisplay').innerText = user.email || "";
-            document.getElementById('desktopUserEmail').innerText = user.email || "";
+            const email = user.email || "";
+            const initial = email.charAt(0).toUpperCase() || "U";
+            
+            const userEmailEl = document.getElementById('userEmailDisplay');
+            if (userEmailEl) userEmailEl.innerText = email;
+            
+            const deskEmailEl = document.getElementById('desktopUserEmail');
+            if (deskEmailEl) deskEmailEl.innerText = email;
+            
+            const deskAvatarEl = document.getElementById('desktopUserAvatar');
+            if (deskAvatarEl) deskAvatarEl.innerText = initial;
+            
             document.getElementById('authOverlay').style.display = 'none';
             syncConfigAndClients();
         } else {
             usuarioLogadoUid = null;
-            document.getElementById('userEmailDisplay').innerText = "";
-            document.getElementById('desktopUserEmail').innerText = "";
+            const userEmailEl = document.getElementById('userEmailDisplay');
+            if (userEmailEl) userEmailEl.innerText = "";
+            const deskEmailEl = document.getElementById('desktopUserEmail');
+            if (deskEmailEl) deskEmailEl.innerText = "carregando...";
             document.getElementById('authOverlay').style.display = 'flex';
             document.getElementById('adminLock').style.display = 'none';
         }
@@ -2099,7 +2694,14 @@
         if(!email || !senha) return alert("Preencha e-mail e senha.");
         auth.signInWithEmailAndPassword(email, senha).catch(err => alert("Erro: " + err.message));
     }
-    function handleLogout() { auth.signOut().then(() => closeNav()); }
+    function handleLogout() { 
+        auth.signOut().then(() => {
+            closeNav();
+            if (document.body.classList.contains('desktop-mode')) {
+                navegarDesktop('dashboard');
+            }
+        }); 
+    }
     function openNav() { document.getElementById("mySidenav").style.width = "300px"; }
     function closeNav() {
         document.getElementById("mySidenav").style.width = "0";
@@ -2122,6 +2724,7 @@
     function ajustarCredito(painel, delta) {
         const inputId = 'cred' + painel.charAt(0).toUpperCase() + painel.slice(1);
         const input = document.getElementById(inputId);
+        if (!input) return;
         let val = parseInt(input.value) || 0;
         val = Math.max(0, val + delta);
         input.value = val;
@@ -2130,13 +2733,19 @@
     function atualizarDisplayCredito(painel) {
         const inputId = 'cred' + painel.charAt(0).toUpperCase() + painel.slice(1);
         const displayId = 'cred' + painel.charAt(0).toUpperCase() + painel.slice(1) + 'Display';
-        const val = parseInt(document.getElementById(inputId).value) || 0;
-        document.getElementById(displayId).innerText = val;
+        const input = document.getElementById(inputId);
+        const display = document.getElementById(displayId);
+        if (!input || !display) return;
+        const val = parseInt(input.value) || 0;
+        display.innerText = val;
     }
     function atualizarBadgesCreditos() {
-        document.getElementById('credCentralDisplay').innerText = config.credCentral || 0;
-        document.getElementById('credWarezDisplay').innerText = config.credWarez || 0;
-        document.getElementById('credZeusDisplay').innerText = config.credZeus || 0;
+        const el1 = document.getElementById('credCentralDisplay');
+        const el2 = document.getElementById('credWarezDisplay');
+        const el3 = document.getElementById('credZeusDisplay');
+        if (el1) el1.innerText = config.credCentral || 0;
+        if (el2) el2.innerText = config.credWarez || 0;
+        if (el3) el3.innerText = config.credZeus || 0;
     }
 
     function consumirCredito(painel) {
@@ -2152,6 +2761,7 @@
           .update({ [chave]: config[chave] })
           .catch(e => console.error("Erro ao atualizar crédito:", e));
         atualizarBadgesCreditos();
+        atualizarBadgesCreditosDesktop();
         const inputId = 'cred' + painel.charAt(0).toUpperCase() + painel.slice(1);
         const input = document.getElementById(inputId);
         if (input) input.value = config[chave];
@@ -2184,41 +2794,61 @@
                     togglePainel1: true, togglePainel2: true, togglePainel3: true
                 };
             }
-            document.getElementById('cfgMsg').value = config.msg || "";
-            document.getElementById('url1').value = config.p1 || "";
-            document.getElementById('url2').value = config.p2 || "";
-            document.getElementById('url3').value = config.p3 || "";
-            document.getElementById('credCentral').value = config.credCentral;
-            document.getElementById('credWarez').value = config.credWarez;
-            document.getElementById('credZeus').value = config.credZeus;
-            document.getElementById('nomePainel1').value = config.nomePainel1;
-            document.getElementById('nomePainel2').value = config.nomePainel2;
-            document.getElementById('nomePainel3').value = config.nomePainel3;
-            document.getElementById('togglePainel1').checked = config.togglePainel1;
-            document.getElementById('togglePainel2').checked = config.togglePainel2;
-            document.getElementById('togglePainel3').checked = config.togglePainel3;
-            document.getElementById('painel1Label').innerText = `Painel 1 (${config.nomePainel1})`;
-            document.getElementById('painel2Label').innerText = `Painel 2 (${config.nomePainel2})`;
-            document.getElementById('painel3Label').innerText = `Painel 3 (${config.nomePainel3})`;
+            // Mobile
+            const cfgMsgEl = document.getElementById('cfgMsg');
+            if (cfgMsgEl) cfgMsgEl.value = config.msg || "";
+            const url1El = document.getElementById('url1');
+            if (url1El) url1El.value = config.p1 || "";
+            const url2El = document.getElementById('url2');
+            if (url2El) url2El.value = config.p2 || "";
+            const url3El = document.getElementById('url3');
+            if (url3El) url3El.value = config.p3 || "";
+            const credCentralEl = document.getElementById('credCentral');
+            if (credCentralEl) credCentralEl.value = config.credCentral;
+            const credWarezEl = document.getElementById('credWarez');
+            if (credWarezEl) credWarezEl.value = config.credWarez;
+            const credZeusEl = document.getElementById('credZeus');
+            if (credZeusEl) credZeusEl.value = config.credZeus;
+            const nomePainel1El = document.getElementById('nomePainel1');
+            if (nomePainel1El) nomePainel1El.value = config.nomePainel1;
+            const nomePainel2El = document.getElementById('nomePainel2');
+            if (nomePainel2El) nomePainel2El.value = config.nomePainel2;
+            const nomePainel3El = document.getElementById('nomePainel3');
+            if (nomePainel3El) nomePainel3El.value = config.nomePainel3;
+            const togglePainel1El = document.getElementById('togglePainel1');
+            if (togglePainel1El) togglePainel1El.checked = config.togglePainel1;
+            const togglePainel2El = document.getElementById('togglePainel2');
+            if (togglePainel2El) togglePainel2El.checked = config.togglePainel2;
+            const togglePainel3El = document.getElementById('togglePainel3');
+            if (togglePainel3El) togglePainel3El.checked = config.togglePainel3;
+            const painel1LabelEl = document.getElementById('painel1Label');
+            if (painel1LabelEl) painel1LabelEl.innerText = `Painel 1 (${config.nomePainel1})`;
+            const painel2LabelEl = document.getElementById('painel2Label');
+            if (painel2LabelEl) painel2LabelEl.innerText = `Painel 2 (${config.nomePainel2})`;
+            const painel3LabelEl = document.getElementById('painel3Label');
+            if (painel3LabelEl) painel3LabelEl.innerText = `Painel 3 (${config.nomePainel3})`;
             atualizarBadgesCreditos();
             renderPaineisAtivos();
-            
-            if (desktopView === 'dashboard') renderDesktopDashboard();
+
+            // Desktop
+            sincronizarCamposPainelDesktop();
+            renderPaineisAtivosDesktop();
+            renderFinanceiroDesktop();
         });        
         
         db.collection("usuarios").doc(usuarioLogadoUid).collection("clientes").onSnapshot(snapshot => {
             clientes = [];
             snapshot.forEach(doc => { clientes.push({ id: doc.id, ...doc.data() }); });
             renderClientes();
-            if (desktopView === 'dashboard') renderDesktopDashboard();
-            if (desktopView === 'clientes') renderDesktopClientes();
+            renderClientesDesktop();
+            renderFinanceiroDesktop();
         });
 
         db.collection("usuarios").doc(usuarioLogadoUid).collection("revendas").onSnapshot(snapshot => {
             revendas = [];
             snapshot.forEach(doc => { revendas.push({ id: doc.id, ...doc.data() }); });
             renderRevendas();
-            if (desktopView === 'revenda') renderDesktopRevendas();
+            renderRevendasDesktop();
         });
     }
 
@@ -2241,16 +2871,22 @@
         };
         db.collection("usuarios").doc(usuarioLogadoUid).collection("config").doc("geral").set(config).then(() => {
             atualizarBadgesCreditos();
+            atualizarBadgesCreditosDesktop();
             document.getElementById('painel1Label').innerText = `Painel 1 (${config.nomePainel1})`;
             document.getElementById('painel2Label').innerText = `Painel 2 (${config.nomePainel2})`;
             document.getElementById('painel3Label').innerText = `Painel 3 (${config.nomePainel3})`;
+            document.getElementById('deskPainel1Label').innerText = `Painel 1 (${config.nomePainel1})`;
+            document.getElementById('deskPainel2Label').innerText = `Painel 2 (${config.nomePainel2})`;
+            document.getElementById('deskPainel3Label').innerText = `Painel 3 (${config.nomePainel3})`;
             renderPaineisAtivos();
+            renderPaineisAtivosDesktop();
             alert("✅ Configurações salvas!");
         }).catch(err => alert("Erro: "+err.message));
     }
 
     function renderPaineisAtivos() {
         const container = document.getElementById('paineisAtivos');
+        if (!container) return;
         container.innerHTML = '';
         if(config.togglePainel1) {
             container.innerHTML += `<button class="btn btn-outline-light btn-sm w-100" onclick="accessPanel(1)">📡 ${config.nomePainel1} <span id="badgeCentral" class="badge-creditos">${config.credCentral || 0}</span></button>`;
@@ -2454,12 +3090,14 @@
     
     function renderClientes() {
         const listaDiv = document.getElementById('listaClientes');
+        if (!listaDiv) return;
         const searchTerm = document.getElementById('search').value.toLowerCase();
         listaDiv.innerHTML = "";
         let counts = { ativos:0, vencer:0, exp:0, apagar:0, del:0 };
         const hoje = new Date();
         
         clientes.forEach(c => {
+            if (!c.data) return;
             let partes = c.data.split('-');
             let dataVenc = new Date(partes[0], partes[1] - 1, partes[2]);
             let diffDays = Math.ceil((dataVenc - hoje) / (1000*3600*24));
@@ -2524,7 +3162,9 @@
     }
     
     function renderFinanceiro() {
-        const dataFiltro = document.getElementById('filterMes').value;
+        const filterMesEl = document.getElementById('filterMes');
+        if (!filterMesEl) return;
+        const dataFiltro = filterMesEl.value;
         const mesFiltro = dataFiltro.slice(0, 7); 
         let recebidoMes = 0;
         let totalGeral = 0;
@@ -2575,6 +3215,9 @@
         }
     }
 
+    // =========================================================================
+    // EXPORTAÇÃO DE FUNÇÕES GLOBAIS
+    // =========================================================================
     window.renovarCliente = renovarCliente;
     window.marcarAReceber = marcarAReceber;
     window.pagarCliente = pagarCliente;
@@ -2612,16 +3255,17 @@
     window.copiarLinkRevenda = copiarLinkRevenda;
     window.excluirRevenda = excluirRevenda;
 
-    window.mudarDesktopView = mudarDesktopView;
-    window.toggleDesktopSubmenu = toggleDesktopSubmenu;
-    window.abrirDesktopConfig = abrirDesktopConfig;
-    window.saveDesktopSettings = saveDesktopSettings;
-    window.ajustarDesktopCredito = ajustarDesktopCredito;
-    window.atualizarDesktopDisplayCredito = atualizarDesktopDisplayCredito;
-    window.renderDesktopDashboard = renderDesktopDashboard;
-    window.renderDesktopClientes = renderDesktopClientes;
-    window.renderDesktopRevendas = renderDesktopRevendas;
-    window.filterDesktopData = filterDesktopData;
+    // Desktop
+    window.navegarDesktop = navegarDesktop;
+    window.toggleSubmenu = toggleSubmenu;
+    window.saveClienteDesktop = saveClienteDesktop;
+    window.filterDataDesktop = filterDataDesktop;
+    window.renderClientesDesktop = renderClientesDesktop;
+    window.saveSettingsDesktop = saveSettingsDesktop;
+    window.ajustarCreditoDesktop = ajustarCreditoDesktop;
+    window.atualizarDisplayCreditoDesktop = atualizarDisplayCreditoDesktop;
+    window.saveRevendaDesktop = saveRevendaDesktop;
+    window.renderRevendasDesktop = renderRevendasDesktop;
 </script>
 </body>
 </html>
