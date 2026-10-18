@@ -43,6 +43,19 @@
         .modal-acoes-row { display: flex; gap: 8px; }
         .modal-acoes-row .btn { flex: 1; font-size: 0.78rem; font-weight: 600; padding: 10px 4px; border-radius: 12px; border: none; color: white; display: flex; align-items: center; justify-content: center; gap: 4px; }
 
+        /* ✅ NAVBAR FIXA NA PARTE INFERIOR DA TELA */
+        .navbar {
+            background-color: #111;
+            border-top: 1px solid #333;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            top: auto;
+            z-index: 1020;
+            padding: 6px 10px;
+            box-shadow: 0 -4px 16px rgba(0,0,0,0.5);
+        }
         .navbar-inferior {
             display: flex;
             align-items: center;
@@ -384,7 +397,7 @@
         }
 
         /* ========================================================================
-           NOVO: ESTILOS PARA O DASHBOARD DESKTOP (COMPUTADOR)
+           ESTILOS PARA O DASHBOARD DESKTOP (COMPUTADOR)
            ======================================================================== */
         .desktop-wrapper {
             display: none;
@@ -1083,7 +1096,7 @@
         </div>
     </div>
 
-    <!-- NAVBAR MOBILE -->
+    <!-- ✅ NAVBAR FIXA NA PARTE INFERIOR DA TELA -->
     <nav class="navbar">
         <div class="navbar-inferior">
             <div class="nav-left">
@@ -1870,21 +1883,17 @@
     };
 
     function navegarDesktop(view, btnElement) {
-        // Esconde todas as views
         document.querySelectorAll('.desktop-view').forEach(v => v.classList.remove('active'));
         const targetView = document.getElementById('desktopView-' + view);
         if (targetView) targetView.classList.add('active');
 
-        // Atualiza título
         const info = titulosDesktop[view] || { icon: 'bi-grid-1x2-fill', title: 'Painel' };
         document.getElementById('desktopPageTitle').innerHTML = `<i class="bi ${info.icon}"></i> ${info.title}`;
 
-        // Atualiza item ativo (somente subitens)
         document.querySelectorAll('.desktop-nav-subitem').forEach(s => s.classList.remove('active'));
         if (btnElement && btnElement.classList.contains('desktop-nav-subitem')) {
             btnElement.classList.add('active');
         } else {
-            // Se clicou em item principal, marca subitem correspondente
             const subMap = {
                 'dashboard': null,
                 'clienteCadastrar': 'subClientes',
@@ -1903,7 +1912,6 @@
             }
         }
 
-        // Ações específicas ao abrir view
         if (view === 'dashboard') {
             renderFinanceiroDesktop();
             renderPaineisAtivosDesktop();
