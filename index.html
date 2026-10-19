@@ -43,6 +43,7 @@
         .modal-acoes-row { display: flex; gap: 8px; }
         .modal-acoes-row .btn { flex: 1; font-size: 0.78rem; font-weight: 600; padding: 10px 4px; border-radius: 12px; border: none; color: white; display: flex; align-items: center; justify-content: center; gap: 4px; }
 
+        /* ✅ NAVBAR FIXA NA PARTE INFERIOR DA TELA */
         .navbar {
             background-color: #111;
             border-top: 1px solid #333;
@@ -652,6 +653,7 @@
             color: #fff;
         }
 
+        /* Main Content Desktop */
         .desktop-main {
             flex: 1;
             background: #0a0a0a;
@@ -705,6 +707,7 @@
             margin: 0 auto;
         }
 
+        /* Dashboard Cards */
         .desktop-stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -831,6 +834,7 @@
             font-size: 0.75rem;
         }
 
+        /* Desktop Clientes Table-like */
         .desktop-clientes-list {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
@@ -908,6 +912,7 @@
             background: rgba(255,255,255,0.3);
         }
 
+        /* Painéis Ativos Desktop */
         .desktop-paineis-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -932,6 +937,7 @@
             transform: translateY(-2px);
         }
 
+        /* Mobile wrapper */
         .mobile-wrapper {
             display: block;
         }
@@ -940,47 +946,13 @@
                 display: none !important;
             }
         }
-
-        /* ✅ NOVO: Estilo do bloco de Revenda no modal de cadastro */
-        .revenda-block {
-            background: linear-gradient(135deg, rgba(255, 153, 0, 0.08), rgba(255, 102, 0, 0.03));
-            border: 1px solid rgba(255, 153, 0, 0.25);
-            border-radius: 14px;
-            padding: 14px;
-            margin-top: 8px;
-            margin-bottom: 12px;
-        }
-        .revenda-block .revenda-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-        .revenda-block .revenda-header h6 {
-            color: #ff9900;
-            font-size: 0.88rem;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-weight: 600;
-        }
-        .revenda-block .revenda-info {
-            background: rgba(0,0,0,0.4);
-            border-radius: 10px;
-            padding: 10px;
-            margin-top: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.8rem;
-        }
-        .revenda-block .revenda-info .cred-label { color: #aaa; }
-        .revenda-block .revenda-info .cred-value { color: #00ff00; font-weight: bold; font-size: 1rem; }
     </style>
 </head>
 <body>
 
+<!-- ========================================================================
+     OVERLAY DE LOGIN (comum a ambas versões)
+     ======================================================================== -->
 <div id="authOverlay">
     <div class="auth-card">
         <div class="text-center mb-4">
@@ -1009,8 +981,12 @@
     <button class="btn btn-primary" onclick="unlockApp()">Desbloquear</button>
 </div>
 
+<!-- ========================================================================
+     VERSÃO MOBILE (mantida integralmente - Android/iPhone)
+     ======================================================================== -->
 <div class="mobile-wrapper">
 
+    <!-- MENU LATERAL MOBILE -->
     <div id="mySidenav" class="menu-lateral">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()" style="position:absolute; top:10px; right:20px; font-size:32px;">&times;</a>
         
@@ -1120,6 +1096,7 @@
         </div>
     </div>
 
+    <!-- ✅ NAVBAR FIXA NA PARTE INFERIOR DA TELA -->
     <nav class="navbar">
         <div class="navbar-inferior">
             <div class="nav-left">
@@ -1195,8 +1172,12 @@
     </div>
 </div>
 
+<!-- ========================================================================
+     VERSÃO DESKTOP (NOVA) - DASHBOARD COMPLETO
+     ======================================================================== -->
 <div class="desktop-wrapper">
     
+    <!-- SIDEBAR FIXA À ESQUERDA -->
     <aside class="desktop-sidebar">
         <div class="desktop-sidebar-header">
             <div class="logo-icon"><i class="bi bi-tv"></i></div>
@@ -1275,6 +1256,7 @@
         </div>
     </aside>
 
+    <!-- MAIN CONTENT -->
     <main class="desktop-main">
         <div class="desktop-topbar">
             <h2 id="desktopPageTitle"><i class="bi bi-grid-1x2-fill"></i> Dashboard</h2>
@@ -1285,6 +1267,7 @@
 
         <div class="desktop-content">
 
+            <!-- VIEW: DASHBOARD -->
             <div class="desktop-view active" id="desktopView-dashboard">
                 <div class="desktop-stats-grid">
                     <div class="desktop-stat-card">
@@ -1367,6 +1350,7 @@
                 </div>
             </div>
 
+            <!-- VIEW: CLIENTE CADASTRAR -->
             <div class="desktop-view" id="desktopView-clienteCadastrar">
                 <div class="desktop-section-card">
                     <h3><i class="bi bi-person-plus-fill"></i> Cadastrar Novo Cliente</h3>
@@ -1401,7 +1385,7 @@
                         </div>
                         <div class="col-md-6">
                             <label class="small text-secondary">Painel (onde será renovado):</label>
-                            <select id="deskCPainel" class="form-control form-select" onchange="atualizarInfoRevendaDesktop()">
+                            <select id="deskCPainel" class="form-control form-select">
                                 <option value="central">📡 CENTRAL</option>
                                 <option value="warez">⚡ WAREZ</option>
                                 <option value="zeus">🔥 ZEUS</option>
@@ -1412,28 +1396,6 @@
                             <label class="small text-secondary">Observações:</label>
                             <input type="text" id="deskCObs" class="form-control">
                         </div>
-                        <!-- ✅ NOVO: Bloco de Revenda no Desktop -->
-                        <div class="col-12">
-                            <div class="revenda-block">
-                                <div class="revenda-header">
-                                    <h6><i class="bi bi-shop"></i> Revenda de Créditos</h6>
-                                    <label class="toggle-switch">
-                                        <input type="checkbox" id="deskCRevenda" onchange="toggleRevendaDesktop()">
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                </div>
-                                <div id="deskRevendaContent" style="display:none;">
-                                    <label class="small text-secondary">💳 Quantidade de créditos a vender:</label>
-                                    <input type="number" id="deskCRevendaQtd" class="form-control mb-2" min="0" value="0" oninput="atualizarInfoRevendaDesktop()">
-                                    <div class="revenda-info">
-                                        <div>
-                                            <div class="cred-label">Disponíveis no painel selecionado:</div>
-                                            <div class="cred-value" id="deskCredDisponivelInfo">0</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <div class="col-12 mt-3">
                             <button class="btn btn-success px-4 py-2 rounded-pill fw-bold" onclick="saveClienteDesktop()">
                                 <i class="bi bi-check-circle me-2"></i>Salvar Cliente
@@ -1443,6 +1405,7 @@
                 </div>
             </div>
 
+            <!-- VIEW: GERENCIAR CLIENTES -->
             <div class="desktop-view" id="desktopView-clienteGerenciar">
                 <div class="desktop-section-card">
                     <h3><i class="bi bi-list-ul"></i> Gerenciar Clientes</h3>
@@ -1470,6 +1433,7 @@
                 </div>
             </div>
 
+            <!-- VIEW: CONF COBRANÇA -->
             <div class="desktop-view" id="desktopView-clienteConfCobranca">
                 <div class="desktop-section-card">
                     <h3><i class="bi bi-chat-dots-fill"></i> Configuração de Mensagem de Cobrança</h3>
@@ -1482,11 +1446,13 @@
                 </div>
             </div>
 
+            <!-- VIEW: CONF PAINEL -->
             <div class="desktop-view" id="desktopView-clienteConfPainel">
                 <div class="desktop-section-card">
                     <h3><i class="bi bi-hdd-stack-fill"></i> Configuração dos Painéis</h3>
                     
                     <div class="row g-3">
+                        <!-- Painel 1 -->
                         <div class="col-md-4">
                             <div class="painel-config-card">
                                 <div class="toggle-container">
@@ -1515,6 +1481,7 @@
                             </div>
                         </div>
 
+                        <!-- Painel 2 -->
                         <div class="col-md-4">
                             <div class="painel-config-card">
                                 <div class="toggle-container">
@@ -1543,6 +1510,7 @@
                             </div>
                         </div>
 
+                        <!-- Painel 3 -->
                         <div class="col-md-4">
                             <div class="painel-config-card">
                                 <div class="toggle-container">
@@ -1578,6 +1546,7 @@
                 </div>
             </div>
 
+            <!-- VIEW: REVENDEDOR CADASTRAR -->
             <div class="desktop-view" id="desktopView-revendaCadastrar">
                 <div class="desktop-section-card">
                     <h3><i class="bi bi-person-plus-fill"></i> Cadastrar Nova Revenda</h3>
@@ -1600,6 +1569,14 @@
                             </select>
                         </div>
                         <div class="col-md-3">
+                            <label class="small text-secondary">Créditos (qtd vendida):</label>
+                            <input type="number" id="deskRCreditos" class="form-control" min="0" value="0">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="small text-secondary">Valor (R$):</label>
+                            <input type="number" id="deskRValor" class="form-control" step="0.01" value="0">
+                        </div>
+                        <div class="col-md-3">
                             <label class="small text-secondary">Usuário:</label>
                             <input type="text" id="deskRUser" class="form-control">
                         </div>
@@ -1620,6 +1597,7 @@
                 </div>
             </div>
 
+            <!-- VIEW: GERENCIAR REVENDEDORES -->
             <div class="desktop-view" id="desktopView-revendaGerenciar">
                 <div class="desktop-section-card">
                     <h3><i class="bi bi-list-ul"></i> Gerenciar Revendas</h3>
@@ -1637,7 +1615,11 @@
     </main>
 </div>
 
-<!-- Modal Cadastro/Edição de Cliente (Mobile) - ✅ ATUALIZADO COM BLOCO REVENDA -->
+<!-- ========================================================================
+     MODAIS (comuns a ambas versões)
+     ======================================================================== -->
+
+<!-- Modal Cadastro/Edição de Cliente (Mobile) -->
 <div class="modal fade" id="modalCadastro" tabindex="-1" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content bg-dark text-white">
@@ -1655,34 +1637,12 @@
                 <label class="small">URL Playlist:</label><input type="text" id="cUrl" class="form-control mb-2">
                 <label class="small">WhatsApp (com DDD):</label><input type="tel" id="cTel" class="form-control mb-2" placeholder="55999999999">
                 <label class="small">Painel (onde será renovado):</label>
-                <select id="cPainel" class="form-control form-select mb-2" onchange="atualizarInfoRevenda()">
+                <select id="cPainel" class="form-control form-select mb-2">
                     <option value="central">📡 CENTRAL</option>
                     <option value="warez">⚡ WAREZ</option>
                     <option value="zeus">🔥 ZEUS</option>
                     <option value="itvplayer">🎬 ITVPlayer</option>
                 </select>
-
-                <!-- ✅ NOVO: BLOCO DE REVENDA -->
-                <div class="revenda-block">
-                    <div class="revenda-header">
-                        <h6><i class="bi bi-shop"></i> Revenda de Créditos</h6>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="cRevenda" onchange="toggleRevenda()">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                    <div id="revendaContent" style="display:none;">
-                        <label class="small text-secondary">💳 Quantidade de créditos a vender:</label>
-                        <input type="number" id="cRevendaQtd" class="form-control mb-2" min="0" value="0" oninput="atualizarInfoRevenda()">
-                        <div class="revenda-info">
-                            <div>
-                                <div class="cred-label">Disponíveis no painel selecionado:</div>
-                                <div class="cred-value" id="credDisponivelInfo">0</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <label class="small">Observações:</label><textarea id="cObs" class="form-control mb-2" rows="2"></textarea>
                 <button class="btn btn-success w-100 mt-2 rounded-pill" onclick="saveCliente()">Salvar Cliente</button>
             </div>
@@ -1706,6 +1666,10 @@
                     <option value="zeus">🔥 ZEUS</option>
                     <option value="itvplayer">🎬 ITVPlayer</option>
                 </select>
+                <label class="small">Créditos (qtd vendida):</label>
+                <input type="number" id="rCreditos" class="form-control mb-2" min="0" value="0">
+                <label class="small">Valor (R$):</label>
+                <input type="number" id="rValor" class="form-control mb-2" step="0.01" value="0">
                 <label class="small">Usuário:</label><input type="text" id="rUser" class="form-control mb-2">
                 <label class="small">Senha:</label><input type="text" id="rPass" class="form-control mb-2">
                 <label class="small">Link do Painel:</label><input type="text" id="rLink" class="form-control mb-2" placeholder="https://...">
@@ -1872,6 +1836,9 @@
     let usuarioLogadoUid = null;
     let viewPrincipal = 'clientes';
 
+    // =========================================================================
+    // DETECÇÃO DE DISPOSITIVO - Ativa modo desktop se tela >= 992px
+    // =========================================================================
     function detectarDispositivo() {
         if (window.innerWidth >= 992) {
             document.body.classList.add('desktop-mode');
@@ -1881,56 +1848,6 @@
     }
     detectarDispositivo();
     window.addEventListener('resize', detectarDispositivo);
-
-    // =========================================================================
-    // ✅ NOVAS FUNÇÕES: LÓGICA DE REVENDA DE CRÉDITOS (MOBILE)
-    // =========================================================================
-    function getCreditosDisponiveisPainel(painel) {
-        if (painel === 'central') return parseInt(config.credCentral) || 0;
-        if (painel === 'warez') return parseInt(config.credWarez) || 0;
-        if (painel === 'zeus') return parseInt(config.credZeus) || 0;
-        if (painel === 'itvplayer') return Infinity; // Livre
-        return 0;
-    }
-
-    function toggleRevenda() {
-        const ativo = document.getElementById('cRevenda').checked;
-        const content = document.getElementById('revendaContent');
-        content.style.display = ativo ? 'block' : 'none';
-        if (ativo) {
-            atualizarInfoRevenda();
-        }
-    }
-
-    function atualizarInfoRevenda() {
-        const painel = document.getElementById('cPainel').value;
-        const disponivel = getCreditosDisponiveisPainel(painel);
-        const display = document.getElementById('credDisponivelInfo');
-        if (display) {
-            display.innerText = disponivel === Infinity ? '∞ (Livre)' : disponivel;
-        }
-    }
-
-    // =========================================================================
-    // ✅ NOVAS FUNÇÕES: LÓGICA DE REVENDA DE CRÉDITOS (DESKTOP)
-    // =========================================================================
-    function toggleRevendaDesktop() {
-        const ativo = document.getElementById('deskCRevenda').checked;
-        const content = document.getElementById('deskRevendaContent');
-        content.style.display = ativo ? 'block' : 'none';
-        if (ativo) {
-            atualizarInfoRevendaDesktop();
-        }
-    }
-
-    function atualizarInfoRevendaDesktop() {
-        const painel = document.getElementById('deskCPainel').value;
-        const disponivel = getCreditosDisponiveisPainel(painel);
-        const display = document.getElementById('deskCredDisponivelInfo');
-        if (display) {
-            display.innerText = disponivel === Infinity ? '∞ (Livre)' : disponivel;
-        }
-    }
 
     // =========================================================================
     // FUNÇÕES DE NAVEGAÇÃO MOBILE
@@ -2030,10 +1947,14 @@
         submenu.classList.toggle('open');
     }
 
+    // =========================================================================
+    // FUNÇÕES DESKTOP - FINANCEIRO
+    // =========================================================================
     function renderFinanceiroDesktop() {
         const dataFiltro = document.getElementById('filterMes') ? document.getElementById('filterMes').value : '';
         const mesFiltro = dataFiltro.slice(0, 7); 
-        let recebidoMes = 0;
+        let recebidoClientesMes = 0;
+        let recebidoRevendasMes = 0;
         let totalGeral = 0;
         let totalActive = 0;
         
@@ -2052,12 +1973,24 @@
                 }
                 
                 if(!mesFiltro || mesPagamentoLocal === mesFiltro) {
-                    recebidoMes += val;
+                    recebidoClientesMes += val;
+                }
+            }
+        });
+
+        revendas.forEach(r => {
+            if(r.ultimoPagamento && r.valor) {
+                const dataPagamento = new Date(r.ultimoPagamento);
+                const ano = dataPagamento.getFullYear();
+                const mes = String(dataPagamento.getMonth() + 1).padStart(2, '0');
+                if((!mesFiltro || `${ano}-${mes}` === mesFiltro)) {
+                    recebidoRevendasMes += parseFloat(r.valor) || 0;
                 }
             }
         });
         
-        let aReceber = totalGeral - recebidoMes;
+        let recebidoMes = recebidoClientesMes + recebidoRevendasMes;
+        let aReceber = Math.max(0, totalGeral - recebidoClientesMes);
         
         document.getElementById('deskFinRecebido').innerText = `R$ ${recebidoMes.toFixed(2)}`;
         document.getElementById('deskFinPendente').innerText = `R$ ${aReceber.toFixed(2)}`;
@@ -2089,6 +2022,9 @@
         }
     }
 
+    // =========================================================================
+    // FUNÇÕES DESKTOP - CLIENTES
+    // =========================================================================
     function limparFormClienteDesktop() {
         document.getElementById('deskCNome').value = "";
         document.getElementById('deskCUser').value = "";
@@ -2099,10 +2035,6 @@
         document.getElementById('deskCTel').value = "";
         document.getElementById('deskCObs').value = "";
         document.getElementById('deskCPainel').value = "central";
-        document.getElementById('deskCRevenda').checked = false;
-        document.getElementById('deskCRevendaQtd').value = "0";
-        document.getElementById('deskRevendaContent').style.display = "none";
-        atualizarInfoRevendaDesktop();
     }
 
     function saveClienteDesktop() {
@@ -2118,20 +2050,9 @@
             tel: document.getElementById('deskCTel').value,
             obs: document.getElementById('deskCObs').value,
             painel: document.getElementById('deskCPainel').value || 'central',
-            // ✅ NOVO: Campos de revenda
-            revenda: document.getElementById('deskCRevenda').checked,
-            revendaQtd: parseInt(document.getElementById('deskCRevendaQtd').value) || 0,
             status: 'ativo'
         };
         if (!clienteData.nome) return alert("Preencha o nome do cliente!");
-        
-        // ✅ Validação de créditos de revenda
-        if (clienteData.revenda && clienteData.painel !== 'itvplayer') {
-            const disponivel = getCreditosDisponiveisPainel(clienteData.painel);
-            if (clienteData.revendaQtd > disponivel) {
-                return alert(`⚠️ Créditos insuficientes no painel ${clienteData.painel.toUpperCase()}!\nDisponível: ${disponivel}\nSolicitado: ${clienteData.revendaQtd}`);
-            }
-        }
         
         db.collection("usuarios").doc(usuarioLogadoUid).collection("clientes").add(clienteData).then(() => {
             alert("✅ Cliente cadastrado com sucesso!");
@@ -2207,6 +2128,9 @@
         document.getElementById('deskCountPagar').innerText = counts.apagar;
     }
 
+    // =========================================================================
+    // FUNÇÕES DESKTOP - CONFIGURAÇÕES
+    // =========================================================================
     function sincronizarCamposPainelDesktop() {
         document.getElementById('deskCfgMsg').value = config.msg || "";
         document.getElementById('deskUrl1').value = config.p1 || "";
@@ -2283,16 +2207,19 @@
             document.getElementById('deskPainel3Label').innerText = `Painel 3 (${config.nomePainel3})`;
             renderPaineisAtivos();
             renderPaineisAtivosDesktop();
-            atualizarInfoRevenda();
-            atualizarInfoRevendaDesktop();
             alert("✅ Configurações salvas!");
         }).catch(err => alert("Erro: "+err.message));
     }
 
+    // =========================================================================
+    // FUNÇÕES DESKTOP - REVENDEDORES
+    // =========================================================================
     function limparFormRevendaDesktop() {
         document.getElementById('deskRNome').value = "";
         document.getElementById('deskRTel').value = "";
         document.getElementById('deskRPainel').value = "central";
+        document.getElementById('deskRCreditos').value = "0";
+        document.getElementById('deskRValor').value = "0";
         document.getElementById('deskRUser').value = "";
         document.getElementById('deskRPass').value = "";
         document.getElementById('deskRLink').value = "";
@@ -2300,16 +2227,22 @@
 
     function saveRevendaDesktop() {
         if(!usuarioLogadoUid) return;
+        const valorRevenda = parseFloat(document.getElementById('deskRValor').value) || 0;
         const revendaData = {
             nome: document.getElementById('deskRNome').value,
             tel: document.getElementById('deskRTel').value,
             painel: document.getElementById('deskRPainel').value,
+            creditos: parseInt(document.getElementById('deskRCreditos').value) || 0,
+            valor: valorRevenda,
             user: document.getElementById('deskRUser').value,
             pass: document.getElementById('deskRPass').value,
             link: document.getElementById('deskRLink').value,
             status: 'ativo',
             dataCriacao: new Date().toISOString()
         };
+        if(valorRevenda > 0) {
+            revendaData.ultimoPagamento = new Date().toISOString();
+        }
         if (!revendaData.nome) return alert("Preencha o nome do revendedor!");
         
         db.collection("usuarios").doc(usuarioLogadoUid).collection("revendas").add(revendaData).then(() => {
@@ -2339,11 +2272,14 @@
                     <div class="cliente-info">
                         <div class="info-item"><span class="info-label">Usuário:</span><span class="info-value">${r.user || '-'}</span></div>
                         <div class="info-item"><span class="info-label">Senha:</span><span class="info-value">${r.pass || '-'}</span></div>
+                        <div class="info-item"><span class="info-label">Créditos:</span><span class="info-value">${r.creditos || 0}</span></div>
+                        <div class="info-item"><span class="info-label">Valor:</span><span class="info-value">R$ ${(parseFloat(r.valor) || 0).toFixed(2)}</span></div>
                         <div class="info-item info-full"><span class="info-label">Link:</span><span class="info-value text-info" style="font-size:0.75rem;">${r.link || '-'}</span></div>
                     </div>
                     <div class="d-flex gap-2 mt-3" onclick="event.stopPropagation()">
                         <button class="btn btn-sm flex-fill" style="background-color:#25D366; color:white;" onclick="enviarWhatsAppRevenda('${r.id}')"><i class="bi bi-whatsapp"></i> WhatsApp</button>
-                        <button class="btn btn-sm btn-info flex-fill" onclick="copiarLinkRevenda('${r.link || ''}')"><i class="bi bi-link-45deg"></i> Copiar</button>
+                        <button class="btn btn-sm btn-warning text-dark flex-fill" onclick="renovarRevenda('${r.id}')"><i class="bi bi-arrow-clockwise"></i> Renovar</button>
+                        <button class="btn btn-sm btn-info flex-fill" onclick="copiarLinkRevenda('${r.link || ''}')"><i class="bi bi-link-45deg"></i></button>
                         <button class="btn btn-sm btn-danger flex-fill" onclick="excluirRevenda('${r.id}')"><i class="bi bi-trash"></i></button>
                     </div>
                 </div>
@@ -2355,12 +2291,17 @@
         }
     }
 
+    // =========================================================================
+    // FUNÇÕES MOBILE - REVENDA (mantidas)
+    // =========================================================================
     function showModalRevenda(id = "") {
         if(id === "") {
             document.getElementById('revEditId').value = "";
             document.getElementById('rNome').value = "";
             document.getElementById('rTel').value = "";
             document.getElementById('rPainel').value = "central";
+            document.getElementById('rCreditos').value = "0";
+            document.getElementById('rValor').value = "0";
             document.getElementById('rUser').value = "";
             document.getElementById('rPass').value = "";
             document.getElementById('rLink').value = "";
@@ -2371,16 +2312,33 @@
     function saveRevenda() {
         if(!usuarioLogadoUid) return;
         const id = document.getElementById('revEditId').value;
+        const valorRevenda = parseFloat(document.getElementById('rValor').value) || 0;
         const revendaData = {
             nome: document.getElementById('rNome').value,
             tel: document.getElementById('rTel').value,
             painel: document.getElementById('rPainel').value,
+            creditos: parseInt(document.getElementById('rCreditos').value) || 0,
+            valor: valorRevenda,
             user: document.getElementById('rUser').value,
             pass: document.getElementById('rPass').value,
             link: document.getElementById('rLink').value,
             status: 'ativo',
             dataCriacao: id ? (revendas.find(r => r.id === id)?.dataCriacao || new Date().toISOString()) : new Date().toISOString()
         };
+        if(valorRevenda > 0) {
+            const original = id ? revendas.find(r => r.id === id) : null;
+            const valorOriginal = original ? (parseFloat(original.valor) || 0) : 0;
+            if(valorRevenda !== valorOriginal) {
+                revendaData.ultimoPagamento = new Date().toISOString();
+            } else if(original && original.ultimoPagamento) {
+                revendaData.ultimoPagamento = original.ultimoPagamento;
+            }
+        } else if(id) {
+            const original = revendas.find(r => r.id === id);
+            if(original && original.ultimoPagamento) {
+                revendaData.ultimoPagamento = original.ultimoPagamento;
+            }
+        }
         const modalEl = document.getElementById('modalRevenda');
         const modal = bootstrap.Modal.getInstance(modalEl);
         
@@ -2411,11 +2369,14 @@
                     <div class="cliente-info">
                         <div class="info-item"><span class="info-label">Usuário:</span><span class="info-value">${r.user || '-'}</span></div>
                         <div class="info-item"><span class="info-label">Senha:</span><span class="info-value">${r.pass || '-'}</span></div>
+                        <div class="info-item"><span class="info-label">Créditos:</span><span class="info-value">${r.creditos || 0}</span></div>
+                        <div class="info-item"><span class="info-label">Valor:</span><span class="info-value">R$ ${(parseFloat(r.valor) || 0).toFixed(2)}</span></div>
                         <div class="info-item info-full"><span class="info-label">Link:</span><span class="info-value text-info" style="font-size:0.7rem;">${r.link || '-'}</span></div>
                     </div>
                     <div class="d-flex gap-2 mt-2" onclick="event.stopPropagation()">
                         <button class="btn btn-sm flex-fill" style="background-color:#25D366; color:white;" onclick="enviarWhatsAppRevenda('${r.id}')"><i class="bi bi-whatsapp"></i> WhatsApp</button>
-                        <button class="btn btn-sm btn-info flex-fill" onclick="copiarLinkRevenda('${r.link || ''}')"><i class="bi bi-link-45deg"></i> Copiar</button>
+                        <button class="btn btn-sm btn-warning text-dark flex-fill" onclick="renovarRevenda('${r.id}')"><i class="bi bi-arrow-clockwise"></i> Renovar</button>
+                        <button class="btn btn-sm btn-info flex-fill" onclick="copiarLinkRevenda('${r.link || ''}')"><i class="bi bi-link-45deg"></i></button>
                         <button class="btn btn-sm btn-danger flex-fill" onclick="excluirRevenda('${r.id}')"><i class="bi bi-trash"></i></button>
                     </div>
                 </div>
@@ -2434,6 +2395,8 @@
             document.getElementById('rNome').value = r.nome || "";
             document.getElementById('rTel').value = r.tel || "";
             document.getElementById('rPainel').value = r.painel || "central";
+            document.getElementById('rCreditos').value = r.creditos || 0;
+            document.getElementById('rValor').value = r.valor || 0;
             document.getElementById('rUser').value = r.user || "";
             document.getElementById('rPass').value = r.pass || "";
             document.getElementById('rLink').value = r.link || "";
@@ -2463,6 +2426,62 @@
         window.open(`https://wa.me/${r.tel.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`);
     }
 
+    // =========================================================================
+    // NOVA FUNÇÃO: RENOVAR REVENDA
+    // =========================================================================
+    function renovarRevenda(id) {
+        const r = revendas.find(i => i.id === id);
+        if(!r) return alert("Revendedor não encontrado!");
+        
+        const painel = r.painel || 'central';
+        const creditosNecessarios = parseInt(r.creditos) || 0;
+        const valor = parseFloat(r.valor) || 0;
+        
+        let nomePainel = painel.toUpperCase();
+        if(painel === 'central') nomePainel = config.nomePainel1 || 'CENTRAL';
+        else if(painel === 'warez') nomePainel = config.nomePainel2 || 'WAREZ';
+        else if(painel === 'zeus') nomePainel = config.nomePainel3 || 'ZEUS';
+        else if(painel === 'itvplayer') nomePainel = 'ITVPlayer';
+        
+        const confirmMsg = `Renovar revenda ${r.nome}?\n\nPainel: ${nomePainel}\nCréditos a debitar: ${creditosNecessarios}\nValor: R$ ${valor.toFixed(2)}`;
+        if(!confirm(confirmMsg)) return;
+        
+        if(painel !== 'itvplayer' && creditosNecessarios > 0) {
+            const chave = 'cred' + painel.charAt(0).toUpperCase() + painel.slice(1);
+            const disponiveis = parseInt(config[chave]) || 0;
+            
+            if(creditosNecessarios > disponiveis) {
+                return alert(`⚠️ Créditos insuficientes no painel ${nomePainel}!\nDisponíveis: ${disponiveis}\nNecessários: ${creditosNecessarios}`);
+            }
+            
+            config[chave] = disponiveis - creditosNecessarios;
+            db.collection("usuarios").doc(usuarioLogadoUid).collection("config").doc("geral")
+              .update({ [chave]: config[chave] })
+              .then(() => {
+                  atualizarBadgesCreditos();
+                  atualizarBadgesCreditosDesktop();
+                  const inputId = 'cred' + painel.charAt(0).toUpperCase() + painel.slice(1);
+                  const input = document.getElementById(inputId);
+                  if (input) input.value = config[chave];
+              })
+              .catch(e => console.error("Erro ao atualizar crédito:", e));
+        }
+        
+        if(valor > 0) {
+            db.collection("usuarios").doc(usuarioLogadoUid).collection("revendas").doc(id).update({
+                ultimoPagamento: new Date().toISOString()
+            }).catch(e => console.error("Erro ao atualizar pagamento:", e));
+        }
+        
+        const msg = `Usuário: ${r.user || '-'}\nSenha: ${r.pass || '-'}\nLink do Painel: ${r.link || '-'}\nFoi adicionado: ${creditosNecessarios} créditos no seu Painel: ${nomePainel}`;
+        
+        if(r.tel) {
+            window.open(`https://wa.me/${r.tel.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`);
+        } else {
+            alert("WhatsApp não cadastrado para este revendedor!");
+        }
+    }
+
     function copiarLinkRevenda(link) {
         if(!link) return alert("Link não informado!");
         navigator.clipboard.writeText(link).then(() => {
@@ -2478,6 +2497,9 @@
         }
     }
 
+    // =========================================================================
+    // FUNÇÕES BANCO ITV (mantidas)
+    // =========================================================================
     let emprestimos = [];
 
     function abrirBancoItv() {
@@ -2751,6 +2773,9 @@
         }
     }
 
+    // =========================================================================
+    // AUTENTICAÇÃO E SINCRONIZAÇÃO
+    // =========================================================================
     const hojeLocal = new Date();
     const anoLocal = hojeLocal.getFullYear();
     const mesLocal = String(hojeLocal.getMonth() + 1).padStart(2, '0');
@@ -2847,17 +2872,15 @@
         if (el3) el3.innerText = config.credZeus || 0;
     }
 
-    // ✅ ATUALIZADO: consumirCredito agora suporta quantidade personalizada (revenda)
-    function consumirCredito(painel, quantidade = 1) {
+    function consumirCredito(painel) {
         if (painel === 'itvplayer') return true;
         const chave = 'cred' + painel.charAt(0).toUpperCase() + painel.slice(1);
         const atual = parseInt(config[chave]) || 0;
-        const qtd = Math.max(1, parseInt(quantidade) || 1);
-        if (atual < qtd) {
-            alert(`⚠️ Créditos insuficientes no Painel ${painel.toUpperCase()}!\nDisponível: ${atual}\nNecessário: ${qtd}\n\nAdicione créditos no menu "Conf Painel".`);
+        if (atual <= 0) {
+            alert(`⚠️ Sem créditos no Painel ${painel.toUpperCase()}! Adicione créditos no menu "Conf Painel".`);
             return false;
         }
-        config[chave] = atual - qtd;
+        config[chave] = atual - 1;
         db.collection("usuarios").doc(usuarioLogadoUid).collection("config").doc("geral")
           .update({ [chave]: config[chave] })
           .catch(e => console.error("Erro ao atualizar crédito:", e));
@@ -2866,9 +2889,6 @@
         const inputId = 'cred' + painel.charAt(0).toUpperCase() + painel.slice(1);
         const input = document.getElementById(inputId);
         if (input) input.value = config[chave];
-        const deskInputId = 'deskCred' + painel.charAt(0).toUpperCase() + painel.slice(1);
-        const deskInput = document.getElementById(deskInputId);
-        if (deskInput) deskInput.value = config[chave];
         return true;
     }
     
@@ -2898,6 +2918,7 @@
                     togglePainel1: true, togglePainel2: true, togglePainel3: true
                 };
             }
+            // Mobile
             const cfgMsgEl = document.getElementById('cfgMsg');
             if (cfgMsgEl) cfgMsgEl.value = config.msg || "";
             const url1El = document.getElementById('url1');
@@ -2933,13 +2954,11 @@
             atualizarBadgesCreditos();
             renderPaineisAtivos();
 
+            // Desktop
             sincronizarCamposPainelDesktop();
             renderPaineisAtivosDesktop();
             renderFinanceiroDesktop();
-            
-            // ✅ Atualiza info de revenda quando créditos mudam
-            atualizarInfoRevenda();
-            atualizarInfoRevendaDesktop();
+            renderFinanceiro();
         });        
         
         db.collection("usuarios").doc(usuarioLogadoUid).collection("clientes").onSnapshot(snapshot => {
@@ -2948,6 +2967,7 @@
             renderClientes();
             renderClientesDesktop();
             renderFinanceiroDesktop();
+            renderFinanceiro();
         });
 
         db.collection("usuarios").doc(usuarioLogadoUid).collection("revendas").onSnapshot(snapshot => {
@@ -2955,6 +2975,8 @@
             snapshot.forEach(doc => { revendas.push({ id: doc.id, ...doc.data() }); });
             renderRevendas();
             renderRevendasDesktop();
+            renderFinanceiroDesktop();
+            renderFinanceiro();
         });
     }
 
@@ -2986,8 +3008,6 @@
             document.getElementById('deskPainel3Label').innerText = `Painel 3 (${config.nomePainel3})`;
             renderPaineisAtivos();
             renderPaineisAtivosDesktop();
-            atualizarInfoRevenda();
-            atualizarInfoRevendaDesktop();
             alert("✅ Configurações salvas!");
         }).catch(err => alert("Erro: "+err.message));
     }
@@ -3007,7 +3027,6 @@
         }
     }
 
-    // ✅ ATUALIZADO: showModalCadastro agora reseta o bloco de revenda
     function showModalCadastro(id = "") {
         if(id === "") {
             document.getElementById('editId').value = "";
@@ -3015,31 +3034,13 @@
             document.getElementById('cValor').value = ""; document.getElementById('cData').value = ""; document.getElementById('cServ').value = "";
             document.getElementById('cUrl').value = ""; document.getElementById('cTel').value = ""; document.getElementById('cObs').value = "";
             document.getElementById('cPainel').value = "central";
-            document.getElementById('cRevenda').checked = false;
-            document.getElementById('cRevendaQtd').value = "0";
-            document.getElementById('revendaContent').style.display = "none";
-            atualizarInfoRevenda();
         }
         new bootstrap.Modal(document.getElementById('modalCadastro')).show();
     }
 
-    // ✅ ATUALIZADO: saveCliente agora salva os campos de revenda
     function saveCliente() {
         if(!usuarioLogadoUid) return;
         const id = document.getElementById('editId').value;
-        const revendaAtivo = document.getElementById('cRevenda').checked;
-        const revendaQtd = parseInt(document.getElementById('cRevendaQtd').value) || 0;
-        const painelSelecionado = document.getElementById('cPainel').value || 'central';
-
-        // ✅ Validação de créditos ao cadastrar com revenda ativa
-        if (revendaAtivo && revendaQtd > 0 && painelSelecionado !== 'itvplayer') {
-            const disponivel = getCreditosDisponiveisPainel(painelSelecionado);
-            // Se for edição, não valida (já foi consumido no passado)
-            if (id === "" && revendaQtd > disponivel) {
-                return alert(`⚠️ Créditos insuficientes no painel ${painelSelecionado.toUpperCase()}!\nDisponível: ${disponivel}\nSolicitado: ${revendaQtd}`);
-            }
-        }
-
         const clienteData = {
             nome: document.getElementById('cNome').value,
             user: document.getElementById('cUser').value,
@@ -3050,9 +3051,7 @@
             url: document.getElementById('cUrl').value,
             tel: document.getElementById('cTel').value,
             obs: document.getElementById('cObs').value,
-            painel: painelSelecionado,
-            revenda: revendaAtivo,
-            revendaQtd: revendaQtd,
+            painel: document.getElementById('cPainel').value || 'central',
             status: 'ativo'
         };
         const modalEl = document.getElementById('modalCadastro');
@@ -3086,18 +3085,11 @@
         return dataISO;
     }
     
-    // ✅ ATUALIZADO: renovarCliente agora consome créditos de revenda se configurado
     function renovarCliente(id) {
         const cliente = clientes.find(c => c.id === id);
         if(!cliente) return;
         const painel = cliente.painel || 'central';
-        
-        // ✅ LÓGICA DE REVENDA: se o cliente tem revenda ativa, consome a quantidade configurada
-        const temRevenda = cliente.revenda === true;
-        const qtdRevenda = parseInt(cliente.revendaQtd) || 0;
-        const creditosAConsumir = (temRevenda && qtdRevenda > 0) ? qtdRevenda : 1;
-        
-        if(!consumirCredito(painel, creditosAConsumir)) return;
+        if(!consumirCredito(painel)) return;
 
         let novaDataISO = "";
         if (cliente.data) {
@@ -3121,10 +3113,7 @@
         else if (painel === 'zeus') nomePainelProvedor = config.nomePainel3 || 'ZEUS';
         else if (painel === 'itvplayer') nomePainelProvedor = 'ITVPlayer';
 
-        // ✅ Mensagem extra se for revenda
-        const infoRevenda = temRevenda ? `\n💳 Créditos utilizados: ${creditosAConsumir}` : '';
-
-        const msg = `✅𝕊𝔼𝕌 ℙ𝔸𝔾𝔸𝕄𝔼ℕ𝕋𝕆 𝔽𝕆𝕀 ℂ𝕆ℕ𝔽𝕀ℝ𝕄𝔸𝔻𝕆!!\n\nNome: ${cliente.nome}\nPlano Familia: ${valorFormat}\nProvedor: ${nomePainelProvedor}\nUsuário: ${cliente.user}\nSenha: ${cliente.pass}\nUrl: ${cliente.url}\nVence: ${novaDataBR}${infoRevenda}\n\nDivirta-se!!`;
+        const msg = `✅𝕊𝔼𝕌 ℙ𝔸𝔾𝔸𝕄𝔼ℕ𝕋𝕆 𝔽𝕆𝕀 ℂ𝕆ℕ𝔽𝕀ℝ𝕄𝔸𝔻𝕆!!\n\nNome: ${cliente.nome}\nPlano Familia: ${valorFormat}\nProvedor: ${nomePainelProvedor}\nUsuário: ${cliente.user}\nSenha: ${cliente.pass}\nUrl: ${cliente.url}\nVence: ${novaDataBR}\n\nDivirta-se!!`;
 
         if(cliente.tel) {
             window.open(`https://wa.me/${cliente.tel.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`);
@@ -3141,7 +3130,7 @@
         const cliente = clientes.find(c => c.id === id);
         if(!cliente) return;
         const painel = cliente.painel || 'central';
-        if(!consumirCredito(painel, 1)) return;
+        if(!consumirCredito(painel)) return;
         const novaDataISO = addOneMonthFromToday();
         const novaDataBR = formatarDataBR(novaDataISO);
         const valorFormat = `R$ ${cliente.valor.toFixed(2)}`;
@@ -3305,7 +3294,8 @@
         if (!filterMesEl) return;
         const dataFiltro = filterMesEl.value;
         const mesFiltro = dataFiltro.slice(0, 7); 
-        let recebidoMes = 0;
+        let recebidoClientesMes = 0;
+        let recebidoRevendasMes = 0;
         let totalGeral = 0;
         let totalActive = 0;
         
@@ -3324,12 +3314,24 @@
                 }
                 
                 if(mesPagamentoLocal === mesFiltro) {
-                    recebidoMes += val;
+                    recebidoClientesMes += val;
+                }
+            }
+        });
+
+        revendas.forEach(r => {
+            if(r.ultimoPagamento && r.valor) {
+                const dataPagamento = new Date(r.ultimoPagamento);
+                const ano = dataPagamento.getFullYear();
+                const mes = String(dataPagamento.getMonth() + 1).padStart(2, '0');
+                if(`${ano}-${mes}` === mesFiltro) {
+                    recebidoRevendasMes += parseFloat(r.valor) || 0;
                 }
             }
         });
         
-        let aReceber = totalGeral - recebidoMes;
+        let recebidoMes = recebidoClientesMes + recebidoRevendasMes;
+        let aReceber = Math.max(0, totalGeral - recebidoClientesMes);
         
         document.getElementById('finRecebido').innerText = `R$ ${recebidoMes.toFixed(2)}`;
         document.getElementById('finPendente').innerText = `R$ ${aReceber.toFixed(2)}`;
@@ -3342,8 +3344,6 @@
     function restore(id) { if(usuarioLogadoUid) db.collection("usuarios").doc(usuarioLogadoUid).collection("clientes").doc(id).update({ status: 'ativo' }); }
     function hardDelete(id) { if(confirm("Excluir permanentemente?")) db.collection("usuarios").doc(usuarioLogadoUid).collection("clientes").doc(id).delete(); }
     function accessPanel(n) { let u = config['p'+n]; if(u) window.open(u); else alert("Configure a URL no menu lateral."); }
-    
-    // ✅ ATUALIZADO: editCliente agora carrega os campos de revenda
     function editCliente(id) {
         let c = clientes.find(i => i.id === id);
         if(c) {
@@ -3352,15 +3352,13 @@
             document.getElementById('cValor').value = c.valor; document.getElementById('cData').value = c.data; document.getElementById('cServ').value = c.serv || '';
             document.getElementById('cUrl').value = c.url; document.getElementById('cTel').value = c.tel; document.getElementById('cObs').value = c.obs;
             document.getElementById('cPainel').value = c.painel || 'central';
-            // ✅ Carrega dados de revenda
-            document.getElementById('cRevenda').checked = c.revenda === true;
-            document.getElementById('cRevendaQtd').value = c.revendaQtd || 0;
-            document.getElementById('revendaContent').style.display = c.revenda ? 'block' : 'none';
-            atualizarInfoRevenda();
             new bootstrap.Modal(document.getElementById('modalCadastro')).show();
         }
     }
 
+    // =========================================================================
+    // EXPORTAÇÃO DE FUNÇÕES GLOBAIS
+    // =========================================================================
     window.renovarCliente = renovarCliente;
     window.marcarAReceber = marcarAReceber;
     window.pagarCliente = pagarCliente;
@@ -3395,9 +3393,11 @@
     window.saveRevenda = saveRevenda;
     window.editarRevenda = editarRevenda;
     window.enviarWhatsAppRevenda = enviarWhatsAppRevenda;
+    window.renovarRevenda = renovarRevenda;
     window.copiarLinkRevenda = copiarLinkRevenda;
     window.excluirRevenda = excluirRevenda;
 
+    // Desktop
     window.navegarDesktop = navegarDesktop;
     window.toggleSubmenu = toggleSubmenu;
     window.saveClienteDesktop = saveClienteDesktop;
@@ -3408,12 +3408,6 @@
     window.atualizarDisplayCreditoDesktop = atualizarDisplayCreditoDesktop;
     window.saveRevendaDesktop = saveRevendaDesktop;
     window.renderRevendasDesktop = renderRevendasDesktop;
-
-    // ✅ NOVAS funções exportadas
-    window.toggleRevenda = toggleRevenda;
-    window.atualizarInfoRevenda = atualizarInfoRevenda;
-    window.toggleRevendaDesktop = toggleRevendaDesktop;
-    window.atualizarInfoRevendaDesktop = atualizarInfoRevendaDesktop;
 </script>
 </body>
 </html>
