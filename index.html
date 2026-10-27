@@ -57,134 +57,6 @@
         }
 
         /* ==========================================
-           ANIMATED WALLPAPER BACKGROUND
-           ========================================== */
-        #wallpaper {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            z-index: 0;
-            overflow: hidden;
-            background: #050510;
-        }
-
-        #wallpaper::before {
-            content: '';
-            position: absolute;
-            inset: -50%;
-            width: 200%; height: 200%;
-            background: 
-                radial-gradient(circle at 15% 25%, rgba(139, 92, 246, 0.18) 0%, transparent 40%),
-                radial-gradient(circle at 85% 75%, rgba(236, 72, 153, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 50% 10%, rgba(6, 182, 212, 0.12) 0%, transparent 35%),
-                radial-gradient(circle at 20% 80%, rgba(245, 158, 11, 0.1) 0%, transparent 35%),
-                radial-gradient(circle at 75% 40%, rgba(16, 185, 129, 0.1) 0%, transparent 35%);
-            animation: wallpaperFloat 25s ease-in-out infinite;
-        }
-
-        @keyframes wallpaperFloat {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            20% { transform: translate(-1.5%, 1.5%) rotate(0.5deg); }
-            40% { transform: translate(1.5%, -1%) rotate(-0.5deg); }
-            60% { transform: translate(-1%, 1%) rotate(0.3deg); }
-            80% { transform: translate(1%, -1.5%) rotate(-0.3deg); }
-        }
-
-        /* Animated mesh gradient */
-        .mesh-layer {
-            position: absolute;
-            inset: -100%;
-            width: 300%; height: 300%;
-            background: 
-                conic-gradient(from 0deg at 50% 50%, 
-                    rgba(139, 92, 246, 0.08), 
-                    rgba(236, 72, 153, 0.06), 
-                    rgba(6, 182, 212, 0.08), 
-                    rgba(245, 158, 11, 0.06), 
-                    rgba(16, 185, 129, 0.08), 
-                    rgba(139, 92, 246, 0.08));
-            animation: meshRotate 40s linear infinite;
-        }
-
-        @keyframes meshRotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Floating orbs */
-        .orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(100px);
-            opacity: 0.35;
-            animation: orbFloat 20s ease-in-out infinite;
-        }
-
-        .orb-1 { width: 350px; height: 350px; background: var(--primary); top: 5%; left: -5%; animation-delay: 0s; }
-        .orb-2 { width: 280px; height: 280px; background: var(--pink); bottom: 10%; right: -5%; animation-delay: -6s; animation-duration: 22s; }
-        .orb-3 { width: 220px; height: 220px; background: var(--secondary); top: 40%; left: 30%; animation-delay: -12s; animation-duration: 18s; }
-        .orb-4 { width: 180px; height: 180px; background: var(--accent); top: 65%; left: 5%; animation-delay: -15s; animation-duration: 24s; opacity: 0.2; }
-        .orb-5 { width: 200px; height: 200px; background: var(--success); top: 15%; right: 15%; animation-delay: -9s; animation-duration: 21s; opacity: 0.18; }
-        .orb-6 { width: 150px; height: 150px; background: var(--info); bottom: 25%; left: 50%; animation-delay: -18s; animation-duration: 19s; opacity: 0.22; }
-
-        @keyframes orbFloat {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            25% { transform: translate(40px, -60px) scale(1.15); }
-            50% { transform: translate(-30px, 30px) scale(0.85); }
-            75% { transform: translate(50px, 40px) scale(1.1); }
-        }
-
-        /* Grid lines */
-        .grid-bg {
-            position: absolute;
-            inset: 0;
-            background-image: 
-                linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
-            background-size: 60px 60px;
-            animation: gridShift 40s linear infinite;
-        }
-
-        @keyframes gridShift {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(60px, 60px); }
-        }
-
-        /* Particles */
-        #particles { position: absolute; inset: 0; }
-        .particle {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.25);
-            border-radius: 50%;
-            pointer-events: none;
-            animation: particleRise linear infinite;
-        }
-
-        @keyframes particleRise {
-            0% { transform: translateY(105vh) scale(0); opacity: 0; }
-            10% { opacity: 1; transform: translateY(90vh) scale(1); }
-            90% { opacity: 1; transform: translateY(5vh) scale(1); }
-            100% { transform: translateY(-5vh) scale(0); opacity: 0; }
-        }
-
-        /* Noise texture */
-        .noise {
-            position: absolute;
-            inset: -50%;
-            width: 200%; height: 200%;
-            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-            opacity: 0.4;
-            animation: noiseMove 0.5s steps(3) infinite;
-        }
-
-        @keyframes noiseMove {
-            0% { transform: translate(0, 0); }
-            33% { transform: translate(-2px, -2px); }
-            66% { transform: translate(2px, 1px); }
-            100% { transform: translate(0, 0); }
-        }
-
-        /* ==========================================
            APP CONTAINER
            ========================================== */
         #app {
@@ -196,6 +68,7 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            background: var(--bg-dark);
         }
 
         /* ==========================================
@@ -205,7 +78,7 @@
             flex-shrink: 0;
             padding: 16px 18px 14px;
             padding-top: max(16px, env(safe-area-inset-top));
-            background: rgba(5, 5, 16, 0.75);
+            background: rgba(5, 5, 16, 0.85);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
             border-bottom: 1px solid var(--border);
@@ -1418,20 +1291,6 @@
     </style>
 </head>
 <body>
-    <!-- ===== WALLPAPER ===== -->
-    <div id="wallpaper">
-        <div class="mesh-layer"></div>
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
-        <div class="orb orb-4"></div>
-        <div class="orb orb-5"></div>
-        <div class="orb orb-6"></div>
-        <div class="grid-bg"></div>
-        <div id="particles"></div>
-        <div class="noise"></div>
-    </div>
-
     <!-- ===== TOAST ===== -->
     <div class="toast" id="toast">
         <span class="toast-ico" id="toastIco">✓</span>
@@ -1858,26 +1717,9 @@
     // ===== INIT =====
     function init() {
         if (!DB.get(KEYS.CATS)) DB.set(KEYS.CATS, DEFAULT_CATS);
-        mkParticles();
         renderCats();
         renderNotes();
         stats();
-    }
-
-    // ===== PARTICLES =====
-    function mkParticles() {
-        const c = document.getElementById('particles');
-        for (let i = 0; i < 25; i++) {
-            const p = document.createElement('div');
-            p.className = 'particle';
-            p.style.left = Math.random() * 100 + '%';
-            p.style.animationDuration = (Math.random() * 20 + 12) + 's';
-            p.style.animationDelay = (Math.random() * 15) + 's';
-            const s = Math.random() * 3 + 1;
-            p.style.width = s + 'px';
-            p.style.height = s + 'px';
-            c.appendChild(p);
-        }
     }
 
     // ===== HELPERS =====
@@ -2018,7 +1860,7 @@
             const bgStyle = x.color && x.color !== 'transparent' ? `style="border-left:3px solid ${x.color};"` : '';
 
             html += `
-                <div class="note-card is-pinned" data-cat="${x.cat}" onclick="viewNote('${x.id}')" ${bgStyle}>
+                <div class="note-card ${x.pinned ? 'is-pinned' : ''}" data-cat="${x.cat}" onclick="viewNote('${x.id}')" ${bgStyle}>
                     <div class="note-head">
                         <span class="note-title"><span class="prio-dot prio-${x.prio}"></span>${esc(x.title)}</span>
                         <div class="note-btns">
