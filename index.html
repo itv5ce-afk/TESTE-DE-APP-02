@@ -215,10 +215,10 @@
         .main-content::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
 
         /* ==========================================
-           STATS ROW
+           STATS ROW (OCULTADO)
            ========================================== */
         .stats-row {
-            display: flex;
+            display: none !important;
             gap: 8px;
             padding: 14px 18px 8px;
             overflow-x: auto;
@@ -332,10 +332,10 @@
         .cat-pill.active .cat-count { background: rgba(255,255,255,0.2); color: white; }
 
         /* ==========================================
-           SORT TABS
+           SORT TABS (OCULTADO)
            ========================================== */
         .sort-tabs {
-            display: flex;
+            display: none !important;
             gap: 6px;
             padding: 8px 18px 10px;
             overflow-x: auto;
@@ -1288,6 +1288,28 @@
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+
+        /* ==========================================
+           OCULTAR ELEMENTOS (BUSCA E EXPORTAR)
+           ========================================== */
+        .search-box {
+            display: none !important;
+        }
+
+        .icon-btn[title="Exportar"] {
+            display: none !important;
+        }
+
+        .nav-btn[data-p="export"] {
+            display: none !important;
+        }
+
+        .sg-item[onclick="exportJSON()"],
+        .sg-item[onclick="exportTXT()"],
+        .sg-item[onclick="exportCSV()"],
+        .sg-item[onclick="exportHTML()"] {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
@@ -2133,8 +2155,6 @@
     }
 
     function delCat(id) {
-        const def = ['trabalho','pessoal','estudos','ideias','saude','financeiro','viagem','projetos','outros'];
-        if (def.includes(id)) { toast('⚠️', 'Categoria padrão não pode ser excluída!'); return; }
         showConfirm('🗑️', 'Excluir categoria?', 'As notas não serão excluídas.', () => {
             const all = cats().filter(x => x.id !== id);
             DB.set(KEYS.CATS, all);
